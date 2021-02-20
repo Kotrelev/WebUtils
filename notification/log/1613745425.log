@@ -1,0 +1,35 @@
+[2021-02-19 17:37:05,593] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ул. Мельничная, 4': {'id': '0', 'name': 'Melnich4-as1, Melnich4-as5, Melnich4-as4, Melnich4-as3, Melnich4-as6, Melnich4-as2', 'all_emails': 'smpmarkov@gmail.com, vgt-spb81@mail.ru, cherrywineserov@rambler.ru, vgt.spb@mail.ru, vadim.polozov@gmail.com, buch_5@mediabroker.pro, north-west@list.ru, info@evrokrep.ru, info@masterscleaning.ru, info@nvtrd.ru, ironsparkk@gmail.com, mail@kostus.pro, bcc-pavlova@mail.ru, volna.86@mail.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '21.02.2021', 'time_start': '09:00', 'time_end': '17:00', 'time_span': '120'}}
+[2021-02-19 17:37:05,594] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-02-19 17:37:05,599] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>21.02.2021</b> г.  в период с <b>09:00</b> до <b>17:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>120</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Мельничная, 4
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-02-19 17:37:05,697] INFO - email sent to smpmarkov@gmail.com
+[2021-02-19 17:37:05,719] INFO - email sent to vgt-spb81@mail.ru
+[2021-02-19 17:37:05,751] INFO - email sent to cherrywineserov@rambler.ru
+[2021-02-19 17:37:05,769] INFO - email sent to vgt.spb@mail.ru
+[2021-02-19 17:37:05,788] INFO - email sent to vadim.polozov@gmail.com
+[2021-02-19 17:37:05,806] INFO - email sent to buch_5@mediabroker.pro
+[2021-02-19 17:37:05,824] INFO - email sent to north-west@list.ru
+[2021-02-19 17:37:05,841] INFO - email sent to info@evrokrep.ru
+[2021-02-19 17:37:05,858] INFO - email sent to info@masterscleaning.ru
+[2021-02-19 17:37:05,876] INFO - email sent to info@nvtrd.ru
+[2021-02-19 17:37:05,891] INFO - email sent to ironsparkk@gmail.com
+[2021-02-19 17:37:05,908] INFO - email sent to mail@kostus.pro
+[2021-02-19 17:37:05,923] INFO - email sent to bcc-pavlova@mail.ru
+[2021-02-19 17:37:05,940] INFO - email sent to volna.86@mail.ru
