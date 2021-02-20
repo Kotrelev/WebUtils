@@ -1,0 +1,16 @@
+{% extends "menu.html" %}
+{% block title %}Поиск девайса на карте{% endblock %}
+{% block content %}
+    <form action="maps_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="ip или hostname">
+        <input id="search_btn" type="submit" name="maps_out" value="Send">
+    </form>
+    <br>
+    <br>
+    <h2>Devices:</h2>
+    {% for dev in devices_arr %}
+    <li><a href=https://devnet.spb.avantel.ru/devid_{{dev[0]}}>{{dev[1]}}</a></li>
+    {% endfor %}
+    <br>
+    <br>
+{% endblock %}

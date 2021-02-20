@@ -1,0 +1,116 @@
+{% extends "menu.html" %}
+{% block title %}Инвентарь{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+
+function init()
+{
+    var sorter1 = tsorter.create('tblVars', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+}
+window.onload = init;
+</script>
+<form action="inventory_out" method="POST">
+    <input id="search_fld" type="text" name="text" placeholder="name / ip / serial">
+    <input id="search_btn" type="submit" name="inventory_out" value="Send">
+</form>
+<br>
+
+<h1>Инвентарные данные:</h1><br>
+<table class="sortable">
+<thead>
+  <tr>
+  <th>Serial</th>
+  <th>Type</th>
+  <th>Vendor</th>
+  <th>Model</th>
+  <th>Hardware</th>
+  <th>DownDate</th>
+  <th>State</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+  <td>{{ inv_data[0] }}</td>
+  <td>{{ inv_data[1] }}</td>
+  <td>{{ inv_data[2] }}</td>
+  <td>{{ inv_data[3] }}</td>
+  <td>{{ inv_data[4] }}</td>
+  <td>{{ inv_data[5] }}</td>
+  <td>{{ inv_data[6]|safe }}</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2>Последние данные:</h2><br>
+<table class="sortable">
+<thead>
+  <tr>
+  <th>Firmware</th>
+  <th>MAC</th>
+  <th>IP</th>
+  <th>Name</th>
+  <th>Hostname</th>
+  <th>Location</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+  <td>{{ vars_last[1] }}</td>
+  <td>{{ vars_last[2] }}</td>
+  <td>{{ vars_last[3] }}</td>
+  <td>{{ vars_last[4] }}</td>
+  <td>{{ vars_last[5] }}</td>
+  <td>{{ vars_last[6] }}</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2>История:</h2><br>
+<table id="tblVars" class="sortable">
+<thead>
+  <tr>
+  <!--<th>Serial</th>
+  <th>Type</th>
+  <th>Vendor</th>
+  <th>Model</th>
+  <th>Hardware</th>
+  <th>DownDate</th>
+  <th>State</th>-->
+  <th>Firmware</th>
+  <th>MAC</th>
+  <th>IP</th>
+  <th>Name</th>
+  <th>Hostname</th>
+  <th>Location</th>
+  <th>Change Date</th>
+  </tr>
+</thead>
+<tbody>
+  {% for row in vars_all %}
+  <tr>
+  <!--<td>{{ row[0]|safe }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2] }}</td>
+  <td>{{ row[3] }}</td>
+  <td>{{ row[4] }}</td>
+  <td>{{ row[5] }}</td>
+  <td>{{ row[6]|safe }}</td>-->
+  <td>{{ row[8] }}</td>
+  <td>{{ row[9] }}</td>
+  <td>{{ row[10] }}</td>
+  <td>{{ row[11] }}</td>
+  <td>{{ row[12] }}</td>
+  <td>{{ row[13] }}</td>
+  <td>{{ row[18] }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

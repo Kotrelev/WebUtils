@@ -1,0 +1,35 @@
+{% extends "menu.html" %}
+{% block title %}Уведомление клиентов{% endblock %}
+{% block content %}
+    <form action="client_notification_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="hostname">
+        <input id="search_btn" type="submit" name="client_notification_out" value="Send">
+    </form>
+    <br>
+    <h3>{{msg}}</h3>
+    <br>
+    <br>
+    {% if notification_history %}
+    <div id="notification_history_table">
+        <table id="notification_history_table" class="sortable">
+            <tr>
+                <th colspan="4">История оповещений</th>
+            </tr>
+            <tr>
+                <th>Дата оповещения</th>
+                <th>Дата работ</th>
+                <th>Устройства</th>
+                <th>Адреса</th>
+            </tr>
+            {% for nf in notification_history %}
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_{{ nf }}">{{ notification_history[nf].notif_date }}</a></td>
+                <td>{{ notification_history[nf].works_date }}</td>
+                <td>{{ notification_history[nf].devices }}</td>
+                <td>{{ notification_history[nf].address }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

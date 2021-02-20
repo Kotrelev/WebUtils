@@ -1,0 +1,16 @@
+{% extends "menu.html" %}
+{% block title %}Поиск девайса на карте{% endblock %}
+{% block content %}
+    <form action="maps_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="ip или hostname">
+        <input id="search_btn" type="submit" name="maps_out" value="Send">
+    </form>
+    <br>
+    <br>
+    <h2>Maps:</h2>
+    <ul>{% for item in maps_arr %}
+    <li><a href={{item[1]}} target="_parent">{{item[0]}}</a></li>
+    {% endfor %}
+    <br>
+    <br>
+{% endblock %}

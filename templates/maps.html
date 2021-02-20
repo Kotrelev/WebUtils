@@ -1,0 +1,10 @@
+{% extends "menu.html" %}
+{% block title %}Поиск девайса на карте{% endblock %}
+{% block content %}
+    <form action="maps_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="ip или hostname">
+        <input id="search_btn" type="submit" name="maps_out" value="Send">
+    </form>
+    </br>
+    <h3>{{msg}}</h3>
+{% endblock %}

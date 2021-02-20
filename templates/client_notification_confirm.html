@@ -1,0 +1,54 @@
+{% extends "menu.html" %}
+{% block title %}Уведомление клиентов{% endblock %}
+{% block content %}
+    <form action="client_notification">
+      <button id="InventarySrtButtons" type="submit">В начало</button>
+    </form>
+<br>
+<br>
+<br>
+<h1>{{ msg }}</h1><br>
+{% for address in addr_d %}
+<table id="tblNotification" class="sortable">
+  <tr>
+    <th>{{ addr_d[address].name }}</th>
+  </tr>
+  <tr>
+    <th>Адресаты</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">
+    {{ addr_d[address].all_emails }}
+    </td>
+  </tr>
+  <tr>
+    <th>Тема</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">
+    {{ subject }}
+    </td>
+  </tr>
+  <tr>
+    <th>Сообщение</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">
+    {{ text_d[address]|safe }}
+    </td>
+  </tr>
+</table>
+<br>
+{% if not loop.last %}
+<hr>
+<br>
+{% endif %}
+{% endfor %}
+{% if not msg|safe %}
+<form action="client_notification_sent_{{ sid }}" method="POST" onsubmit="return confirm('А надо ли?');">
+<input id="notif_send_btn" type="submit" name="client_notification_sent_{{ sid }}" value="Send">
+</form>
+<br>
+<br>
+{% endif %}
+{% endblock %}

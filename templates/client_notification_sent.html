@@ -1,0 +1,32 @@
+{% extends "menu.html" %}
+{% block title %}Уведомление клиентов{% endblock %}
+{% block content %}
+    <form action="client_notification">
+      <button id="InventarySrtButtons" type="submit">В начало</button>
+    </form>
+<br>
+<br>
+<br>
+<h1>{{ msg }}</h1>
+<br>
+<table id="tblNotificationOut" class="sortable">
+  <tr>
+    <th>Адресаты</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">{{ all_emails_str }}</td>
+  </tr>
+  <tr>
+    <th>Тема</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">{{ subject }}</td>
+  </tr>
+  <tr>
+    <th>Сообщение</th>
+  </tr>
+  <tr>
+    <td id="tblNotificationOut">{{ message_txt|safe }}</td>
+  </tr>
+</table><br>
+{% endblock %}

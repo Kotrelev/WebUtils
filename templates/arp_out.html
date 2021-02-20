@@ -1,0 +1,37 @@
+{% extends "menu.html" %}
+{% block title %}Поиск по базе ARP{% endblock %}
+{% block content %}
+    <form action="arp_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="IP или MAC">
+        <input id="search_btn" type="submit" name="arp_out" value="Send">
+    </form>
+    <br>
+    <br>
+    <h2>ARPs for {{ dev }}:</h2>
+<table id="tblMany" class="sortable">
+<thead>
+  <tr>
+  <th>Node</th>
+  <th>Interface</th>
+  <th>IP</th>
+  <th>MAC</th>
+  <th>Chande date</th>
+  <th>Last seen</th>
+  </tr>
+</thead>
+<tbody>
+  {% for item in arp_arr %}
+  <tr>
+  <td>{{ item['node_ip'] }}</td>
+  <td>{{ item['interface'] }}</td>
+  <td>{{ item['ip'] }}</td>
+  <td>{{ item['mac'] }}</td>
+  <td>{{ item['change_date'] }}</td>
+  <td>{{ item['last_seen'] }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+    <br>
+    <br>
+{% endblock %}

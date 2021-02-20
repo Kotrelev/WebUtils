@@ -1,0 +1,10 @@
+{% extends "menu.html" %}
+{% block title %}Поиск по базе ARP{% endblock %}
+{% block content %}
+    <form action="arp_out" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="IP или MAC">
+        <input id="search_btn" type="submit" name="arp_out" value="Send">
+    </form>
+    <br>
+    <h3>{{msg}}</h3>
+{% endblock %}

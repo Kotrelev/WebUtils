@@ -1,0 +1,233 @@
+{% extends "menu.html" %}
+{% block title %}Инвентарь{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+
+function init()
+{
+    var sorter1 = tsorter.create('tblType', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+    var sorter2 = tsorter.create('tblVendor', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+    var sorter3 = tsorter.create('tblModel', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+}
+window.onload = init;
+
+function byType() {
+  var t = document.getElementById("tblType");
+  var v = document.getElementById("tblVendor");
+  var m = document.getElementById("tblModel");
+  if (t.style.display === "none") {
+    t.style.display = "block";
+    v.style.display = "none";
+    m.style.display = "none";
+  } else {
+    t.style.display = "block";
+    v.style.display = "none";
+    m.style.display = "none";
+  }
+}
+function byVendor() {
+  var t = document.getElementById("tblType");
+  var v = document.getElementById("tblVendor");
+  var m = document.getElementById("tblModel");
+  if (v.style.display === "none") {
+    t.style.display = "none";
+    v.style.display = "block";
+    m.style.display = "none";
+  } else {
+    t.style.display = "none";
+    v.style.display = "block";
+    m.style.display = "none";
+  }
+}
+function byModel() {
+  var t = document.getElementById("tblType");
+  var v = document.getElementById("tblVendor");
+  var m = document.getElementById("tblModel");
+  if (m.style.display === "none") {
+    t.style.display = "none";
+    v.style.display = "none";
+    m.style.display = "block";
+  } else {
+    t.style.display = "none";
+    v.style.display = "none";
+    m.style.display = "block";
+  }
+}
+</script>
+<form action="inventory_out" method="POST">
+    <input id="search_fld" type="text" name="text" placeholder="name / ip / serial">
+    <input id="search_btn" type="submit" name="inventory_out" value="Send">
+</form>
+<div class="InventarySrtButtonsGroup">
+Группировать: <button id="InventarySrtButtons" onclick="byType()">По типу</button>
+<button id="InventarySrtButtons" onclick="byVendor()">По вендору</button>
+<button id="InventarySrtButtons" onclick="byModel()">По модели</button></div>
+
+<table id="tblType" style="display:none" class="sortable">
+<thead>
+  <tr>
+  <th>{{ headers_t[0] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[1] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[2] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[3] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[4] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[5] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[6] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[7] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[8] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[9] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[10] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[11] }}</th>
+  <th data-tsorter="numeric">{{ headers_t[12] }}</th>
+  </tr>
+</thead>
+<tbody>
+  {% for row in types %}
+  <tr>
+  <td>{{ row[0]|safe }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2] }}</td>
+  <td>{{ row[3] }}</td>
+  <td>{{ row[4] }}</td>
+  <td>{{ row[5] }}</td>
+  <td>{{ row[6] }}</td>
+  <td>{{ row[7] }}</td>
+  <td>{{ row[8] }}</td>
+  <td>{{ row[9] }}</td>
+  <td>{{ row[10] }}</td>
+  <td>{{ row[11] }}</td>
+  <td>{{ row[12] }}</td>
+</tr>
+{% endfor %}
+<tr>
+  <td>{{ total[0]|safe }}</td>
+  <td>{{ total[1]|safe }}</td>
+  <td>{{ total[2]|safe }}</td>
+  <td>{{ total[3]|safe }}</td>
+  <td>{{ total[4]|safe }}</td>
+  <td>{{ total[5]|safe }}</td>
+  <td>{{ total[6]|safe }}</td>
+  <td>{{ total[7]|safe }}</td>
+  <td>{{ total[8]|safe }}</td>
+  <td>{{ total[9]|safe }}</td>
+  <td>{{ total[10]|safe }}</td>
+  <td>{{ total[11]|safe }}</td>
+  <td>{{ total[12]|safe }}</td>
+</tr>
+</tbody>
+</table>
+
+<table id="tblVendor" style="display:none" class="sortable">
+<thead>
+  <tr>
+  <th>{{ headers_v[0] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[1] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[2] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[3] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[4] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[5] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[6] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[7] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[8] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[9] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[10] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[11] }}</th>
+  <th data-tsorter="numeric">{{ headers_v[12] }}</th>
+  </tr>
+</thead>
+<tbody>
+  {% for row in vendors %}
+  <tr>
+  <td>{{ row[0]|safe }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2] }}</td>
+  <td>{{ row[3] }}</td>
+  <td>{{ row[4] }}</td>
+  <td>{{ row[5] }}</td>
+  <td>{{ row[6] }}</td>
+  <td>{{ row[7] }}</td>
+  <td>{{ row[8] }}</td>
+  <td>{{ row[9] }}</td>
+  <td>{{ row[10] }}</td>
+  <td>{{ row[11] }}</td>
+  <td>{{ row[12] }}</td>
+</tr>
+{% endfor %}
+<tr>
+  <td>{{ total[0]|safe }}</td>
+  <td>{{ total[1]|safe }}</td>
+  <td>{{ total[2]|safe }}</td>
+  <td>{{ total[3]|safe }}</td>
+  <td>{{ total[4]|safe }}</td>
+  <td>{{ total[5]|safe }}</td>
+  <td>{{ total[6]|safe }}</td>
+  <td>{{ total[7]|safe }}</td>
+  <td>{{ total[8]|safe }}</td>
+  <td>{{ total[9]|safe }}</td>
+  <td>{{ total[10]|safe }}</td>
+  <td>{{ total[11]|safe }}</td>
+  <td>{{ total[12]|safe }}</td>
+</tr>
+</tbody>
+</table>
+
+<table id="tblModel" class="sortable">
+<thead>
+  <tr>
+  <th>{{ headers[0] }}</th>
+  <th>{{ headers[1] }}</th>
+  <th>{{ headers[2] }}</th>
+  <th data-tsorter="numeric">{{ headers[3] }}</th>
+  <th data-tsorter="numeric">{{ headers[4] }}</th>
+  <th data-tsorter="numeric">{{ headers[5] }}</th>
+  <th data-tsorter="numeric">{{ headers[6] }}</th>
+  <th data-tsorter="numeric">{{ headers[7] }}</th>
+  <th data-tsorter="numeric">{{ headers[8] }}</th>
+  <th data-tsorter="numeric">{{ headers[9] }}</th>
+  <th data-tsorter="numeric">{{ headers[10] }}</th>
+  <th data-tsorter="numeric">{{ headers[11] }}</th>
+  <th data-tsorter="numeric">{{ headers[12] }}</th>
+  <th data-tsorter="numeric">{{ headers[13] }}</th>
+  <th data-tsorter="numeric">{{ headers[14] }}</th>
+  </tr>
+</thead>
+<tbody>
+  {% for row in models %}
+  <tr>
+  <td>{{ row[0] }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2]|safe }}</td>
+  <td>{{ row[3] }}</td>
+  <td>{{ row[4] }}</td>
+  <td>{{ row[5] }}</td>
+  <td>{{ row[6] }}</td>
+  <td>{{ row[7] }}</td>
+  <td>{{ row[8] }}</td>
+  <td>{{ row[9] }}</td>
+  <td>{{ row[10] }}</td>
+  <td>{{ row[11] }}</td>
+  <td>{{ row[12] }}</td>
+  <td>{{ row[13] }}</td>
+  <td>{{ row[14] }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

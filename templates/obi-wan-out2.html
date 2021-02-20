@@ -1,0 +1,21 @@
+{% extends "menu.html" %}
+{% block title %}Obi-Wan{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<img src="pic/obi-wan.jpg" width="500" height="300">
+<h1 style='color:blue'>Hello There!</h1>
+
+    <h3>{{ avar }}</h3>
+    
+    <h3>{{ avar2 }}</h3>
+    
+    <form action="obi-wan">
+      <button id="InventarySrtButtons" type="submit">HOME</button>
+    </form>
+    
+{% endblock %}

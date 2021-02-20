@@ -1,0 +1,80 @@
+{% extends "menu.html" %}
+{% block title %}Уведомление клиентов{% endblock %}
+{% block content %}
+    <form action="client_notification">
+      <button id="InventarySrtButtons" type="submit">Назад</button>
+    </form>
+<br>
+<br>
+<form action="client_notification_confirm_{{ sid }}" method="POST">
+<table id="tblNotification" class="sortable">
+<thead>
+  <tr>
+  <th>📨</th>
+  <th>Host</th>
+  <th>Address</th>
+  <th>Uplink</th> 
+  <th>Unknown</th>
+  <th>Contracts</th>
+  <th>Emails</th>
+  </tr>
+</thead>
+<tbody>
+  {% for dev in contract_dict %}
+  <tr>
+    <td rowspan="{{ contract_dict[dev]['cont_num'] }}">
+        <input type="checkbox" class="notification_form" id="mail_send" name="mail_send" checked="checked" value="{{ dev }}"></td>
+    <td rowspan="{{ contract_dict[dev]['cont_num'] }}">{{ contract_dict[dev]['name'] }}</td>
+    <td rowspan="{{ contract_dict[dev]['cont_num'] }}">
+        <input type="text" 
+               class="notification_form" 
+               id="address_fld" 
+               name="{{ dev }}_address_fld" 
+               value="{{ contract_dict[dev]['address'] }}" required>
+    </td>
+    <td rowspan="{{ contract_dict[dev]['cont_num'] }}">{{ contract_dict[dev]['uplink'] }}</td>
+    <td rowspan="{{ contract_dict[dev]['cont_num'] }}">{{ contract_dict[dev]['unrecognized'] }}</td>
+    {% for contract in contract_dict[dev]['contracts'] %}
+
+    {% if loop.first %}
+     <td>{{ contract }}</td>
+     <td>{{ contract_dict[dev]['contracts'][contract] }}</td>
+    </tr>
+    {% else %}
+      <tr>
+      <td>{{ contract }}</td>
+      <td>{{ contract_dict[dev]['contracts'][contract] }}</td>
+      </tr>
+    {% endif %}
+    {% endfor %}
+  {% endfor %}
+</tbody>
+</table>
+<br>
+<input type="text" 
+       class="notification_form" 
+       id="subject_fld" 
+       name="subject" 
+       value="Уведомление о плановых работах на сети АО «Авантел»" 
+       placeholder="Тема письма" required><br>
+<label for="time_date">Дата работ:</label>
+<input type="date" class="notification_form" id="time_date" name="time_date" min="{{ today_date }}" required><br>
+
+<label for="time_start_hr">Время начала:</label>
+<input type="number" class="notification_form" id="time_start_hr" name="time_start_hr" min="0" max="23" required>
+<text id="time_start_hr">:</text>
+<input type="number" class="notification_form" id="time_start_min" name="time_start_min" min="0" max="55" step="5" required><br>
+
+<label for="time_end_hr">Время окончания:</label>
+<input type="number" class="notification_form" id="time_end_hr" name="time_end_hr" min="0" max="23" required>
+<text id="time_end_hr">:</text>
+<input type="number" class="notification_form" id="time_end_min" name="time_end_min" min="0" max="55" step="5" required><br>
+
+<label for="time_span">Продолжительность (минут):</label>
+<input type="number" class="notification_form" id="time_span" name="time_span" min="5" step="5" required><br>
+    
+<input id="search_btn" type="submit" name="client_notification_confirm_{{ sid }}" value="Далее">
+</form>
+<br>
+<br>
+{% endblock %}

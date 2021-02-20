@@ -1,0 +1,31 @@
+{% extends "menu.html" %}
+{% block title %}Obi-Wan{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<img src="pic/obi-wan.jpg" width="500" height="300">
+<h1 style='color:blue'>Hello There!</h1>
+    
+    <h1>shit: {{ varrrs['shit'] }}</h1>
+    <h2>search: {{ varrrs['ar'] }}</h2>
+    <h2>subject: {{ varrrs['ax'] }}</h2>
+    <h2>text: {{ varrrs['as'] }}</h2>
+    <h2>browser: {{ varrrs['bs'] }}</h2>
+    <h2>bike: {{ varrrs['vv'] }}</h2>
+    <h2>not bike: {{ varrrs['vv'] }}</h2>
+    <h2>date: {{ varrrs['dt'] }}</h2>
+    <h2>time: {{ varrrs['th'] }}:{{ varrrs['tm'] }}</h2>
+    <h2>date2: {{ varrrs['dd'] }}</h2>
+
+    <form action="obi-wan">
+      <button id="InventarySrtButtons" type="submit">BACK</button>
+    </form>
+    <form action="obi-wan-out_{{ sid }}" method="POST">
+        <input id="search_fld" type="text" name="text" placeholder="ANOTHER ONE">
+        <input id="search_btn" type="submit" name="obi-wan-out_{{ sid }}" value="NEXT">
+    </form>
+{% endblock %}

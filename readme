@@ -1,0 +1,26 @@
+#run with gunicorn from folder:
+
+gunicorn --bind 0.0.0.0:4000 wsgi:app
+
+на monitor.spb.avantel.ru, в /usr/share/zabbix/include/ лежит файл menu.inc.php
+Это меню заббикса. Туда добавлены строки:
+[
+        'url' => 'webutils.php',
+        'label' => 'Утилиты'
+],
+Это ссылка на страницу WebUtils
+
+webutils.php лежит в /usr/share/zabbix/
+Содержит:
+<?php
+require_once dirname(__FILE__).'/include/config.inc.php';
+
+$page['title'] = _('Web utils');
+$page['file'] = 'webutils.php';
+
+require_once dirname(__FILE__).'/include/page_header.php';
+echo '<iframe src="https://devnet.spb.avantel.ru/" style="width:100%" height="600" align="left">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe>';
+require_once dirname(__FILE__).'/include/page_footer.php';
+
