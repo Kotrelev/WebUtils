@@ -1,0 +1,27 @@
+[2021-03-11 14:21:32,497] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ул. Большая Пушкарская, 10': {'id': '0', 'name': 'BolPush10-as2, BolPush10-as3', 'all_emails': 'chikov@etalonpg.ru, legkoduhova@yandex.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '15.03.2021', 'time_start': '18:00', 'time_end': '19:00', 'time_span': '30'}}
+[2021-03-11 14:21:32,498] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-03-11 14:21:32,508] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>15.03.2021</b> г.  в период с <b>18:00</b> до <b>19:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>30</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Большая Пушкарская, 10
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-03-11 14:21:32,547] INFO - email sent to chikov@etalonpg.ru
+[2021-03-11 14:21:32,565] INFO - email sent to legkoduhova@yandex.ru
+[2021-03-11 14:31:51,456] ERROR - Ошибка в функции client_notification_get_emails 'str' object has no attribute 'append'
+[2021-03-11 14:31:51,483] ERROR - Ошибка в функции get_address_zabbix_host string indices must be integers
+[2021-03-11 14:32:04,817] INFO - {'10.60.245.30': {'name': 'BolPush10-as2', 'ip': '10.60.245.30', 'address': '', 'uplink': '', 'cont_num': '1', 'unrecognized': '0016-21_IPEmanovVV, 0009-21_SZPS, 0010-21_Magenta, 0026-21_VishiiSvet, 0068-21_Endi', 'alive': 1, 'contracts': {'0385-20': 'legkoduhova@yandex.ru'}}, '10.60.245.22': {'name': 'BolPush10-as3', 'ip': '10.60.245.22', 'address': '', 'uplink': 'BolPush10-as2', 'cont_num': '1', 'unrecognized': '2_TAU8_Etalon, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0314-20': 'chikov@etalonpg.ru'}}}
+[2021-03-11 14:35:56,213] INFO - {'10.60.245.30': {'name': 'BolPush10-as2', 'ip': '10.60.245.30', 'address': '', 'uplink': '', 'cont_num': '1', 'unrecognized': '0016-21_IPEmanovVV, 0009-21_SZPS, 0010-21_Magenta, 0026-21_VishiiSvet, 0068-21_Endi', 'alive': 1, 'contracts': {'0385-20': 'legkoduhova@yandex.ru'}}, '10.60.245.22': {'name': 'BolPush10-as3', 'ip': '10.60.245.22', 'address': '', 'uplink': 'BolPush10-as2', 'cont_num': '1', 'unrecognized': '2_TAU8_Etalon, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0314-20': 'chikov@etalonpg.ru'}}}

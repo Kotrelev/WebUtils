@@ -21,7 +21,7 @@ window.onload = init;
 </form>
 <br>
 
-<h3>Request: "{{ req }}"</h3><br>
+<h3>Suspended devices:</h3><br>
 <table id="tblMany" class="sortable">
 <thead>
   <tr>
@@ -31,18 +31,10 @@ window.onload = init;
   <th>Model</th>
   <!--<th>Hardware</th>-->
   <th>DownDate</th>
-  <th>State</th>
-  <th>Firmware</th>
-  <th>MAC</th>
-  <th>IP</th>
-  <th>Name</th>
-  <!--<th>Hostname</th>-->
-  <th>Location</th>
-  <!--<th>Change Date</th>-->
   </tr>
 </thead>
 <tbody>
-  {% for row in vars_all %}
+  {% for row in suspended_arr %}
   <tr>
   <td>{{ row[0]|safe }}</td>
   <td>{{ row[1] }}</td>
@@ -50,14 +42,6 @@ window.onload = init;
   <td>{{ row[3] }}</td>
   <!--<td>{{ row[4] }}</td>-->
   <td>{{ row[5] }}</td>
-  <td>{{ row[6]|safe }}</td>
-  <td>{{ row[8] }}</td>
-  <td>{{ row[9] }}</td>
-  <td>{{ row[10] }}</td>
-  <td>{{ row[11] }}</td>
-  <!--<td>{{ row[12] }}</td>-->
-  <td>{{ row[13] }}</td>
-  <!--<td>{{ row[18] }}</td>-->
 </tr>
 {% endfor %}
 </tbody>

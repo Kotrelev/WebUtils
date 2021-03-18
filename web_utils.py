@@ -311,6 +311,31 @@ def sql_inventory_vmt(connection, req, vmt):
         return dev_arr
     except Exception as err_message:
         logger.error('Ошибка в функции sql_inventory_vmt: {}'.format(str(err_message)))
+        
+# inventory suspended
+def sql_inventory_suspended(connection):
+    try:
+        dev_req = ('SELECT * FROM Inventory WHERE monitored = "0";')
+        cursor = connection.cursor()
+        cursor.execute(dev_req)
+        dev_arr = cursor.fetchall()
+        if not dev_arr:
+            cursor.close()
+            return None
+        dev_arr = [list(line) for line in dev_arr]
+        for x in range(len(dev_arr)):
+            url = 'https://devnet.spb.avantel.ru/inventory_serial_{}'.format(
+                                        urllib.parse.quote(dev_arr[x][0].replace('/','slash'), safe=''))
+            model_url = '<a href={}>{}</a>'.format(url, dev_arr[x][0])
+            
+            dev_arr[x][0] = model_url
+            dev_arr[x][6] = states[dev_arr[x][6]]
+        cursor.close()
+        return dev_arr
+    except Exception as err_message:
+        logger.error('Ошибка в функции sql_inventory_suspended: {}'.format(str(err_message)))
+        
+        
 ### INVENTORY FUNCTIONS END
      
 def getSysObjectID(ip, community, logger):
@@ -324,16 +349,17 @@ def getSysObjectID(ip, community, logger):
     except Exception as err_message:
         logger.error('{}: Ошибка в функции getSysObjectID {}'.format(ip, str(err_message)))
         
-def getDescriptions(ip, community, descoid, logger):
+def getSNMPstuff(ip, community, oid, logger):
     try:
-        proc = subprocess.Popen("/bin/snmpwalk -Ov -t 2 -v1 -c {} {} {}".format(community, ip, descoid),
-                                stdout=subprocess.PIPE,shell=True)
+        proc = subprocess.Popen(
+            "/bin/snmpwalk -Ov -t 2 -v1 -c {} {} {}".format(community, ip, oid),
+            stdout=subprocess.PIPE,shell=True)
         (out,err) = proc.communicate()
         if out:
             return out.decode('utf-8')
         return None
     except Exception as err_message:
-        logger.error('{}: Ошибка в функции getDescriptions {}'.format(ip, str(err_message)))
+        logger.error('{}: Ошибка в функции getSNMPstuff {}'.format(ip, str(err_message)))
     
 def sql_set_session(sid, storage, date):
     try:
@@ -453,7 +479,7 @@ def sql_get_notification_history_msg(msgid):
     
 def client_notification_get_emails(devices_arr, contract_dict, logger):
     
-    #devices_arr = [ip]
+    devices_arr = list(set(devices_arr))
     all_devices_arr = []
     #contract_dict = {ip: {'name': hostname, 
     #                      'ip': ip,
@@ -470,6 +496,10 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
         try:
             # берем первый ip из списка на обработку
             ip = devices_arr[0]
+            if ip in all_devices_arr:
+                # Уже видели девайс, пропускаем
+                devices_arr.remove(ip)
+                continue
             # в all_devices_arr записываем тоже что и в devices_arr но отсюда девайсы не будем удалять после обработки
             all_devices_arr.append(ip)
             
@@ -487,7 +517,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                 else: descoid = '1.3.6.1.2.1.31.1.1.1.18'
             
             # собираем дескрипшны
-            descs = getDescriptions(ip, config.community, descoid, logger)
+            descs = getSNMPstuff(ip, config.community, descoid, logger)
             if not descs: 
                 logger.error('{}: Не нашел подписей на портах'.format(ip))
                 continue
@@ -516,6 +546,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                         if ipx and ipx in all_devices_arr:
                             continue
                         elif ipx and ipx not in all_devices_arr:
+                            logger.info('DEV_ARRR {} {}'.format(ipx, devices_arr))
                             devices_arr.append(ipx)
                             contract_dict[ipx] = {'name': downlink.group(1),
                                                   'ip': ipx,
@@ -537,7 +568,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                 
             devices_arr.remove(ip)
         except Exception as err_message:
-            logger.error('Ошибка в функции client_notification_get_emails {}'.format(str(err_message)))
+            logger.error('Ошибка в функции client_notification_get_emails {}: {}'.format(ip,str(err_message)))
             return str(err_message)
     
     logger.info(str(contract_dict))
@@ -910,6 +941,13 @@ def inventory_serial(serial):
     connection.close()
     return render_template("inventory_one.html", inv_data=inv_data, vars_last=vars_last, vars_all=vars_all)
 
+@web_utils_app.route("/inventory_suspended")
+def inventory_suspended():
+    connection = local_sql_conn_l()
+    suspended_arr = sql_inventory_suspended(connection)
+    connection.close()
+    return render_template("inventory_suspended.html", suspended_arr=suspended_arr)
+
 ###
 ### /INVENTORY
 ###
@@ -1077,6 +1115,7 @@ def client_notification_sent_(sid):
     now = datetime.now()
     nid = int(now.timestamp())
     
+    # Отдельный логгер запишет файл под конкретную рассылку
     nf_logger = logging.getLogger('my_logger')
     nf_handler = logging.FileHandler(config.notification_log_folder+str(nid)+'.log', 'w+')
     nf_formatter = logging.Formatter("[%(asctime)s] %(levelname)s - %(message)s")
@@ -1121,7 +1160,8 @@ def client_notification_sent_(sid):
                                                   addr)
         text_d[addr] = msg_text
         nf_logger.info('Message compiled: \n{}'.format(str(msg_text)))
-        for email_addr in data_dict['addr_d'][addr]['all_emails'].split(', '):
+        #В список рассылки добавляем from_addr, чтобы на саппорт упало сообщение тоже.
+        for email_addr in data_dict['addr_d'][addr]['all_emails'].split(', ')+[config.from_addr]:
             send_email(subject, msg_text, email_addr, nf_logger)
         
         sql_add_notification_history(nid,

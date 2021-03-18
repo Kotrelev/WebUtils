@@ -1,0 +1,37 @@
+[2021-03-18 15:21:35,250] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, пр-т Лиговский, 73': {'id': '0', 'name': 'Lig73-as1', 'all_emails': 'tatiana.tarasova@datium.fi, 9250688@mail.ru, shilov@most6.ru, mlvov@most6.ru, 9230688@bk.ru, andrievsky.d@gmail.com, aleksandr.arsenov@teamgroup.ru, it@most6.ru, buh@most6.spb.ru, kozlikova@most6.ru, kozlikova@most7.ru, aleksandra.dimova@teamgroup.ru, merkulov@canox.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '23.03.2021', 'time_start': '00:00', 'time_end': '06:00', 'time_span': '360'}}
+[2021-03-18 15:21:35,252] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-03-18 15:21:35,257] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>23.03.2021</b> г.  в период с <b>00:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>360</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Лиговский, 73
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-03-18 15:21:35,303] INFO - email sent to tatiana.tarasova@datium.fi
+[2021-03-18 15:21:35,324] INFO - email sent to 9250688@mail.ru
+[2021-03-18 15:21:35,342] INFO - email sent to shilov@most6.ru
+[2021-03-18 15:21:35,360] INFO - email sent to mlvov@most6.ru
+[2021-03-18 15:21:35,378] INFO - email sent to 9230688@bk.ru
+[2021-03-18 15:21:35,393] INFO - email sent to andrievsky.d@gmail.com
+[2021-03-18 15:21:35,447] INFO - email sent to aleksandr.arsenov@teamgroup.ru
+[2021-03-18 15:21:35,464] INFO - email sent to it@most6.ru
+[2021-03-18 15:21:35,483] INFO - email sent to buh@most6.spb.ru
+[2021-03-18 15:21:35,501] INFO - email sent to kozlikova@most6.ru
+[2021-03-18 15:21:35,521] INFO - email sent to kozlikova@most7.ru
+[2021-03-18 15:21:35,542] INFO - email sent to aleksandra.dimova@teamgroup.ru
+[2021-03-18 15:21:35,616] INFO - email sent to merkulov@canox.ru
+[2021-03-18 15:21:35,687] INFO - email sent to support@spb.avantel.ru
+[2021-03-18 15:28:19,594] ERROR - Ошибка в функции client_notification_get_emails 'str' object has no attribute 'append'
+[2021-03-18 15:28:19,621] ERROR - Ошибка в функции get_address_zabbix_host string indices must be integers
