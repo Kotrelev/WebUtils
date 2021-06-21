@@ -1,0 +1,179 @@
+{% extends "menu.html" %}
+{% block title %}Уведомление для Telegram{% endblock %}
+{% block content %}
+<script type="text/javascript">
+
+function notifier_create() {
+  var f = document.getElementById("notification_create_form");
+  var t = document.getElementById("active_notifications_div");
+  var h = document.getElementById("history_notifications_div");
+  if (f.style.display === "none") {
+    f.style.display = "block";
+    t.style.display = "none";
+    h.style.display = "none";
+  } else {
+    f.style.display = "block";
+    t.style.display = "none";
+    h.style.display = "none";
+  }
+}
+function notifier_active() {
+  var f = document.getElementById("notification_create_form");
+  var t = document.getElementById("active_notifications_div");
+  var h = document.getElementById("history_notifications_div");
+  if (t.style.display === "none") {
+    f.style.display = "none";
+    t.style.display = "block";
+    h.style.display = "none";
+  } else {
+    f.style.display = "none";
+    t.style.display = "block";
+    h.style.display = "none";
+  }
+}
+function notifier_history() {
+  var f = document.getElementById("notification_create_form");
+  var t = document.getElementById("active_notifications_div");
+  var h = document.getElementById("history_notifications_div");
+  if (h.style.display === "none") {
+    f.style.display = "none";
+    t.style.display = "none";
+    h.style.display = "block";
+  } else {
+    f.style.display = "none";
+    t.style.display = "none";
+    h.style.display = "block";
+  }
+}
+</script>
+    <br>
+    <div class="NotifierButtonsGroup">
+        <input id="scale0" class="RadioButtons" name="RadioButtons" type="radio" value="0" checked>
+        <label for="scale0" class="NotifierButtons" onclick="notifier_active()">Активные</label>
+        <input id="scale1" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale1" class="NotifierButtons" onclick="notifier_create()">Создать</label>
+        <input id="scale2" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale2" class="NotifierButtons" onclick="notifier_history()">История</label>
+        <!--<button id="NotifierButtons" onclick="notifier_active()">Активные</button>
+        <button id="NotifierButtons" onclick="notifier_create()">Создать</button>
+        <button id="NotifierButtons" onclick="notifier_history()">История</button>-->
+    </div>
+    {% if msg %}
+    <h2>{{ msg }}<br></h2>
+    {% endif %}
+    <div id="notification_create_form" style="display:none">
+        <form action="notifier_create" method="POST">
+        <br>
+        <br>
+        <label for="telegram_chat_fld">Чат в телеге:</label>
+        <input type="text" 
+            class="notification_form" 
+            id="telegram_chat_fld" 
+            name="telegram_chat_fld"
+            autocomplete="off"            
+            placeholder="Telegram chat id" 
+            list="tg_chats" required><br>
+        <datalist id = "tg_chats">
+			<option value = "-1001460690948" label = "Техническая поддержка Авантел">
+			<option value = "-1001465305426" label = "АвантелТЕХ">
+			<option value = "-1001054349366" label = "Авантел-СПБ">
+		</datalist>	
+        <label for="time_date">Дата:</label>
+        <input type="date" 
+               class="notification_form" 
+               id="time_date" 
+               name="time_date" 
+               min="{{ today_date }}" required><br>
+        
+        <label for="time_start_hr">Время:</label>
+        <input type="number" 
+               class="notification_form" 
+               id="time_start_hr" 
+               name="time_start_hr" 
+               min="0" 
+               max="23" required>
+        <text id="time_start_hr">:</text>
+        <input type="number" 
+               class="notification_form" 
+               id="time_start_min" 
+               name="time_start_min" 
+               min="0" 
+               max="55" 
+               step="5" required><br>
+        
+        <label for="msg_textarea">Текст сообщения:</label><br>
+        <textarea class="notification_form" 
+                  id="msg_textarea" 
+                  name="msg_textarea"
+                  cols="4" 
+                  rows="3"
+                  maxlength="3000" required></textarea><br>
+            
+        <input id="search_btn" type="submit" name="notifier_create" value="Создать">
+        </form>
+    </div>
+    <div id="active_notifications_div">
+        <br>
+        <br>
+        {% if active_notifications %}
+        <table id="active_notifications_table" class="sortable">
+            <tr>
+                <th colspan="5">Активные уведомления</th>
+            </tr>
+            <tr>
+                <th>Дата создания</th>
+                <th>Дата оповещения</th>
+                <th>Чат в Telegram</th>
+                <th>Сообщение</th>
+                <th>🗑</th>
+            </tr>
+            {% for an in active_notifications %}
+            <tr>
+                <td>{{ an.cur_date }}</td>
+                <td>{{ an.msg_date }}</td>
+                <td>{{ an.telegram_id }}</td>
+                <td>{{ an.message }}</td>
+                <td><form action="notifier_delete_{{ an.id }}" 
+                          method="POST" 
+                          onsubmit="return confirm('Удаляем?');">
+                    <input id="notifier_delete_button" 
+                           type="submit" 
+                           name="notifier_delete_{{ an.id }}" 
+                           value="❌">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        
+        </table>
+        {% else %}
+        <h2>Нет активных уведомлений<br><br></h2>
+        {% endif %}
+    </div>
+    <div id="history_notifications_div" style="display:none">
+        <br>
+        <br>
+        {% if history %}
+        <table id="history_notifications_table" class="sortable">
+            <tr>
+                <th colspan="5">История уведомлений</th>
+            </tr>
+            <tr>
+                <th>Дата создания</th>
+                <th>Дата оповещения</th>
+                <th>Чат в Telegram</th>
+                <th>Сообщение</th>
+            </tr>
+            {% for an in history %}
+            <tr>
+                <td>{{ an.create_date }}</td>
+                <td>{{ an.msg_date }}</td>
+                <td>{{ an.telegram_id }}</td>
+                <td>{{ an.message }}</td>
+            </tr>
+            {% endfor %}
+        
+        </table>
+        {% endif %}
+    </div>
+{% endblock %}

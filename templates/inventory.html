@@ -74,15 +74,23 @@ function byModel() {
     <input id="search_fld" type="text" name="text" placeholder="name / ip / serial">
     <input id="search_btn" type="submit" name="inventory_out" value="Send">
 </form>
-<div class="InventarySrtButtonsGroup">
-Группировать: <button id="InventarySrtButtons" onclick="byType()">По типу</button>
-<button id="InventarySrtButtons" onclick="byVendor()">По вендору</button>
-<button id="InventarySrtButtons" onclick="byModel()">По модели</button></div>
+<div class="InventorySrtButtonsGroup">
+Группировать: <!--<button id="InventorySrtButtons" onclick="byType()">По типу</button>
+  <button id="InventorySrtButtons" onclick="byVendor()">По вендору</button>
+  <button id="InventorySrtButtons" onclick="byModel()">По модели</button>-->
+  <input id="isb1" class="RadioButtons" name="InventorySrtButton" type="radio" value="0">
+  <label for="isb1" class="InventorySrtButtons" onclick="byType()">По типу</label>
+  <input id="isb2" class="RadioButtons" name="InventorySrtButton" type="radio" value="0">
+  <label for="isb2" class="InventorySrtButtons" onclick="byVendor()">По вендору</label>
+  <input id="isb3" class="RadioButtons" name="InventorySrtButton" type="radio" value="0" checked>
+  <label for="isb3" class="InventorySrtButtons" onclick="byModel()">По модели</label>
+  <button class="InventorySrtButtons" onclick="window.location.href = 'https://devnet.spb.avantel.ru/inventory_suspended';">Не в сети</button>
+</div>
 
 <table id="tblType" style="display:none" class="sortable">
 <thead>
   <tr>
-  <th>{{ headers_t[0] }}</th>
+  <th data-tsorter="link">{{ headers_t[0] }}</th>
   <th data-tsorter="numeric">{{ headers_t[1] }}</th>
   <th data-tsorter="numeric">{{ headers_t[2] }}</th>
   <th data-tsorter="numeric">{{ headers_t[3] }}</th>
@@ -100,43 +108,43 @@ function byModel() {
 <tbody>
   {% for row in types %}
   <tr>
-  <td>{{ row[0]|safe }}</td>
-  <td>{{ row[1] }}</td>
-  <td>{{ row[2] }}</td>
-  <td>{{ row[3] }}</td>
-  <td>{{ row[4] }}</td>
-  <td>{{ row[5] }}</td>
-  <td>{{ row[6] }}</td>
-  <td>{{ row[7] }}</td>
-  <td>{{ row[8] }}</td>
-  <td>{{ row[9] }}</td>
-  <td>{{ row[10] }}</td>
-  <td>{{ row[11] }}</td>
-  <td>{{ row[12] }}</td>
-</tr>
+    <td>{{ row[0]|safe }}</td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }}</td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+  </tr>
 {% endfor %}
-<tr>
-  <td>{{ total[0]|safe }}</td>
-  <td>{{ total[1]|safe }}</td>
-  <td>{{ total[2]|safe }}</td>
-  <td>{{ total[3]|safe }}</td>
-  <td>{{ total[4]|safe }}</td>
-  <td>{{ total[5]|safe }}</td>
-  <td>{{ total[6]|safe }}</td>
-  <td>{{ total[7]|safe }}</td>
-  <td>{{ total[8]|safe }}</td>
-  <td>{{ total[9]|safe }}</td>
-  <td>{{ total[10]|safe }}</td>
-  <td>{{ total[11]|safe }}</td>
-  <td>{{ total[12]|safe }}</td>
-</tr>
+  <tr>
+    <td>{{ total[0]|safe }}</td>
+    <td>{{ total[1]|safe }}</td>
+    <td>{{ total[2]|safe }}</td>
+    <td>{{ total[3]|safe }}</td>
+    <td>{{ total[4]|safe }}</td>
+    <td>{{ total[5]|safe }}</td>
+    <td>{{ total[6]|safe }}</td>
+    <td>{{ total[7]|safe }}</td>
+    <td>{{ total[8]|safe }}</td>
+    <td>{{ total[9]|safe }}</td>
+    <td>{{ total[10]|safe }}</td>
+    <td>{{ total[11]|safe }}</td>
+    <td>{{ total[12]|safe }}</td>
+  </tr>
 </tbody>
 </table>
 
 <table id="tblVendor" style="display:none" class="sortable">
 <thead>
   <tr>
-  <th>{{ headers_v[0] }}</th>
+  <th data-tsorter="link">{{ headers_v[0] }}</th>
   <th data-tsorter="numeric">{{ headers_v[1] }}</th>
   <th data-tsorter="numeric">{{ headers_v[2] }}</th>
   <th data-tsorter="numeric">{{ headers_v[3] }}</th>
@@ -192,7 +200,7 @@ function byModel() {
   <tr>
   <th>{{ headers[0] }}</th>
   <th>{{ headers[1] }}</th>
-  <th>{{ headers[2] }}</th>
+  <th data-tsorter="link">{{ headers[2] }}</th>
   <th data-tsorter="numeric">{{ headers[3] }}</th>
   <th data-tsorter="numeric">{{ headers[4] }}</th>
   <th data-tsorter="numeric">{{ headers[5] }}</th>

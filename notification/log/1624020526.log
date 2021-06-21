@@ -1,0 +1,45 @@
+[2021-06-18 15:48:46,222] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ш. Выборгское, 503': {'id': '0', 'name': 'Vyborgskoe503-ds1, Vyborgskoe503-as1', 'all_emails': 'infosib@quehenberger.ru, oleg.domaev@billing.ru, zakupki@billing.ru, sd@nexign.com, bk@injcentr.ru, valevina@ibcon.ru, koroleva@ibcon.ru, natalia.pushechkina@billing.ru, boris@quehenberger.ru, vitaly.grudinin@nexign.com, maia.kabanova@quehenberger.ru, itd_bills@billing.ru, marina.ardysheva@nexign.com, marina.krotova@billing.ru, zemlakov@injcentr.ru, dmitriy.ermakov@nexign.com, office@ibcon.ru, erokhno@ibcon.ru, natalia.pushechkina@nexign.com, infostp@quehenberger.ru, dmitriy.ermakov@billing.ru, nastya.vorobieva@quehenberger.ru, marina.ardysheva@billing.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '22.06.2021', 'time_start': '22:00', 'time_end': '23:00', 'time_span': '5'}, 'hostids': ['11595', '10850']}
+[2021-06-18 15:48:46,224] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-06-18 15:48:46,235] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.06.2021</b> г. в период с <b>22:00</b> до <b>23:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ш. Выборгское, 503
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-06-18 15:48:46,321] INFO - email sent to infosib@quehenberger.ru
+[2021-06-18 15:48:46,341] INFO - email sent to oleg.domaev@billing.ru
+[2021-06-18 15:48:46,359] INFO - email sent to zakupki@billing.ru
+[2021-06-18 15:48:46,384] INFO - email sent to sd@nexign.com
+[2021-06-18 15:48:46,408] INFO - email sent to bk@injcentr.ru
+[2021-06-18 15:48:46,429] INFO - email sent to valevina@ibcon.ru
+[2021-06-18 15:48:46,448] INFO - email sent to koroleva@ibcon.ru
+[2021-06-18 15:48:46,467] INFO - email sent to natalia.pushechkina@billing.ru
+[2021-06-18 15:48:46,484] INFO - email sent to boris@quehenberger.ru
+[2021-06-18 15:48:46,508] INFO - email sent to vitaly.grudinin@nexign.com
+[2021-06-18 15:48:46,525] INFO - email sent to maia.kabanova@quehenberger.ru
+[2021-06-18 15:48:46,543] INFO - email sent to itd_bills@billing.ru
+[2021-06-18 15:48:46,585] INFO - email sent to marina.ardysheva@nexign.com
+[2021-06-18 15:48:46,604] INFO - email sent to marina.krotova@billing.ru
+[2021-06-18 15:48:46,624] INFO - email sent to zemlakov@injcentr.ru
+[2021-06-18 15:48:46,643] INFO - email sent to dmitriy.ermakov@nexign.com
+[2021-06-18 15:48:46,660] INFO - email sent to office@ibcon.ru
+[2021-06-18 15:48:46,685] INFO - email sent to erokhno@ibcon.ru
+[2021-06-18 15:48:46,707] INFO - email sent to natalia.pushechkina@nexign.com
+[2021-06-18 15:48:46,723] INFO - email sent to infostp@quehenberger.ru
+[2021-06-18 15:48:46,740] INFO - email sent to dmitriy.ermakov@billing.ru
+[2021-06-18 15:48:46,758] INFO - email sent to nastya.vorobieva@quehenberger.ru
+[2021-06-18 15:48:46,776] INFO - email sent to marina.ardysheva@billing.ru
+[2021-06-18 15:48:46,797] INFO - email sent to support@spb.avantel.ru

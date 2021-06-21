@@ -1,0 +1,15 @@
+{% extends "menu.html" %}
+{% block title %}Отчет 95 перцентиль{% endblock %}
+{% block content %}
+    <br>
+    <br>
+    <button id="zabbix95_return_button" 
+            onclick="window.location.href = 'https://devnet.spb.avantel.ru/zabbix95';">
+            Назад к интерфейсам</button>
+<div id="zabbix95_show_report_div">
+    <br>
+    <h2>{{fromd_str}} - {{tilld_str}}</h2>
+    {{ report|safe }}
+    <br>
+</div>
+{% endblock %}

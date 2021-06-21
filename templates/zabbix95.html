@@ -1,0 +1,177 @@
+{% extends "menu.html" %}
+{% block title %}Отчет 95 перцентиль{% endblock %}
+{% block content %}
+<script type="text/javascript">
+
+function zabbix95_switch_form() {
+  var report = document.getElementById("zabbix95_report_div");
+  var ifaces = document.getElementById("zabbix95_edit_ifaces_div");
+  if (report.style.display === "none") {
+    report.style.display = "block";
+    ifaces.style.display = "none";
+  } else {
+    ifaces.style.display = "block";
+    report.style.display = "none";
+  }
+}
+</script>
+    <br>
+    {% if validation_msg %}
+    <div class="alarm">
+    <h3>{{ validation_msg|safe }}<h3>
+    </div>
+    <br>
+    {% endif %}
+    <h3>{{msg}}</h3>
+    <br>
+    <div id="zabbix95_report_div">
+        <button type="reset"
+                form="zabbix95_report_form"
+                id="notifier_create_button" 
+                onclick="zabbix95_switch_form()">Редактировать интерфейсы</button>
+        <br><br>
+        <form action="zabbix95_report" 
+              id="zabbix95_report_form"
+              method="POST">
+            <label for="zabbix95_report_date_from"></label>
+            <input type="date" 
+                   class="notification_form" 
+                   id="zabbix95_report_date_from" 
+                   name="zabbix95_report_date_from"
+                   form="zabbix95_report_form"
+                   required>
+            <label for="zabbix95_report_date_to">-</label>
+            <input type="date" 
+                   class="notification_form" 
+                   id="zabbix95_report_date_to" 
+                   name="zabbix95_report_date_to" 
+                   form="zabbix95_report_form"
+                   required>
+            <input id="search_btn" form="zabbix95_report_form" type="submit" name="zabbix95_report" value="Отчет">
+        </form>
+        <br>
+        <table id="zabbix95_table" class="sortable">
+            <thead>
+            <tr>
+                <th>📈</th>
+                <th>Neighbour</th>
+                <th>Node</th>
+                <th>Interface</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for neighbour in zabbix95_ifaces %}
+            <tr>
+                <td rowspan="{{span_dict[neighbour]}}">
+                    <input type="checkbox" 
+                            class="notification_form" 
+                            id="zabbix95_report_check"
+                            form="zabbix95_report_form"
+                            name="zabbix95_report_check" 
+                            value="{{ neighbour }}"></a></td>
+                <td rowspan="{{span_dict[neighbour]}}">{{ neighbour }}</a></td>
+                {% for node in zabbix95_ifaces[neighbour] %}
+                    <td rowspan="{{zabbix95_ifaces[neighbour][node]|length}}">{{ node }}</td>
+                    {% for interface in zabbix95_ifaces[neighbour][node] %}
+                        {% if loop.first %}
+                        {% else %}
+                        <tr>
+                        {% endif %}
+                        <td>{{ interface }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <div id="zabbix95_edit_ifaces_div" style="display:none">
+        <button type="reset"
+                form="zabbix95_add_form"
+                id="notifier_create_button" 
+                onclick="zabbix95_switch_form()">К отчетам</button>
+        <br><br>
+        <form action="zabbix95_add" 
+              id="zabbix95_add_form"
+              method="POST">
+        <input type="text" 
+            class="notification_form" 
+            id="zabbix95_add_name" 
+            name="zabbix95_add_name"
+            form="zabbix95_add_form"
+            autocomplete="off"            
+            placeholder="Название" 
+            list="neighbour_names" required>
+        <datalist id = "neighbour_names">
+            {% for neighbour in zabbix95_ifaces %}
+			<option value = "{{ neighbour }}" label = "{{ neighbour }}">
+            {% endfor %}
+		</datalist>	
+        <input type="text" 
+            class="notification_form" 
+            id="zabbix95_add_node" 
+            name="zabbix95_add_node"
+            form="zabbix95_add_form"
+            autocomplete="off"            
+            placeholder="Узел" 
+            required>
+        <input type="text" 
+            class="notification_form" 
+            id="zabbix95_add_iface" 
+            name="zabbix95_add_iface"
+            form="zabbix95_add_form"
+            autocomplete="off"            
+            placeholder="Интерфейс/дескрипшн" 
+            required>
+        <input id="zabbix95_add_button" 
+               form="zabbix95_add_form" 
+               type="submit" 
+               name="zabbix95_add" 
+               value="➕">
+        </form>
+        <br>
+        <table id="zabbix95_table" class="sortable">
+            <thead>
+            <tr>
+                <th>Neighbour</th>
+                <th>Node</th>
+                <th>Interface</th>
+                <th>🗑</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for neighbour in zabbix95_ifaces %}
+            <tr>
+                <td rowspan="{{span_dict[neighbour]}}">{{ neighbour }}</a></td>
+                {% for node in zabbix95_ifaces[neighbour] %}
+                    <td rowspan="{{zabbix95_ifaces[neighbour][node]|length}}">{{ node }}</td>
+                    {% for interface in zabbix95_ifaces[neighbour][node] %}
+                        {% if loop.first %}
+                        {% else %}
+                        <tr>
+                        {% endif %}
+                        <td>{{ interface }}</td>
+                        <td>
+                            <form action="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface] }}" 
+                                  method="POST" 
+                                  onsubmit="return confirm('Удаляем {{neighbour}} | {{node}} | {{interface}}?');">
+                            <input id="zabbix95_delete_button" 
+                                type="submit" 
+                                name="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface] }}" 
+                                value="❌">
+                            </form>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+{% endblock %}

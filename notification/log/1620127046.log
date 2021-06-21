@@ -1,0 +1,148 @@
+[2021-05-04 14:17:26,702] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ул. Кантемировская, 4': {'id': '0', 'name': 'Kantemir4-as2', 'all_emails': ''}, 'г. Санкт-Петербург, наб. Выборгская, 55': {'id': '1', 'name': 'Vyborg-nab55-as1, Vyborg-nab55-as2', 'all_emails': 'info@meta-company.ru, ekaterina.serkova@cellooe.ru, zhasmina.andreeva@cellooe.ru, info@enresh.ru, pasha_spb@inbox.ru, inresh2005@yandex.ru, join@prolevtech.com, paul.tanaskov@gmail.com, c2.admin@ciliz.com, olgakurilova@gmail.com'}, 'г. Санкт-Петербург, ул. Кантемировская, 5': {'id': '1', 'name': 'Kantemir5-as3, Kantemir5-as1', 'all_emails': 'a@ruscold.com, sharin@itain.spb.ru, uks@itain.spb.ru, a@ruscold.ru, kosjakin.konstantin@talant-gold.ru, olgaoffice@itain.spb.ru, it@itain.spb.ru, top412@spb-yuz.ru, tanya@ruscold.ru, tanya@ruscold.com, reflogllc@gmail.com, danilov.aleksandr@zolotoy.ru, naumkin_b@itain.spb.ru'}, 'г. Санкт-Петербург, ул. Кантемировская, 2': {'id': '1', 'name': 'Kantemir2-as1', 'all_emails': 'admin@vipsgroup.com, elkina@unionbox.ru, volkovatv@unionbox.ru, glodev@unionbox.ru'}, 'г. Санкт-Петербург, наб. Выборгская, 61': {'id': '1', 'name': 'Vyborg-nab61-as1, Vyborg-nab61-as3, Vyborg-nab61-as4, Vyborg-nab61-as2', 'all_emails': ', all@we2ru.ru, support@it-ontime.ru, spb@umpgroup.ru, filial7@tlk-group.ru, hr235965@gmail.com, 108@wolf.com.ru, info@dialet.ru, office@cpteam.ru, antonov.d.hc@gmail.com, arabochaya19@gmail.com, irina.palkina@dialet.ru, alexey.luzhnov@dialet.ru, yana.generalova@dialet.ru, elvira.tkachenko@dialet.ru, alexsey.luzhnov@mail.ru, alexey.luzhnov@mail.ru, shulepovk@gmail.com'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '06.05.2021', 'time_start': '20:00', 'time_end': '21:00', 'time_span': '15'}}
+[2021-05-04 14:17:26,704] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-05-04 14:17:26,706] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>06.05.2021</b> г.  в период с <b>20:00</b> до <b>21:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>15</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Кантемировская, 4
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-05-04 14:17:26,727] ERROR - Ошибка в функции send_email {'': (501, b'5.1.3 Bad recipient address syntax')}
+[2021-05-04 14:17:26,800] INFO - email sent to support@spb.avantel.ru
+[2021-05-04 14:17:26,823] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>06.05.2021</b> г.  в период с <b>20:00</b> до <b>21:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>15</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. Выборгская, 55
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-05-04 14:17:26,850] INFO - email sent to info@meta-company.ru
+[2021-05-04 14:17:26,879] INFO - email sent to ekaterina.serkova@cellooe.ru
+[2021-05-04 14:17:26,901] INFO - email sent to zhasmina.andreeva@cellooe.ru
+[2021-05-04 14:17:26,918] INFO - email sent to info@enresh.ru
+[2021-05-04 14:17:26,936] INFO - email sent to pasha_spb@inbox.ru
+[2021-05-04 14:17:26,954] INFO - email sent to inresh2005@yandex.ru
+[2021-05-04 14:17:26,985] INFO - email sent to join@prolevtech.com
+[2021-05-04 14:17:27,004] INFO - email sent to paul.tanaskov@gmail.com
+[2021-05-04 14:17:27,023] INFO - email sent to c2.admin@ciliz.com
+[2021-05-04 14:17:27,040] INFO - email sent to olgakurilova@gmail.com
+[2021-05-04 14:17:27,058] INFO - email sent to support@spb.avantel.ru
+[2021-05-04 14:17:27,091] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>06.05.2021</b> г.  в период с <b>20:00</b> до <b>21:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>15</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Кантемировская, 5
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-05-04 14:17:27,282] INFO - email sent to a@ruscold.com
+[2021-05-04 14:17:27,489] INFO - email sent to sharin@itain.spb.ru
+[2021-05-04 14:17:27,509] INFO - email sent to uks@itain.spb.ru
+[2021-05-04 14:17:27,526] INFO - email sent to a@ruscold.ru
+[2021-05-04 14:17:27,546] INFO - email sent to kosjakin.konstantin@talant-gold.ru
+[2021-05-04 14:17:27,593] INFO - email sent to olgaoffice@itain.spb.ru
+[2021-05-04 14:17:27,616] INFO - email sent to it@itain.spb.ru
+[2021-05-04 14:17:27,633] INFO - email sent to top412@spb-yuz.ru
+[2021-05-04 14:17:27,655] INFO - email sent to tanya@ruscold.ru
+[2021-05-04 14:17:27,672] INFO - email sent to tanya@ruscold.com
+[2021-05-04 14:17:27,690] INFO - email sent to reflogllc@gmail.com
+[2021-05-04 14:17:27,706] INFO - email sent to danilov.aleksandr@zolotoy.ru
+[2021-05-04 14:17:27,722] INFO - email sent to naumkin_b@itain.spb.ru
+[2021-05-04 14:17:27,740] INFO - email sent to support@spb.avantel.ru
+[2021-05-04 14:17:27,755] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>06.05.2021</b> г.  в период с <b>20:00</b> до <b>21:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>15</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Кантемировская, 2
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-05-04 14:17:27,784] INFO - email sent to admin@vipsgroup.com
+[2021-05-04 14:17:27,805] INFO - email sent to elkina@unionbox.ru
+[2021-05-04 14:17:27,821] INFO - email sent to volkovatv@unionbox.ru
+[2021-05-04 14:17:27,839] INFO - email sent to glodev@unionbox.ru
+[2021-05-04 14:17:27,864] INFO - email sent to support@spb.avantel.ru
+[2021-05-04 14:17:27,880] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>06.05.2021</b> г.  в период с <b>20:00</b> до <b>21:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>15</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. Выборгская, 61
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-05-04 14:17:27,892] ERROR - Ошибка в функции send_email {'': (501, b'5.1.3 Bad recipient address syntax')}
+[2021-05-04 14:17:27,910] INFO - email sent to all@we2ru.ru
+[2021-05-04 14:17:27,927] INFO - email sent to support@it-ontime.ru
+[2021-05-04 14:17:27,944] INFO - email sent to spb@umpgroup.ru
+[2021-05-04 14:17:27,962] INFO - email sent to filial7@tlk-group.ru
+[2021-05-04 14:17:27,979] INFO - email sent to hr235965@gmail.com
+[2021-05-04 14:17:27,997] INFO - email sent to 108@wolf.com.ru
+[2021-05-04 14:17:28,023] INFO - email sent to info@dialet.ru
+[2021-05-04 14:17:28,041] INFO - email sent to office@cpteam.ru
+[2021-05-04 14:17:28,059] INFO - email sent to antonov.d.hc@gmail.com
+[2021-05-04 14:17:28,079] INFO - email sent to arabochaya19@gmail.com
+[2021-05-04 14:17:28,097] INFO - email sent to irina.palkina@dialet.ru
+[2021-05-04 14:17:28,163] INFO - email sent to alexey.luzhnov@dialet.ru
+[2021-05-04 14:17:28,189] INFO - email sent to yana.generalova@dialet.ru
+[2021-05-04 14:17:28,215] INFO - email sent to elvira.tkachenko@dialet.ru
+[2021-05-04 14:17:28,232] INFO - email sent to alexsey.luzhnov@mail.ru
+[2021-05-04 14:17:28,250] INFO - email sent to alexey.luzhnov@mail.ru
+[2021-05-04 14:17:28,274] INFO - email sent to shulepovk@gmail.com
+[2021-05-04 14:17:28,293] INFO - email sent to support@spb.avantel.ru

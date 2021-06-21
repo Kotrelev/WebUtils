@@ -1,0 +1,66 @@
+{% extends "menu.html" %}
+{% block title %}Отчет об авариях{% endblock %}
+{% block content %}
+<script type="text/javascript">
+
+function init()
+{
+    var sorter1 = tsorter.create('avalibility_report_table', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+}
+window.onload = init;
+
+</script>
+    <div id="notification_create_form">
+        <form action="avalibility_report" method="POST">
+        <label for="avalibility_report_date_from"></label>
+        <input type="date" 
+               class="notification_form" 
+               id="avalibility_report_date_from" 
+               name="avalibility_report_date_from" 
+               required>
+        <label for="avalibility_report_date_to">-</label>
+        <input type="date" 
+               class="notification_form" 
+               id="avalibility_report_date_to" 
+               name="avalibility_report_date_to" 
+               required>
+        <input id="search_btn" type="submit" name="avalibility_report" value="Фильтр"><br>
+        <p style="font-size: 12px; color: Grey">
+            Даты подставляют время 00:00<br>
+            Т.е. от начала дня первой даты до начала дня второй.
+        </p>
+        </form>
+    </div>
+    <br>
+    <h3>{{msg}}</h3>
+    <br>
+    <br>
+    <div id="avalibility_report_div">
+        <table id="avalibility_report_table" class="sortable">
+            <thead>
+            <tr>
+                <th colspan="3">{{ fromd_str }} - {{ tilld_str }}</th>
+            </tr>
+            <tr>
+                <th>Имя узла</th>
+                <th data-tsorter="numeric">Количество отключений</th>
+                <th data-tsorter="numeric">Общее время простоя (мин)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for device in report %}
+            <tr>
+                <td>{{ device }}</a></td>
+                <td>{{ report[device].events }}</td>
+                <td>{{ report[device].dtime }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

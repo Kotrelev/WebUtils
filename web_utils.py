@@ -11,13 +11,12 @@ from logging.handlers import RotatingFileHandler
 from pyzabbix import ZabbixAPI
 from flask import Flask
 from flask import request
-from flask import redirect
+from flask import redirect, url_for
 from flask import render_template
 from flask import flash
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
-
 web_utils_app = Flask(__name__)
 
 logger = logging.getLogger('my_logger')
@@ -89,18 +88,18 @@ def ip_by_hostname(hostname, logger):
         interfaces = zabbix_conn.hostinterface.get()
         hid = hostid_by_name(zabbix_conn, hostname, logger)
         zabbix_conn.user.logout()
-        if not hid: return None
+        if not hid: return None, None
         for hostid in hid:
             # filter incomlite names such as 'Pirog17' instead of 'Pirog17-cr1'
             if (hostid['host'].lower() == hostname.lower() or 
                 hostid['name'].lower() == hostname.lower()):
                 for interface in interfaces:
                     if interface['hostid'] == hostid['hostid']:
-                        return interface['ip']
-        return None
+                        return interface['ip'], hostid['hostid']
+        return None, None
     except Exception as err_message:
         logger.error('Ошибка в функции ip_by_hostname {}'.format(str(err_message)))
-        return None
+        return None, None
         
 def mapid_by_hostid(zabbix_conn, hostid):
     try:
@@ -446,7 +445,7 @@ def sql_get_notification_history():
     try:
         table = {}
         connection = local_sql_conn()
-        req = ("select id, notif_date, works_date from webutils_notif_history group by id limit 25")
+        req = ("select id, notif_date, works_date from webutils_notif_history group by id ORDER BY notif_date DESC")
         with connection.cursor() as cursor:
             cursor.execute(req)
             nfs = cursor.fetchall()
@@ -509,6 +508,10 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
             if not sysobjectid:
                 devices_arr.remove(ip)
                 contract_dict[ip]['alive'] = 0
+                # если девайс недоступен, то ставим "заглушку" чтобы в таблице дырок небыло
+                contract_dict[ip]['contracts'][''] = ''
+                # cont_num используется в темплейте client_notification_out для правильной генерации таблицы
+                contract_dict[ip]['cont_num'] = len(contract_dict[ip]['contracts'])
                 continue
             else:
                 contract_dict[ip]['alive'] = 1
@@ -523,7 +526,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                 continue
             descs_arr = [x.strip('STRING: ').strip('"') for x in descs.split('\n')]
             for desc in descs_arr:
-                if desc == "": continue
+                if not desc: continue
                 # тут мачим договор. 888 это тестовый договор.
                 contract = re.search('(\d{4}-\d{2})|(\d{5})|888', desc)
                 # мачим даунлинк
@@ -541,7 +544,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                     if 'UP' in desc or 'U_' in desc:
                         continue
                     else:
-                        ipx = ip_by_hostname(downlink.group(1), logger)
+                        ipx, host_id = ip_by_hostname(downlink.group(1), logger)
                         # loop detection
                         if ipx and ipx in all_devices_arr:
                             continue
@@ -550,9 +553,10 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                             devices_arr.append(ipx)
                             contract_dict[ipx] = {'name': downlink.group(1),
                                                   'ip': ipx,
+                                                  'host_id': host_id,
                                                   'address': '',
                                                   'uplink': contract_dict[ip]['name'],
-                                                  'cont_num': '',
+                                                  'cont_num': '1',
                                                   'unrecognized': [],
                                                   'alive': 0,
                                                   'contracts': {}}
@@ -564,8 +568,8 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
             # если договоров нет, то ставим "заглушку" чтобы в таблице дырок небыло
             if len(contract_dict[ip]['contracts']) == 0:
                 contract_dict[ip]['contracts'][''] = ''
-            contract_dict[ip]['cont_num'] = str(len(contract_dict[ip]['contracts']))
-                
+            # cont_num используется в темплейте client_notification_out для правильной генерации таблицы
+            contract_dict[ip]['cont_num'] = len(contract_dict[ip]['contracts'])
             devices_arr.remove(ip)
         except Exception as err_message:
             logger.error('Ошибка в функции client_notification_get_emails {}: {}'.format(ip,str(err_message)))
@@ -573,6 +577,35 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
     
     logger.info(str(contract_dict))
     return contract_dict
+
+def zabbix_add_maintenance(tcode_start, tcode_end, hostids_arr, devices, config, logger):
+    try:
+        timeperiod = {'timeperiod_type': 0,
+                      'every': 1,
+                      'dayofweek': 0,
+                      'day': 1,
+                      'period': int(tcode_end-tcode_start),
+                      'start_date': int(tcode_start)
+                      }
+        name = 'Плановые работы {}'.format(format(datetime.fromtimestamp(tcode_start), '%d.%m.%Y %H:%M'))
+        descr = '{}'.format(devices)
+        zabbix_conn = ZabbixAPI(config.zabbix_link, 
+                                user=config.zabbix_user, 
+                                password=config.zabbix_pass)
+        # return: {'jsonrpc': '2.0', 'result': {'maintenanceids': ['17']}, 'id': '1'}
+        zabbix_conn.do_request('maintenance.create', params={'name': name,
+                                                     'maintenance_type': '0',
+                                                     'description': descr,
+                                                     'active_since': int(tcode_start),
+                                                     'active_till': int(tcode_end),
+                                                     'hostids': hostids_arr,
+                                                     'timeperiods': [timeperiod]
+                                                    }
+                      )
+        zabbix_conn.user.logout()
+        
+    except Exception as err_message:
+        logger.error('Ошибка в функции zabbix_add_maintenance {}'.format(str(err_message)))
     
 def get_address_zabbix_host(contract_dict, logger):
     try:
@@ -587,13 +620,13 @@ def get_address_zabbix_host(contract_dict, logger):
             contract_dict[dev]['hostid'] = dev_arr[0]['hostid']
             contract_dict[dev]['inventory'] = dev_arr[0]['inventory']['inventory_mode']
             # проверим не выключена ли инвентаризация у девайса:
-            if dev_arr[0]['inventory']['inventory_mode'] == '-1':
+            if dev_arr[0]['inventory']['inventory_mode'] != '1':
                 # включаем
                 inv_on = zabbix_conn.host.update(hostid=dev_arr[0]['hostid'], 
-                                                 inventory_mode = 0)
+                                                 inventory_mode = 1)
                 if inv_on: 
                     logger.info('Turned on inventory for {}'.format(dev_arr[0]['host']))
-                    contract_dict[dev]['inventory'] == '0'
+                    contract_dict[dev]['inventory'] == '1'
                 else:
                     logger.warning('{}: failed zabbix inventory activation'.format(dev))
                 continue
@@ -609,9 +642,9 @@ def set_address_zabbix_host(device_dict, address, logger):
         zabbix_conn = ZabbixAPI(config.zabbix_link, 
                                 user=config.zabbix_user, 
                                 password=config.zabbix_pass)
-        if device_dict['inventory'] == '-1':
+        if device_dict['inventory'] != '1':
             inv_on = zabbix_conn.host.update(hostid=device_dict['hostid'], 
-                                             inventory_mode = 0)
+                                             inventory_mode = 1)
             if not inv_on: 
                 zabbix_conn.user.logout()
                 logger.warning('{}: failed zabbix inventory activation'.format(device_dict['name']))
@@ -643,18 +676,23 @@ def send_email(subject, body_text, to_email, nf_logger):
     except Exception as err_message:
         nf_logger.error('Ошибка в функции send_email {}'.format(str(err_message)))
 
-def sql_add_notification_tg(now, wdate_dt, edate_dt, time_span, addr_list, device_list, logger):
+#def create_msg_notification_tg(wdate_dt, edate_dt, time_span, addr_list, device_list, logger):
+#    try:
+#        w_start = format(wdate_dt, '%d.%m.%y %H:%M')
+#        w_end = format(edate_dt, '%d.%m.%y %H:%M')
+#        message_text = config.notifier_tg_msg.format(w_start, w_end, time_span, addr_list, device_list)
+#        return message_text
+#    except Exception as err_message:
+#        logger.error('Ошибка в функции create_msg_notification_tg {}'.format(str(err_message)))
+        
+def sql_add_notification_tg(str_now, message_text, msg_date, telegram_id, logger):
     try:
-        w_start = format(wdate_dt, '%d.%m.%y %H:%M')
-        w_end = format(edate_dt, '%d.%m.%y %H:%M')
-        msg = config.notifier_tg_msg.format(w_start, w_end, time_span, addr_list, device_list)
-        msg_date = format(wdate_dt - timedelta(minutes = 30), '%Y-%m-%d %H:%M:%S')
         connection = local_sql_conn()
         req = ("INSERT into NotifierTG(message, telegram_id, msg_date, cur_date)"
-               "values ('{}', '{}', '{}', '{}')".format(msg, 
-                                                        config.notifier_tg_id,
+               "values ('{}', '{}', '{}', '{}')".format(message_text, 
+                                                        telegram_id,
                                                         msg_date, 
-                                                        now))
+                                                        str_now))
         with connection.cursor() as cursor:
             cursor.execute(req)
         connection.commit()
@@ -953,7 +991,7 @@ def inventory_suspended():
 ###
 
 ###
-### NOTIFICATION
+### NOTIFICATION (Email)
 ###
 
 @web_utils_app.route("/client_notification")
@@ -983,12 +1021,13 @@ def client_notification_out():
     devices_arr = []
     contract_dict = {}
     for hn in hostnames:
-        ip = ip_by_hostname(hn, logger)
+        ip, host_id = ip_by_hostname(hn, logger)
         if not ip: 
             return client_notification(msg='Не смог определить IP для {}'.format(hn))
         devices_arr.append(ip)
         contract_dict[ip] = {'name': hn, 
                              'ip': ip,
+                             'host_id': host_id,
                              'address': '',
                              'uplink': '',
                              'cont_num': '', 
@@ -1036,13 +1075,14 @@ def client_notification_confirm_(sid):
     time_start = datetime.strptime(text_vars['time_start'], '%H:%M')
     time_end = datetime.strptime(text_vars['time_end'], '%H:%M')
     time_span = timedelta(minutes=int(text_vars['time_span']))
-    if time_end <= time_start:
-        msg = ('Проверь время работ. Начало в {}, '
-               'конец в {}, что-то не сходится<br>'.format(text_vars['time_start'], 
-                                                       text_vars['time_end']))
-    elif (time_end - time_start) < time_span:
-        msg = ('Продолжительность перерыва ({} мин) '
-               'не может быть больше чем длительность работ в целом<br>'.format(text_vars['time_span']))
+    #ТУт проблема если мы начинаем в один день и заканчиваем в другой.
+    #if time_end <= time_start:
+    #    msg = ('Проверь время работ. Начало в {}, '
+    #           'конец в {}, что-то не сходится'.format(text_vars['time_start'], 
+    #                                                   text_vars['time_end']))
+    #elif (time_end - time_start) < time_span:
+    #    msg = ('Продолжительность перерыва ({} мин) '
+    #           'не может быть больше чем длительность работ в целом<br>'.format(text_vars['time_span']))
     
     checked = request.form.getlist('mail_send')
     logger.info('CHECKED: {}'.format(str(checked)))
@@ -1052,8 +1092,16 @@ def client_notification_confirm_(sid):
     sid_storage = sql_get_session(sid)
     if not sid_storage: return client_notification(msg='Проблема с SQL')
     contract_dict = json.loads(sid_storage[0]['storage'])
+    
+    # для создания обслуживания в заббиксе сделаем лист с host_id (в заббиксе) всех устройств в цепочке
+    host_id_arr = [contract_dict[dev]['host_id'] for dev in contract_dict]
+    
     # убираем не отмеченные девайсы из списка на рассылку
-    excluded = [contract_dict.pop(dev) for dev in list(contract_dict) if dev not in checked]
+    excluded = [contract_dict.pop(dev) for dev in list(contract_dict) 
+                if dev not in checked]
+    # убираем девайсы без договоров из списка на рассылку
+    no_contracts_found = [contract_dict.pop(dev) for dev in list(contract_dict) 
+                          if '' in contract_dict[dev]['contracts']]
     # синхронизируем адреса (домов, не мейлы) с полученными из формы
     for d in contract_dict:
         if contract_dict[d]['address'] != addresses[d]:
@@ -1098,7 +1146,7 @@ def client_notification_confirm_(sid):
         # мейлов нет, но вы держитесь
         msg = 'Мейлов нет, слать некуда<br>'
     else:
-        storage = {'addr_d': addr_d, 'text_vars': text_vars}
+        storage = {'addr_d': addr_d, 'text_vars': text_vars, 'hostids': host_id_arr}
         storage_json = json.dumps(storage, ensure_ascii=False)
         sql_upd_session(sid, storage_json)
     logger.info('ADDR DICT {}'.format(str(addr_d)))
@@ -1178,13 +1226,25 @@ def client_notification_sent_(sid):
     # Он кинет в телегу сообщение о предстоящих работах
     addr_list = '\n'.join([addr for addr in data_dict['addr_d']])
     device_list = ', '.join([data_dict['addr_d'][addr]['name'] for addr in data_dict['addr_d']])
-    sql_add_notification_tg(ndate,
-                            wdate_dt, 
-                            edate_dt, 
-                            data_dict['text_vars']['time_span'],
-                            addr_list,
-                            device_list,
+    msg_date = format(wdate_dt - timedelta(minutes = 30), '%Y-%m-%d %H:%M:%S')
+    w_start = format(wdate_dt, '%d.%m.%y %H:%M')
+    w_end = format(edate_dt, '%d.%m.%y %H:%M')
+    message_text = config.notifier_tg_msg.format(w_start, w_end, data_dict['text_vars']['time_span'], addr_list, device_list)
+
+    sql_add_notification_tg(ndate, 
+                            message_text, 
+                            msg_date, 
+                            config.notifier_tg_id, 
                             logger)
+    
+    # создаем обслуживание девайсов в заббиксе
+    # эту функцию решили пока что не включать.
+    #zabbix_add_maintenance(wdate_dt.timestamp(), 
+    #                       edate_dt.timestamp(), 
+    #                       data_dict['hostids'], 
+    #                       device_list,
+    #                       config, 
+    #                       logger)
         
     msg = "Сообщения отправлены"
     return render_template("client_notification_confirm.html",
@@ -1208,8 +1268,517 @@ def client_notification_history(sid):
                            subject=subject, 
                            text_d=text_d)
 ###
-### /NOTIFICATION
+### /NOTIFICATION (Email)
 ###
+
+
+###
+### NOTIFIER (Telegram)
+###
+
+def sql_get_notifications(logger):
+    try:
+        connection = local_sql_conn()
+        req_active = ("select * from NotifierTG")
+        req_history = ("select * from NotifierTG_history")
+        with connection.cursor() as cursor:
+            cursor.execute(req_active)
+            active = cursor.fetchall()
+            cursor.execute(req_history)
+            history = cursor.fetchall()
+        connection.close()
+        return active, history
+    except Exception as err_message:
+        logger.error('Ошибка в функции sql_get_notifications {}'.format(str(err_message)))
+        
+def sql_del_notification(nid):
+    try:
+        connection = local_sql_conn()
+        req = ("delete from NotifierTG where id = '{}'".format(nid))
+        with connection.cursor() as cursor:
+            cursor.execute(req)
+        connection.commit()
+        connection.close()
+    except Exception as err_message:
+        logger.error('Ошибка в функции sql_del_notification {}'.format(str(err_message)))
+    
+        
+@web_utils_app.route("/notifier")
+def notifier(msg=''):
+    notifications, history = sql_get_notifications(logger)
+    # подменяем id каналов в телеге на имена. Хардкод, словарь в конфиге лежит.
+    for x in range(len(notifications)):
+        if notifications[x]['telegram_id'] in config.tg_id_name_dict:
+            notifications[x]['telegram_id'] = config.tg_id_name_dict[notifications[x]['telegram_id']]
+    for x in range(len(history)):
+        if history[x]['telegram_id'] in config.tg_id_name_dict:
+            history[x]['telegram_id'] = config.tg_id_name_dict[history[x]['telegram_id']]
+    today_date = format(datetime.now(), '%Y-%m-%d')
+    return render_template("notifier.html",
+                           msg = msg,
+                           today_date = today_date,
+                           active_notifications = notifications,
+                           history = history)
+    
+@web_utils_app.route("/notifier_create", methods=['POST', 'GET'])
+def notifier_create():
+    if request.method == 'GET':
+        return redirect(url_for('notifier'))
+    now = datetime.now()
+    logger.error('NOW')
+    ndate = format(now, '%Y-%m-%d %H:%M:%S')
+    logger.error('NOW STRING')
+    telegram_chat = request.form['telegram_chat_fld']
+    logger.error('CHAT ID {}'.format(telegram_chat))
+    time_date = request.form['time_date']
+    logger.error('DATE {}'.format(time_date))
+    time_start = ('{:02d}:{:02d}:00'.format(
+                                    int(request.form['time_start_hr']),
+                                    int(request.form['time_start_min'])))
+    logger.error('TIME {}'.format(time_start))
+    msg_date = '{} {}'.format(time_date, time_start)
+    message_text = request.form['msg_textarea']
+    sql_add_notification_tg(ndate, message_text, msg_date, telegram_chat, logger)
+
+    msg = "Уведомление создано"
+    return notifier(msg)
+    
+@web_utils_app.route("/notifier_delete_<nid>", methods=['POST', 'GET'])
+def notifier_delete(nid):
+    if request.method == 'GET':
+        return redirect(url_for('notifier'))
+    sql_del_notification(nid)
+    msg = "Уведомление удалено"
+    return notifier(msg)
+
+
+###
+### /NOTIFIER (Telegram)
+###
+
+###
+### Avalibility_report
+###
+
+def get_avalibility_report(fromd, tilld, logger):
+    try:
+        zabbix_conn = ZabbixAPI(config.zabbix_link,
+                                user=config.zabbix_user,
+                                password=config.zabbix_pass)
+    
+        events = zabbix_conn.do_request('event.get', params={'time_from': fromd, 
+                                                            'time_till': tilld, 
+                                                            'output': ['eventid', 
+                                                                        'clock', 
+                                                                        'name', 
+                                                                        'r_eventid',
+                                                                        'value']})
+        hosts = zabbix_conn.host.get(monitored_hosts=1, output=['name'])
+        zabbix_conn.user.logout()
+        #ppi = [x for x in pp['result'] if 'ICMP' in x['name']]
+        icmp_events = {x['eventid']: x for x in events['result'] 
+                    if 'Unavailable by ICMP ping' in x['name'] 
+                    or 'не доступен по ICMP' in x['name']}
+        
+        host_id_dict = {h['name']: h['hostid'] for h in hosts}
+
+        raw_report = {}
+        report = {}
+        icmp_events_copy = icmp_events.copy()
+        for event_id in icmp_events:
+            trigger_name = icmp_events[event_id]['name']
+            if not trigger_name in raw_report:
+                raw_report[trigger_name] = {'dtime': []}
+            # ['r_eventid'] == '0' means this event is the end of the event or it's in progress now
+            if icmp_events[event_id]['r_eventid'] == '0':
+                continue
+            if icmp_events[event_id]['r_eventid'] in icmp_events:
+                # r_eventid is the id of the event's ending 
+                r_eventid = icmp_events[event_id]['r_eventid']
+                dtime = int(icmp_events[r_eventid]['clock'])-int(icmp_events[event_id]['clock'])
+                raw_report[trigger_name]['dtime'].append(dtime)
+                icmp_events_copy.pop(r_eventid)
+            # event ended after
+            else:
+                raw_report[trigger_name]['dtime'].append(tilld-int(icmp_events[event_id]['clock']))
+            icmp_events_copy.pop(event_id)
+        # event started before or in progress now
+        for event_id in icmp_events_copy:
+            trigger_name = icmp_events_copy[event_id]['name']
+            if not trigger_name in raw_report:
+                raw_report[trigger_name] = {'dtime': []}
+            tstamp = int(icmp_events_copy[event_id]['clock'])
+            # end of the event
+            if icmp_events_copy[event_id]['value'] == '0':
+                raw_report[trigger_name]['dtime'].append(tstamp-fromd)
+            # start of the event
+            else:
+                raw_report[trigger_name]['dtime'].append(tilld-tstamp)
+        
+        for name in raw_report:
+            clean_name = name.replace(' Unavailable by ICMP ping', '').replace(' не доступен по ICMP', '')
+            # игнорируем удаленных из заббикса
+            if not clean_name in host_id_dict:
+                continue
+            report[clean_name] = {}
+            report[clean_name]['events'] = str(len(raw_report[name]['dtime']))
+            report[clean_name]['dtime'] = '{:d}'.format(int(sum(raw_report[name]['dtime'])/60))
+            report[clean_name]['id'] = host_id_dict[clean_name]
+    
+        return(report)
+        
+    except Exception as err_message:
+        logger.error('Ошибка в функции get_avalibility_report {}'.format(str(err_message)))
+
+@web_utils_app.route("/avalibility_report", methods=['POST', 'GET'])
+def avalibility_report(msg=''):
+
+    #
+    #min_date = format(datetime.now() - timedelta(days = 290), '%Y-%m-%d')
+
+    if request.method == 'GET':
+        now = datetime.now()
+        month_ago = now - timedelta(weeks=4)
+        fromd = int(datetime.strptime('01.'+month_ago.strftime("%m.%Y"),'%d.%m.%Y').timestamp())
+        tilld = int(datetime.strptime('01.'+now.strftime("%m.%Y"),'%d.%m.%Y').timestamp())
+        fromd_str = format(datetime.fromtimestamp(fromd), '%d.%m.%Y')
+        tilld_str = format(datetime.fromtimestamp(tilld), '%d.%m.%Y')
+    if request.method == 'POST':
+        date_from = datetime.strptime(request.form['avalibility_report_date_from'], '%Y-%m-%d')
+        date_to = datetime.strptime(request.form['avalibility_report_date_to'], '%Y-%m-%d')
+        if (date_to - date_from).days > 290:
+            msg = 'Заббикс не хавает больше 290 дней за раз. Я потом починю =)'
+            date_from = date_to - timedelta(days = 1)
+        fromd = date_from.timestamp()
+        tilld = date_to.timestamp()
+        fromd_str = format(date_from, '%d.%m.%Y')
+        tilld_str = format(date_to, '%d.%m.%Y')
+
+            
+    
+    report = get_avalibility_report(fromd, tilld, logger)
+
+        
+    return render_template("avalibility_report.html",
+                           msg = msg,
+                           fromd_str = fromd_str,
+                           tilld_str = tilld_str,
+                           report = report)
+
+###
+### /Avalibility_report
+###
+
+###
+### Zabbix95
+###
+
+def get_zabbix95_ifaces(logger):
+    try:
+        connection = local_sql_conn()
+        req = ("select * from Zabbix95")
+        with connection.cursor() as cursor:
+            cursor.execute(req)
+            zabbix95 = cursor.fetchall()
+        connection.close()
+        
+        # преобразуем список словарей из базы в словарь
+        zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: i['id']
+            for i in zabbix95 if i['peer'] == p['peer'] and i['node'] == n['node']} 
+            for n in zabbix95 if n['peer'] == p['peer']} for p in zabbix95}
+            
+        return zabbix95_ifaces
+
+    except Exception as err_message:
+        logger.error('Ошибка в функции get_zabbix95_ifaces {}'.format(str(err_message)))
+
+def sql_del_iface_zabbix95(int_id):
+    try:
+        connection = local_sql_conn()
+        req = ("delete from Zabbix95 where id = '{}'".format(int_id))
+        with connection.cursor() as cursor:
+            cursor.execute(req)
+        connection.commit()
+        connection.close()
+    except Exception as err_message:
+        logger.error('Ошибка в функции sql_del_iface_zabbix95 {}'.format(str(err_message)))
+        
+def sql_add_iface_zabbix95(neighbour, node, interface, logger):
+    try:
+        connection = local_sql_conn()
+        req = ("insert into Zabbix95(peer, node, interface)"
+               " values ('{}', '{}', '{}');".format(neighbour, node, interface))
+        with connection.cursor() as cursor:
+            cursor.execute(req)
+        connection.commit()
+        connection.close()
+    except Exception as err_message:
+        logger.error('Ошибка в функции sql_add_iface_zabbix95 {}'.format(str(err_message)))
+        
+def validate_zabbix95_iface(neighbour, node, iface, logger):
+    try:
+        zabbix_conn = ZabbixAPI(config.zabbix_link,
+                                user=config.zabbix_user,
+                                password=config.zabbix_pass)
+        host_arr = hostid_by_name(zabbix_conn, node, logger)
+        host_id = ''
+        if not host_arr:
+            return None, 'Узел {} не найден в Zabbix'.format(node)
+        for host in host_arr:
+            if host['host'] == node or host['name'] == node:
+                host_id = host['hostid']
+        if not host_id:
+            return None, 'Узел {} не найден в Zabbix'.format(node)
+            
+        items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
+                                    'output': ['itemid','name']})
+        zabbix_conn.user.logout()
+                                    
+        iface_full = [re.search('Interface (.+\)):', x['name']).group(1) 
+                    for x in items['result'] 
+                    if any(y in x['name'] for y in [iface+'(', '('+iface+')']) 
+                    and 'received' in x['name']]
+        if len(iface_full) != 1:
+            return None, 'Порт не найден на узле {}'.format(node)
+            
+        return iface_full[0], 'Порт добавлен'
+            
+    except Exception as err_message:
+        logger.error('Ошибка в функции validate_zabbix95_iface {}'.format(str(err_message)))
+        
+def validate_zabbix95_base(zabbix95_ifaces, logger):
+    try:
+        zabbix_conn = ZabbixAPI(config.zabbix_link,
+                                user=config.zabbix_user,
+                                password=config.zabbix_pass)
+        
+        validation_msg = ''
+        nodes_set = {node for neigh in zabbix95_ifaces 
+                     for node in zabbix95_ifaces[neigh]}
+        nodes_dict = {x: [] for x in nodes_set}
+        for node in nodes_set:
+            host_arr = hostid_by_name(zabbix_conn, node, logger)
+            host_id = ''
+            if not host_arr:
+                validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
+                continue
+            for host in host_arr:
+                if host['host'] == node or host['name'] == node:
+                    host_id = host['hostid']
+            if not host_id:
+                validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
+                continue
+            
+            items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
+                                           'output': ['itemid','name']})
+                                           
+            for nei in zabbix95_ifaces:
+                for host in zabbix95_ifaces[nei]:
+                    if host != node:
+                        continue
+                    for iface in zabbix95_ifaces[nei][host]:
+                        if any(iface in x['name'] for x in items['result']):
+                            continue
+                        validation_msg += 'Интерфейс не найден {} | {} | {}<br>'.format(nei, host, iface)
+                                           
+        zabbix_conn.user.logout()
+            
+        return validation_msg
+            
+    except Exception as err_message:
+        logger.error('Ошибка в функции validate_zabbix95_base {}'.format(str(err_message)))
+        
+def message_form(msg, values_tx, values_rx, values_all):
+
+    if not values_tx or not values_rx:
+        msg = msg + 'No data<br>'
+        return msg
+    msg = msg + str('Data elements (quantity): '+str(len(values_all))+'<br>')
+    msg = msg + str('Max traffic tx: '+
+                    str(round(sorted(values_tx)[-1]/1000000000, 2))+' Gbit<br>')
+    msg = msg + str('Max traffic rx: '+
+                    str(round(sorted(values_rx)[-1]/1000000000, 2))+' Gbit<br>')
+    msg = msg + str('Max traffic all: '+
+                    str(round(sorted(values_all)[-1]/1000000000, 2))+' Gbit<br>')
+    # сортируем список значений (в битах)
+    # обрезаем последние 0,5% списка (самые большие)
+    # берем последнее значение и три раза делим на 1000 (лярд) чтобы получить Гбит
+    tx95 = str('95Percentile tx: {} Gbit'.format(
+        str(round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 2))))
+    msg = msg + tx95 + '<br>'
+    rx95 = str('95Percentile rx: {} Gbit'.format(
+        str(round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 2))))
+    msg = msg + rx95 + '<br>'
+    msg = msg + str('95Percentile all: '+str(
+                    round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 2)
+                    )+' Gbit<br>')
+    return msg
+       
+def zabbix95_create_report(zabbix95_ifaces, fromd, tilld, checked, logger):
+    try:
+        html_report = []
+        zabbix_conn = ZabbixAPI(config.zabbix_link,
+                                user=config.zabbix_user,
+                                password=config.zabbix_pass)
+        for neighbour in checked:
+            # Генерячим словарик с таймкодами каждой минуты за прошедший месяц
+            values_aggregated_tx = {m: 0 for m in range(fromd, tilld, 60)}
+            values_aggregated_rx = {m: 0 for m in range(fromd, tilld, 60)}
+            values_aggregated_all = {m: 0 for m in range(fromd, tilld, 60)}
+            msg = '<h2>'+neighbour+'</h2><br>'
+            for hostname in zabbix95_ifaces[neighbour]:
+                host_id = ''
+                host_arr = hostid_by_name(zabbix_conn, hostname, logger)
+                if not host_arr:
+                    return 'Узел {} не найден в Zabbix'.format(hostname)
+                for host in host_arr:
+                    if host['host'] == hostname or host['name'] == hostname:
+                        host_id = host['hostid']
+                if not host_id:
+                    return 'Узел {} не найден в Zabbix'.format(hostname)
+
+                msg = msg + '<b>' + hostname+'</b><br>'
+                for port in zabbix95_ifaces[neighbour][hostname]:
+                    items = zabbix_conn.do_request('item.get', {'hostids':[host_id], 
+                                                   'output': ['itemid','name'], 'search':{'name': port}})
+                    if not items['result']:
+                        return('Потерял порт '+neighbour+' | '+hostname+' | '+port)
+            
+                    for item in items['result']:
+                        if 'sent' in item['name']:
+                            tx_item = item
+                        elif 'received' in item['name']:
+                            rx_item = item
+                    values_tx = []
+                    values_rx = []
+                    values_all = []
+                    history_tx = zabbix_conn.history.get(itemids=tx_item['itemid'],time_from=fromd, time_till=tilld)
+                    history_rx = zabbix_conn.history.get(itemids=rx_item['itemid'],time_from=fromd, time_till=tilld)
+                    if not history_tx or not history_rx:
+                        msg += 'Для {}: {} нет данных!<br>'.format(hostname, port)
+
+                    # переделываем данные в словари. Ключ - таймкод. Сразу округляем до минут.
+                    history_tx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_tx}
+                    history_rx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_rx}
+                    
+                    # перетаскиваем данные в массивы и агрегируем их же в словари
+                    for t in history_tx:
+                        values_tx.append(int(history_tx[t]['value']))
+                        values_aggregated_tx[t] += int(history_tx[t]['value'])
+                        values_aggregated_all[t] += int(history_tx[t]['value'])
+                    for r in history_rx:
+                        values_rx.append(int(history_rx[r]['value']))
+                        values_aggregated_rx[r] += int(history_rx[r]['value'])
+                        values_aggregated_all[r] += int(history_rx[r]['value'])
+                        
+                    # добиваем недостающие данные нулями
+                    data_len = len(values_aggregated_all)
+                    for x in range(min(len(values_tx),len(values_rx))):
+                        values_all.append(values_tx[x]+values_rx[x])
+                    if len(values_tx) < data_len:
+                        values_tx += [0 for x in range(data_len-len(values_tx))]
+                    if len(values_rx) < data_len:
+                        values_rx += [0 for x in range(data_len-len(values_rx))]
+                    if len(values_all) < data_len:
+                        values_all += [0 for x in range(data_len-len(values_all))]
+                                    
+                    msg = msg + '<b>'+port+'</b><br>'
+                    # Если у нейбора больше одного порта, выплевываем промежуточный итог
+                    if (len(zabbix95_ifaces[neighbour]) > 1 or
+                        len(zabbix95_ifaces[neighbour][hostname]) > 1):
+                        msg = msg + str(tx_item['name'])+'<br>'
+                        msg = msg + str(rx_item['name'])+'<br>'
+                        msg = message_form(msg, values_tx, values_rx, values_all)
+                        
+            if (len(zabbix95_ifaces[neighbour]) > 1 or
+                any(len(zabbix95_ifaces[neighbour][hn]) > 1 
+                    for hn in zabbix95_ifaces[neighbour])):
+                msg = msg + '<br><b>Aggregated:</b><br>'
+            # Конвертим дикты в списки, таймкоды больше не нужны
+            values_tx = [values_aggregated_tx[tcode] for tcode in values_aggregated_tx]
+            values_rx = [values_aggregated_rx[tcode] for tcode in values_aggregated_rx]
+            values_all = [values_aggregated_all[tcode] for tcode in values_aggregated_all]
+            msg = message_form(msg, values_tx, values_rx, values_all)
+            html_report.append(msg)
+        zabbix_conn.user.logout()
+        return html_report
+        
+    except Exception as err_message:
+        logger.error('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))
+        return('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))
+        
+@web_utils_app.route("/zabbix95", methods=['POST', 'GET'])
+def zabbix95(msg=''):
+
+    zabbix95_ifaces = get_zabbix95_ifaces(logger)
+    span_dict = {neigh: sum(len(zabbix95_ifaces[neigh][node]) 
+                 for node in zabbix95_ifaces[neigh]) 
+                 for neigh in zabbix95_ifaces}
+    validation_msg = validate_zabbix95_base(zabbix95_ifaces, logger)
+    
+    return render_template("zabbix95.html",
+                           msg = msg,
+                           validation_msg = validation_msg,
+                           zabbix95_ifaces = zabbix95_ifaces,
+                           span_dict = span_dict)
+
+@web_utils_app.route("/zabbix95_add", methods=['POST', 'GET'])
+def zabbix95_add():
+    if request.method == 'GET':
+        return redirect(url_for('zabbix95'))
+       
+    neighbour = request.form['zabbix95_add_name']
+    node = request.form['zabbix95_add_node']
+    iface = request.form['zabbix95_add_iface']
+    
+    interface, msg = validate_zabbix95_iface(neighbour, node, iface, logger)
+    
+    if interface:
+        sql_add_iface_zabbix95(neighbour, node, interface, logger)
+    
+    return zabbix95(msg)
+
+@web_utils_app.route("/zabbix95_delete_<iface_id>", methods=['POST', 'GET'])
+def zabbix95_delete(iface_id):
+    if request.method == 'GET':
+        return redirect(url_for('zabbix95'))
+    sql_del_iface_zabbix95(iface_id)
+    msg = "Интерфейс удален"
+    return zabbix95(msg)
+    
+@web_utils_app.route("/zabbix95_report", methods=['POST', 'GET'])
+def zabbix95_report():
+    if request.method == 'GET':
+        return redirect(url_for('zabbix95'))
+       
+    date_from = datetime.strptime(request.form['zabbix95_report_date_from'], '%Y-%m-%d')
+    date_to = datetime.strptime(request.form['zabbix95_report_date_to'], '%Y-%m-%d')
+    fromd = int(date_from.timestamp())
+    tilld = int(date_to.timestamp())
+    fromd_str = format(date_from, '%d.%m.%Y')
+    tilld_str = format(date_to, '%d.%m.%Y')
+    checked = request.form.getlist('zabbix95_report_check')
+    if not checked:
+        msg = 'Галочку поставь кого опрашивать'
+        return zabbix95(msg)
+    
+    zabbix95_ifaces = get_zabbix95_ifaces(logger)
+    
+    report = zabbix95_create_report(zabbix95_ifaces, fromd, tilld, checked, logger)
+    if type(report) == str:
+        return zabbix95(report)
+        
+    report = '\n'.join(report)
+
+    return render_template("zabbix95_report.html", 
+                           report=report, 
+                           fromd_str=fromd_str, 
+                           tilld_str=tilld_str)
+    
+###
+### /Zabbix95
+###
+
 
     # Hello, there!
 @web_utils_app.route("/obi-wan")
