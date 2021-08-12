@@ -1,0 +1,28 @@
+[2021-06-24 16:03:56,560] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, пр-т Московский, 94': {'id': '0', 'name': 'Mosk94-as1', 'all_emails': 'finance@traffic.online, bill@bia-tech.ru, olga.shestova@bia-tech.ru, mihail.tihomirov@bia-tech.ru, olga.kashinskaya@bia-tech.ru, telecomgas@dellin.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '29.06.2021', 'time_start': '08:00', 'time_end': '09:00', 'time_span': '45'}, 'hostids': ['10677']}
+[2021-06-24 16:03:56,561] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-06-24 16:03:56,564] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>29.06.2021</b> г. в период с <b>08:00</b> до <b>09:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>45</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Московский, 94
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-06-24 16:03:56,628] INFO - email sent to finance@traffic.online
+[2021-06-24 16:03:56,648] INFO - email sent to bill@bia-tech.ru
+[2021-06-24 16:03:56,666] INFO - email sent to olga.shestova@bia-tech.ru
+[2021-06-24 16:03:56,689] INFO - email sent to mihail.tihomirov@bia-tech.ru
+[2021-06-24 16:03:56,708] INFO - email sent to olga.kashinskaya@bia-tech.ru
+[2021-06-24 16:03:56,729] INFO - email sent to telecomgas@dellin.ru
+[2021-06-24 16:03:56,751] INFO - email sent to support@spb.avantel.ru

@@ -490,6 +490,41 @@ hr{
   text-transform: uppercase;
   color: red;
 }
+/* Avalibility report */
+.AvalibilityButton{
+  width: 140px;
+  height: 32px;
+  background-color: #454545;
+  border-color: #454545;
+  border-style: solid;
+  border-radius: 2px;
+  font-size: 20px;
+  color: rgb(242, 242, 242);
+  cursor: pointer;
+  font-family: Arial, Tahoma, Verdana, sans-serif;
+  text-align: center;
+  user-select: none;
+  display: inline-block;
+  padding: 2px;
+  margin-bottom: 5px;
+}
+
+#Generic140pxBlueButton{
+  width: 140px;
+  height: 32px;
+  background-color: rgb(105, 128, 141);
+  border-color: rgb(105, 128, 141);
+  border-style: solid;
+  border-radius: 2px;
+  font-size: 20px;
+  color: rgb(242, 242, 242);
+  cursor: pointer;
+  font-family: Arial, Tahoma, Verdana, sans-serif;
+  text-align: center;
+  user-select: none;
+  display: inline-block;
+  padding: 2px;
+}
 /*
 .sortable tbody tr:nth-child(even) {
 }

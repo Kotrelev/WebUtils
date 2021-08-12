@@ -256,7 +256,7 @@ def sql_inventory_ipname(connection, ipname):
 def month_back(date, m):
     for month in range(0, m):
         date = date - timedelta(days = date.day)
-    return(date.strftime('%b.%y'))
+    return(date)
         
     
 # уникальные серийники с макс. датой по ip
@@ -877,7 +877,7 @@ def inventory():
     now = datetime.now()
     headers = ['Type','Vendor','Model']
     #сделаем массив с названиями последних 12 месяцев
-    headers += (month_back(now, x) for x in reversed(range(0, 12)))
+    headers += (month_back(now, x).strftime('%b.%y') for x in reversed(range(0, 12)))
     models = []
     # получим массив диктов вида {'type': 'switch', 'vendor': 'Cisco', 'model': 'SF352-08'}
     db = sql_dynamic_models(connection)
@@ -1365,24 +1365,38 @@ def get_avalibility_report(fromd, tilld, logger):
         zabbix_conn = ZabbixAPI(config.zabbix_link,
                                 user=config.zabbix_user,
                                 password=config.zabbix_pass)
-    
-        events = zabbix_conn.do_request('event.get', params={'time_from': fromd, 
-                                                            'time_till': tilld, 
-                                                            'output': ['eventid', 
-                                                                        'clock', 
-                                                                        'name', 
-                                                                        'r_eventid',
-                                                                        'value']})
-        hosts = zabbix_conn.host.get(monitored_hosts=1, output=['name'])
+        
+        hosts = zabbix_conn.host.get(monitored_hosts=1, 
+                                     output=['name'], 
+                                     selectGroups=[], 
+                                     selectGraphs=[])
+        graphs = zabbix_conn.graph.get(output=['graphid'], 
+                                       search={'name': 'Доступность'})
+        graphs_arr =  [g['graphid'] for g in graphs]
+        host_list = [h['hostid'] for h in hosts]
+        events = zabbix_conn.event.get(time_from = fromd, 
+                                       time_till = tilld, 
+                                       hostids = host_list,
+                                       output = ['eventid', 
+                                                 'clock', 
+                                                 'name', 
+                                                 'r_eventid',
+                                                 'value'])
+
+        #[{'hostid': '10258', 'name': 'RTU2 iLo4', 'groups': [{'groupid': '15'}]}, {...}]
+        groups = zabbix_conn.hostgroup.get(output='extend', search={'name':'Avantel'})
+        #[{'groupid': '15', 'name': 'Avantel IPMI', 'internal': '0', 'flags': '0'}, {...}]
         zabbix_conn.user.logout()
         #ppi = [x for x in pp['result'] if 'ICMP' in x['name']]
-        icmp_events = {x['eventid']: x for x in events['result'] 
+        icmp_events = {x['eventid']: x for x in events 
                     if 'Unavailable by ICMP ping' in x['name'] 
                     or 'не доступен по ICMP' in x['name']}
         
-        host_id_dict = {h['name']: h['hostid'] for h in hosts}
+        # список диктов в дикт диктов, индексируем именами
+        host_id_dict = {h['name']: h for h in hosts}
 
         raw_report = {}
+        # raw_report = {'trigger name': {'dtime': [downtime-in-seconds, ...]}, ...}
         report = {}
         icmp_events_copy = icmp_events.copy()
         for event_id in icmp_events:
@@ -1395,14 +1409,15 @@ def get_avalibility_report(fromd, tilld, logger):
             if icmp_events[event_id]['r_eventid'] in icmp_events:
                 # r_eventid is the id of the event's ending 
                 r_eventid = icmp_events[event_id]['r_eventid']
+                # из таймштампа окончания вычитаем таймштамп начала
                 dtime = int(icmp_events[r_eventid]['clock'])-int(icmp_events[event_id]['clock'])
                 raw_report[trigger_name]['dtime'].append(dtime)
                 icmp_events_copy.pop(r_eventid)
-            # event ended after
+            # event ended after 'end time'
             else:
                 raw_report[trigger_name]['dtime'].append(tilld-int(icmp_events[event_id]['clock']))
             icmp_events_copy.pop(event_id)
-        # event started before or in progress now
+        # event started before 'start time' or in progress now
         for event_id in icmp_events_copy:
             trigger_name = icmp_events_copy[event_id]['name']
             if not trigger_name in raw_report:
@@ -1423,13 +1438,105 @@ def get_avalibility_report(fromd, tilld, logger):
             report[clean_name] = {}
             report[clean_name]['events'] = str(len(raw_report[name]['dtime']))
             report[clean_name]['dtime'] = '{:d}'.format(int(sum(raw_report[name]['dtime'])/60))
-            report[clean_name]['id'] = host_id_dict[clean_name]
+            report[clean_name]['id'] = host_id_dict[clean_name]['hostid']
+            icmp_graph = [x['graphid'] 
+                          for x in host_id_dict[clean_name]['graphs'] 
+                          if x['graphid'] in graphs_arr]
+            if not icmp_graph: 
+                report[clean_name]['graph'] = ''
+            else:
+                report[clean_name]['graph'] = icmp_graph[0]
     
-        return(report)
+        # Группы из списка диктов в дикт с ключами в виде id группы. Срезаем Авантел из названия.
+        groups_id_dict = {x['groupid']: {'name': x['name'].replace('Avantel ', '')} for x in groups}
+        # Добавляем ключ hosts в дикты групп, в него сгружаем дикты хостов из отчета.
+        [groups_id_dict[group['groupid']].setdefault('hosts', {}).update({host_id_dict[dev]['name']: report[dev]})
+         for dev in report 
+         for group in host_id_dict[dev]['groups'] 
+         if group['groupid'] in groups_id_dict]
+        # дропаем лишние группы
+        [groups_id_dict.pop(x) for x in groups_id_dict.copy() if 'hosts' not in groups_id_dict[x]]
+        # делаем дикт для функции создания кнопок
+        names_dict = {x['name']: x['name'] for x in groups_id_dict.values()}
+        names_dict.update({'full_report': 'Все'})
+        # сокращаем лишние данные. На выходе 
+        # {Имя группы: {Имя хоста: {'events': '6', 'dtime': '60', 'id': 'hostid'}}}
+        report_grouped = {groups_id_dict[g]['name']: groups_id_dict[g]['hosts'] for g in groups_id_dict}
+        buttons_script, buttons = js_buttons_generator(names_dict, 'AvalibilityButton', logger)
+        table_sorter_script = js_table_sorter_generator(names_dict, logger)
+        return(report, report_grouped, buttons_script, buttons, table_sorter_script)
         
     except Exception as err_message:
         logger.error('Ошибка в функции get_avalibility_report {}'.format(str(err_message)))
 
+def js_buttons_generator(names_dict, bclass, logger):
+    '''Функция генерит скрипт который сделает нам кнопки для переключения между таблицами.
+    Чтобы оно работало, таблицам надо будет раздать id из names_dict
+    names_dict = {'short_eng_name': 'Большое название', ...}
+    '''
+    try:
+        if not names_dict:
+            return None
+        jscript = ''
+        block = '''
+function {button}() {{
+  {elems}
+  if ({button}.style.display === "none") {{
+    {vars_block}
+  }} else {{
+    {vars_block}
+  }}
+}}'''
+        elem = 'var {} = document.getElementById("{}");'
+        disp = '{}.style.display = "none";'
+        button_template = '''
+<input id="{eid}" class="RadioButtons" name="{bname}Button" type="radio" value="0">
+<label for="{eid}" class="{bclass}" onclick="{func}()">{blabel}</label>\n'''
+        
+        buttons = ''.join([button_template.format(eid = x+str(i),
+                                                  bclass = bclass,
+                                                  func = x,
+                                                  bname = bclass,
+                                                  blabel = names_dict[x])
+                               for i, x in enumerate(names_dict)])
+        for button in names_dict:
+            elems = '\n  '.join([elem.format(x, x) for x in names_dict])
+            vars_block = '{}.style.display = "block";\n'.format(button)
+            vars_block = vars_block+'\n    '.join([disp.format(x) 
+                                                for x in names_dict 
+                                                if x != button])
+            jscript = jscript+block.format(button=button, 
+                                        elems=elems, 
+                                        vars_block=vars_block)
+        return jscript, buttons
+    except Exception as err_message:
+        er = 'Ошибка в функции js_buttons_generator {}'
+        logger.error(er.format(str(err_message)))
+        
+def js_table_sorter_generator(names_dict, logger):
+    try:
+        body = '''
+function init()
+{{
+{}
+}}
+window.onload = init;'''
+        var_template = '''
+    var {sorter} = tsorter.create('{table_id}', null, {{
+            'image-number': function(row){{  
+                console.log( this );
+                return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+            }}
+        }});'''
+        sorters = '\n'.join([var_template.format(sorter = tid+str(i), 
+                                                 table_id = tid) 
+                             for i, tid in enumerate(names_dict)])
+        return(body.format(sorters))
+        
+    except Exception as err_message:
+        er = 'Ошибка в функции js_table_sorter_generator {}'
+        logger.error(er.format(str(err_message)))
+        
 @web_utils_app.route("/avalibility_report", methods=['POST', 'GET'])
 def avalibility_report(msg=''):
 
@@ -1438,11 +1545,8 @@ def avalibility_report(msg=''):
 
     if request.method == 'GET':
         now = datetime.now()
-        month_ago = now - timedelta(weeks=4)
-        fromd = int(datetime.strptime('01.'+month_ago.strftime("%m.%Y"),'%d.%m.%Y').timestamp())
+        fromd = int(datetime.strptime('01.'+month_back(now, 1).strftime("%m.%Y"),'%d.%m.%Y').timestamp())
         tilld = int(datetime.strptime('01.'+now.strftime("%m.%Y"),'%d.%m.%Y').timestamp())
-        fromd_str = format(datetime.fromtimestamp(fromd), '%d.%m.%Y')
-        tilld_str = format(datetime.fromtimestamp(tilld), '%d.%m.%Y')
     if request.method == 'POST':
         date_from = datetime.strptime(request.form['avalibility_report_date_from'], '%Y-%m-%d')
         date_to = datetime.strptime(request.form['avalibility_report_date_to'], '%Y-%m-%d')
@@ -1451,19 +1555,29 @@ def avalibility_report(msg=''):
             date_from = date_to - timedelta(days = 1)
         fromd = date_from.timestamp()
         tilld = date_to.timestamp()
-        fromd_str = format(date_from, '%d.%m.%Y')
-        tilld_str = format(date_to, '%d.%m.%Y')
-
-            
+    fromd_human_str = format(datetime.fromtimestamp(fromd), '%d.%m.%Y')
+    tilld_human_str = format(datetime.fromtimestamp(tilld), '%d.%m.%Y')
+    fromd_str = format(datetime.fromtimestamp(fromd), '%Y-%m-%d')
+    tilld_str = format(datetime.fromtimestamp(tilld), '%Y-%m-%d')
     
-    report = get_avalibility_report(fromd, tilld, logger)
+    (report, 
+     report_grouped, 
+     buttons_script, 
+     buttons,
+     table_sorter_script) = get_avalibility_report(fromd, tilld, logger)
 
         
     return render_template("avalibility_report.html",
                            msg = msg,
                            fromd_str = fromd_str,
                            tilld_str = tilld_str,
-                           report = report)
+                           fromd_human_str = fromd_human_str,
+                           tilld_human_str = tilld_human_str,
+                           report = report,
+                           report_grouped = report_grouped,
+                           buttons_script = buttons_script,
+                           buttons = buttons,
+                           table_sorter_script = table_sorter_script)
 
 ###
 ### /Avalibility_report
@@ -1595,22 +1709,22 @@ def message_form(msg, values_tx, values_rx, values_all):
         return msg
     msg = msg + str('Data elements (quantity): '+str(len(values_all))+'<br>')
     msg = msg + str('Max traffic tx: '+
-                    str(round(sorted(values_tx)[-1]/1000000000, 2))+' Gbit<br>')
+                    str(round(sorted(values_tx)[-1]/1000000000, 3))+' Gbit<br>')
     msg = msg + str('Max traffic rx: '+
-                    str(round(sorted(values_rx)[-1]/1000000000, 2))+' Gbit<br>')
+                    str(round(sorted(values_rx)[-1]/1000000000, 3))+' Gbit<br>')
     msg = msg + str('Max traffic all: '+
-                    str(round(sorted(values_all)[-1]/1000000000, 2))+' Gbit<br>')
+                    str(round(sorted(values_all)[-1]/1000000000, 3))+' Gbit<br>')
     # сортируем список значений (в битах)
     # обрезаем последние 0,5% списка (самые большие)
     # берем последнее значение и три раза делим на 1000 (лярд) чтобы получить Гбит
     tx95 = str('95Percentile tx: {} Gbit'.format(
-        str(round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 2))))
+        str(round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 3))))
     msg = msg + tx95 + '<br>'
     rx95 = str('95Percentile rx: {} Gbit'.format(
-        str(round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 2))))
+        str(round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 3))))
     msg = msg + rx95 + '<br>'
     msg = msg + str('95Percentile all: '+str(
-                    round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 2)
+                    round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 3)
                     )+' Gbit<br>')
     return msg
        

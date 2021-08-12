@@ -13,7 +13,8 @@ function init()
     });
 }
 window.onload = init;
-
+{{ buttons_script|safe }}
+{{ table_sorter_script|safe }}
 </script>
     <div id="notification_create_form">
         <form action="avalibility_report" method="POST">
@@ -40,13 +41,17 @@ window.onload = init;
     <h3>{{msg}}</h3>
     <br>
     <br>
+    <div id="AvalibilityButtons">{{ buttons|safe }}</div>
+    <br>
     <div id="avalibility_report_div">
-        <table id="avalibility_report_table" class="sortable">
+        <table id="full_report" class="sortable" style="display:none">
             <thead>
             <tr>
-                <th colspan="3">{{ fromd_str }} - {{ tilld_str }}</th>
+                <th colspan="5">{{ fromd_human_str }} - {{ tilld_human_str }}</th>
             </tr>
             <tr>
+                <th>📉</th>
+                <th>🔍</th>
                 <th>Имя узла</th>
                 <th data-tsorter="numeric">Количество отключений</th>
                 <th data-tsorter="numeric">Общее время простоя (мин)</th>
@@ -55,12 +60,45 @@ window.onload = init;
             <tbody>
             {% for device in report %}
             <tr>
-                <td>{{ device }}</a></td>
+                <td>{% if report[device].graph %}
+                    <a href="https://monitor.spb.avantel.ru/zabbix/charts.php?page=1&from={{ fromd_str }}+00%3A00%3A00&to={{ tilld_str }}+00%3A00%3A00&groupid=0&hostid={{ report[device].id }}&graphid={{ report[device].graph }}&action=showgraph" target="_parent">📉</a>
+                {% else %}🤷🏼{% endif %}</td>
+                <td><a href="https://monitor.spb.avantel.ru/zabbix/zabbix.php?action=problem.view&page=1&from={{ fromd_str }}+00%3A00%3A00&to={{ tilld_str }}+00%3A00%3A00&filter_show=2&filter_hostids%5B%5D={{ report[device].id }}&filter_application=&filter_name=ICMP&filter_severity=0&filter_inventory%5B0%5D%5Bfield%5D=type&filter_inventory%5B0%5D%5Bvalue%5D=&filter_evaltype=0&filter_tags%5B0%5D%5Btag%5D=&filter_tags%5B0%5D%5Boperator%5D=0&filter_tags%5B0%5D%5Bvalue%5D=&filter_show_tags=3&filter_tag_name_format=0&filter_tag_priority=&filter_set=1" target="_parent">🔍</a></td>
+                <td>{{ device }}</td>
                 <td>{{ report[device].events }}</td>
                 <td>{{ report[device].dtime }}</td>
             </tr>
             {% endfor %}
             </tbody>
+        </table> 
+        {% for group in report_grouped %}
+        <table id="{{ group }}" class="sortable" style="display:none">
+            <thead>
+            <tr>
+                <th colspan="5">{{ fromd_str }} - {{ tilld_str }}</th>
+            </tr>
+            <tr>
+                <th>📉</th>
+                <th>🔍</th>
+                <th>Имя узла</th>
+                <th data-tsorter="numeric">Количество отключений</th>
+                <th data-tsorter="numeric">Общее время простоя (мин)</th>
+            </tr>
+            </thead>
+           <tbody>
+            {% for device in report_grouped[group] %} 
+            <tr>
+                <td>{% if report[device].graph %}
+                    <a href="https://monitor.spb.avantel.ru/zabbix/charts.php?page=1&from={{ fromd_str }}+00%3A00%3A00&to={{ tilld_str }}+00%3A00%3A00&groupid=0&hostid={{ report[device].id }}&graphid={{ report[device].graph }}&action=showgraph" target="_parent">📉</a>
+                {% else %}🤷🏼{% endif %}</td>
+                <td><a href="https://monitor.spb.avantel.ru/zabbix/zabbix.php?action=problem.view&page=1&from={{ fromd_str }}+00%3A00%3A00&to={{ tilld_str }}+00%3A00%3A00&filter_show=2&filter_hostids%5B%5D={{ report_grouped[group][device].id }}&filter_application=&filter_name=ICMP&filter_severity=0&filter_inventory%5B0%5D%5Bfield%5D=type&filter_inventory%5B0%5D%5Bvalue%5D=&filter_evaltype=0&filter_tags%5B0%5D%5Btag%5D=&filter_tags%5B0%5D%5Boperator%5D=0&filter_tags%5B0%5D%5Bvalue%5D=&filter_show_tags=3&filter_tag_name_format=0&filter_tag_priority=&filter_set=1" target="_parent">🔍</a></td>
+                <td>{{ device }}</td>
+                <td>{{ report_grouped[group][device].events }}</td>
+                <td>{{ report_grouped[group][device].dtime }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
         </table>
+        {% endfor %}
     </div>
 {% endblock %}
