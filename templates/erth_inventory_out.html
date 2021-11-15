@@ -1,0 +1,11 @@
+{% extends "menu.html" %}
+{% block title %}Инвентаризация для ЭР-Телеком{% endblock %}
+{% block content %}
+    <form action="erth_inventory">
+      <button id="Generic140pxBlueButton" type="submit">Назад</button>
+    </form>
+<br>
+<br>
+{{ table|safe }}
+<br>
+{% endblock %}

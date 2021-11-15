@@ -8,6 +8,11 @@
             Назад к интерфейсам</button>
 <div id="zabbix95_show_report_div">
     <br>
+    {% for nei in links %}
+    <a href="{{ links[nei] }}">csv: {{ nei }}</a>
+    {% endfor %}
+    <br>
+    <br>
     <h2>{{fromd_str}} - {{tilld_str}}</h2>
     {{ report|safe }}
     <br>

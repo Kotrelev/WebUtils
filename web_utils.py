@@ -2,7 +2,7 @@
 #!/usr/bin/python3
 #Python 3.7.3
 
-import config, ipaddress, logging, webbrowser, re, json
+import config, ipaddress, logging, webbrowser, re, json, time
 import urllib, subprocess, requests, secrets, string, smtplib
 import pymysql.cursors
 
@@ -17,6 +17,11 @@ from flask import flash
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
+from lib.zabbix_common import zabbix_common
+from lib.configurator import ifaces_and_vlans, configurator
+from lib.erth_inventory import erth_inventory
+from lib.ddm import ddm
+#from lib.snmp_common import snmp_common
 web_utils_app = Flask(__name__)
 
 logger = logging.getLogger('my_logger')
@@ -62,9 +67,11 @@ def hostid_by_ip(zabbix_conn, ip):
 # achtung! эта функция может вернуть больше одного id
 def hostid_by_name(zabbix_conn, name, logger):
     try:
-        dev_arr = zabbix_conn.host.get(search={'name': name}, output=['hostid','host','name'])
+        dev_arr = zabbix_conn.host.get(search={'name': name}, 
+                                       output=['hostid','host','name'])
         if not dev_arr:
-            dev_arr = zabbix_conn.host.get(search={'host': name}, output=['hostid','host','name'])
+            dev_arr = zabbix_conn.host.get(search={'host': name}, 
+                                           output=['hostid','host','name'])
             if not dev_arr:
                 return None
         return dev_arr # [{'hostid': '10934', 'host': 'BMor18-cs2', 'name': 'BMor18-cs2'}]
@@ -74,7 +81,8 @@ def hostid_by_name(zabbix_conn, name, logger):
         
 def hostname_by_id(zabbix_conn, hostid):
     try:
-        dev_arr = zabbix_conn.host.get(filter={'hostid': hostid}, output=['hostid','host','name'])
+        dev_arr = zabbix_conn.host.get(filter={'hostid': hostid}, 
+                                       output=['hostid','host','name'])
         if not dev_arr:
             return None
         return dev_arr
@@ -84,7 +92,9 @@ def hostname_by_id(zabbix_conn, hostid):
         
 def ip_by_hostname(hostname, logger):
     try:
-        zabbix_conn = ZabbixAPI(config.zabbix_link, user=config.zabbix_user, password=config.zabbix_pass)
+        zabbix_conn = ZabbixAPI(config.zabbix_link, 
+                                user=config.zabbix_user, 
+                                password=config.zabbix_pass)
         interfaces = zabbix_conn.hostinterface.get()
         hid = hostid_by_name(zabbix_conn, hostname, logger)
         zabbix_conn.user.logout()
@@ -103,7 +113,8 @@ def ip_by_hostname(hostname, logger):
         
 def mapid_by_hostid(zabbix_conn, hostid):
     try:
-        all_elements_on_maps = zabbix_conn.map.get(selectSelements="extend", output='selements')
+        all_elements_on_maps = zabbix_conn.map.get(selectSelements="extend", 
+                                                   output='selements')
         map_arr = []
         for map in all_elements_on_maps:
             for selement in map['selements']:
@@ -283,7 +294,7 @@ def sql_many_ip(connection, ip):
                 many_ip_arr.append(data[0])
         return many_ip_arr
     except Exception as err_message:
-        logger.error('Ошибка в функции sql_dynamic_models {}'.format(str(err_message)))
+        logger.error('Ошибка в функции sql_many_ip {}'.format(str(err_message)))
     
 # inventory + vars по типу/вендору/модели
 def sql_inventory_vmt(connection, req, vmt):
@@ -754,11 +765,13 @@ def maps_out():
                 return render_template("maps_out.html", maps_arr=maps_arr)
                 
             # if hostname returns many ids
-            devices_arr = []
+            devices_dict = {}
             for devid in hosts:
-                devices_arr.append([devid['hostid'],devid['name']])
+                devices_dict[devid['name']] = devid['hostid']
                 
-            return render_template("devices_out.html", devices_arr=devices_arr)
+            return render_template("devices_out.html", 
+                                   devices_arr=sorted(devices_dict),
+                                   devices_dict=devices_dict)
                     
         
         # user sent ip address
@@ -1041,6 +1054,7 @@ def client_notification_out():
     # {ip: {name: '', ip: '', address: '', uplink: '', cont_num: '', unrecognized: '', alive: '', contracts: {contract: emails}}}
     contract_dict = client_notification_get_emails(devices_arr, contract_dict, logger)
     contract_dict = get_address_zabbix_host(contract_dict, logger)
+    logger.info('contract_dict: {}'.format(str(contract_dict)))
     contract_dict_json = json.dumps(contract_dict, ensure_ascii=False)
 
     # генерячим session id и записываем его вместе с имейлами в mysql
@@ -1088,10 +1102,12 @@ def client_notification_confirm_(sid):
     logger.info('CHECKED: {}'.format(str(checked)))
     addresses = {key.replace("_address_fld", ''):str(request.form.get(key)) 
                  for key in request.form.keys() if "_address_fld" in key}
-    
+    logger.info('addresses: {}'.format(str(addresses)))
     sid_storage = sql_get_session(sid)
-    if not sid_storage: return client_notification(msg='Проблема с SQL')
-    contract_dict = json.loads(sid_storage[0]['storage'])
+    logger.info('sid_storage: {}'.format(str(sid_storage)))
+    if not sid_storage: 
+        return client_notification(msg='Проблема с SQL')
+    contract_dict = json.loads(sid_storage[0]['storage'].replace('\t', '').replace('\\"', '').replace('\\', ''))
     
     # для создания обслуживания в заббиксе сделаем лист с host_id (в заббиксе) всех устройств в цепочке
     host_id_arr = [contract_dict[dev]['host_id'] for dev in contract_dict]
@@ -1893,6 +1909,131 @@ def zabbix95_report():
 ### /Zabbix95
 ###
 
+###
+### DDM
+###
+    
+        
+@web_utils_app.route("/ddm_report", methods=['POST', 'GET'])
+def ddm_report():
+    if request.method == 'GET':
+        return render_template("ddm_report.html")
+    else:
+        alarm_dict = ddm.get_alarms(logger)
+        return render_template("ddm_report.html",
+                               alarm_dict = alarm_dict)
+
+###
+### /DDM
+###
+
+
+###
+### Configurator
+###
+        
+@web_utils_app.route("/configurator", methods=['GET'])
+def configurator_init(msg=''):
+    hostname_list = zabbix_common.get_hostname_list(logger)
+    
+    return render_template("configurator.html",
+                           msg = msg,
+                           hostname_list = hostname_list)
+                           
+@web_utils_app.route("/configurator_inet_create", methods=['POST'])
+def configurator_inet_create(msg=''):
+    hostname = request.form['hostname_fld']
+    contract = request.form['contract_fld']
+    rate = request.form['rate_fld']
+    name = request.form['name_fld']
+    latin_name = request.form['latname_fld']
+    address = request.form['addr_fld']
+    amount_ip = request.form['amountip_fld']
+    
+    #hosts = zabbix_common.get_hostname_list(logger)
+
+    #soid = snmp_common.getSysObjectID(hostip, logger)
+    host_list = [hostname]
+    been_there = []
+    host_dict = {}
+    chain = {}
+    chain_step = 100
+    while host_list:
+        current_hostname = host_list[0]
+        host_list.remove(current_hostname)
+        if current_hostname in been_there:
+            continue
+        been_there.append(current_hostname)
+        
+        hostid = zabbix_common.hostid_by_name(current_hostname, logger)
+        if not hostid: 
+            return configurator_init('no can do: {}'.format(current_hostname))
+        hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
+        host_dict[current_hostname] = {'ip': hostip}
+        host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
+        
+        chain[chain_step] = [current_hostname]
+    
+    a = [host_dict]
+    #time.sleep(5)
+    return configurator('no can do: {}'.format(a))
+
+@web_utils_app.route("/configurator_vlan_create", methods=['POST'])
+def configurator_vlan_create(msg=''):
+    hostname1 = request.form['hostname1_fld']
+    hostname2 = request.form['hostname2_fld']
+    tag = request.form['vlan_tag_fld']
+    rate = request.form['vlan_rate_fld']
+    latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
+    mtu = request.form['mtu_fld']
+    
+    chain, host_dict, been_there, mesg = configurator.get_chain(hostname1, logger)
+    
+    a = [chain, host_dict, been_there, mesg]
+    #time.sleep(5)
+    return configurator_init('no can do: {}'.format(a))
+                           
+###
+### /Configurator
+###
+
+
+###
+### ERTH Inventory
+###
+
+@web_utils_app.route("/erth_inventory")
+def erth_inventory_in(msg=''):
+    return render_template("erth_inventory.html", 
+                           msg=msg)
+        
+@web_utils_app.route("/erth_inventory_out", methods=['POST'])
+def erth_inventory_out():
+    hostname = request.form['text']
+    if not hostname: return erth_inventory_in(msg='Нужен хостнейм')
+    hostname = hostname.strip(' \t')
+
+    dlks, ulks, devs = erth_inventory.links_and_stuff(hostname, logger)
+    logger.info(dlks)
+    logger.info(ulks)
+    logger.info(devs)
+    table = erth_inventory.table_form(hostname, dlks, ulks, devs, logger)
+    
+    return render_template("erth_inventory_out.html", 
+                           table=table)
+###
+### /ERTH Inventory
+###
+
+
+
+
+
+
+
+
+
+
 
     # Hello, there!
 @web_utils_app.route("/obi-wan")
@@ -1934,6 +2075,11 @@ def obi_out2(sid):
     sql_del_session(sid)
     if not sid_storage: return obi()
     return render_template("obi-wan-out2.html", avar=sid_storage[0]['storage'], avar2=avar2)
+
+@web_utils_app.route("/loading_test", methods=['POST'])
+def loading_test():
+    time.sleep(10)
+    return render_template("obi-wan.html")
 
 if __name__ == "__main__":
     web_utils_app.run(debug=True, host='0.0.0.0', port=4000)

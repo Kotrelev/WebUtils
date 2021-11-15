@@ -9,7 +9,7 @@
     <br>
     <h2>Devices:</h2>
     {% for dev in devices_arr %}
-    <li><a href=https://devnet.spb.avantel.ru/devid_{{dev[0]}}>{{dev[1]}}</a></li>
+    <li><a href=https://devnet.spb.avantel.ru/devid_{{ devices_dict[dev] }}>{{ dev }}</a></li>
     {% endfor %}
     <br>
     <br>

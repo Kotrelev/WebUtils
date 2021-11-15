@@ -1,0 +1,89 @@
+{% extends "menu.html" %}
+{% block title %}DDM alarms{% endblock %}
+{% block content %}
+<script type="text/javascript">
+function init()
+{
+    var sorter1 = tsorter.create('alarm_table', null, {
+        'image-number': function(row){  
+            console.log( this );
+            return parseFloat( this.getCell(row).childNodes[1].nodeValue, 10 );
+        }
+    });
+}
+window.onload = init;
+
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
+function FilterFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("alarm_filter");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("alarm_table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    td2 = tr[i].getElementsByTagName("td")[2];
+    if (td || td2) {
+      txtValue = td.textContent || td.innerText;
+      txtValue2 = td2.textContent || td2.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
+    <form action="ddm_report" method="POST">
+        <input id="Generic140pxBlueButton" 
+         type="submit" 
+         name="ddm_report" 
+         {% if alarm_dict %}
+         value="Обновить" 
+         {% else %}
+         value="Собрать" 
+         {% endif %}
+         onclick="loading()">
+    </form>
+    <br>
+    <h3>{{msg}}</h3>
+    <br>
+    {% if alarm_dict %}
+    <input type="text" 
+           id="alarm_filter" 
+           onkeyup="FilterFunction()" 
+           placeholder="Filter">
+    <div id="alarm_div">
+        <table id="alarm_table" class="sortable">
+            <thead>
+            <tr>
+                <th>Хост</th>
+                <th>Порт</th>
+                <th>Дескрипшн</th>
+                <th>Сигнал RX</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for alarm in alarm_dict %}
+            <tr>
+                <td><a>{{ alarm_dict[alarm].hname }}</a></td>
+                <td>{{ alarm_dict[alarm].port }}</td>
+                <td>{{ alarm_dict[alarm].desc }}</td>
+                <td>{{ alarm_dict[alarm].rx }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    W = Warning, A = Alarm, "-" = low, "+" = high
+    <br>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,284 @@
+[2021-10-18 16:53:20,290] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ул. Цветочная, 19': {'id': '0', 'name': 'Cvetoch19-ds1', 'all_emails': 'it@redmond-rus.com, podchinenova.o@redmond.company, office-spb@systematica-consulting.ru, olga.ipatova@flexdatabases.com, vadim.vaskovtsov@flexdatabases.com, itmail@redmond.company, it@tps.com.ru, ve@estp.ru, a.yakimov@redmond-rus.com, it@redmond.company, anatoliy.tupitsin@flexdatabases.com'}, 'г. Санкт-Петербург, пр-т Люботинский, 8': {'id': '1', 'name': 'Lubot8v-as1', 'all_emails': 'memetdenis@yandex.ru, mdn@kcit-ozd.ru, mdn@kc-ozd.ru, memetdenis@ya.ru'}, 'г. Санкт-Петербург, ул. Коли Томчака, 20': {'id': '1', 'name': 'KTomch20-as1', 'all_emails': 'sintez@flok.ru, 12102002@mail.ru, rufat3183@mail.ru, svetabogd08@rambler.ru, megainstrument@mail.ru, admin@lash.ru, g@spb-ppk.ru, 8129218099@mail.ru, olgazar@yandex.ru, email@planta-a.sp.ru, marcon163@yandex.ru, info@spb-ppk.ru, miestilo@inbox.ru, b@spb-ppk.ru, igor.meringer@gmail.com, xkrinerx@gmail.com'}, 'г. Санкт-Петербург, ул. Заставская, 22': {'id': '1', 'name': 'Zastav22-as1', 'all_emails': 'alex.perspectiva@gmail.com, antey43@yandex.ru'}, 'г. Санкт-Петербург, ул. Цветочная, 17': {'id': '1', 'name': 'Cvetoch17-as1', 'all_emails': '8603325@mail.ru, e.tapinov@legalsw.ru, portal.jurist@mail.ru, e.tapinov@kogorta.ru, pavlushof@mail.ru'}, 'г. Санкт-Петербург, ул. Коли Томчака, 9': {'id': '1', 'name': 'KTomch9-as1', 'all_emails': 's.v.kulida@onegroup.ru'}, 'г. Санкт-Петербург, ул. Заставская, 4': {'id': '1', 'name': 'Zastav4-as1', 'all_emails': 'vl.filippov@intens-spb.ru, info@intens-spb.ru'}, 'г. Санкт-Петербург, ул. Коли Томчака, 1/6': {'id': '1', 'name': 'KTomch1-6-as1', 'all_emails': 'fudtor@yandex.ru, t0924290@gmail.com, max.martoff@gmail.com, auteka.adm@gmail.com, mary.poltoratskaya@gmail.com, frudtor@yandex.ru'}, 'г. Санкт-Петербург, ул. Цветочная, 25': {'id': '1', 'name': 'Cvetoch25-as1', 'all_emails': 'itkin@elstandart.spb.ru, gamal@elstandart.spb.ru, darkman@elstandart.spb.ru, admin@ekaterinahotel.com, r.kuznetsov@nekor.ru, bes@elstandart.spb.ru'}, 'г. Санкт-Петербург, ул. Коли Томчака, 25': {'id': '1', 'name': 'KTomch25-as1', 'all_emails': 'bystrov.av@openbit.ru, sale@arkadia.spb.ru'}, 'г. Санкт-Петербург, пр-т Витебский, 3': {'id': '1', 'name': 'Vitebskij3-as1', 'all_emails': 'andrey.melnikov@sovavto.ru, office@sovavto.ru, vasily.berdnikov@sovavto.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '22.10.2021', 'time_start': '06:00', 'time_end': '08:00', 'time_span': '5'}, 'hostids': ['11393', '12071', '11903', '10580', '10859', '10481', '10582', '11547', '10579', '10485', '11420', '11836', '12189', '10596']}
+[2021-10-18 16:53:20,293] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-10-18 16:53:20,313] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Цветочная, 19
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:20,420] INFO - email sent to it@redmond-rus.com
+[2021-10-18 16:53:20,450] INFO - email sent to podchinenova.o@redmond.company
+[2021-10-18 16:53:20,481] INFO - email sent to office-spb@systematica-consulting.ru
+[2021-10-18 16:53:20,505] INFO - email sent to olga.ipatova@flexdatabases.com
+[2021-10-18 16:53:20,523] INFO - email sent to vadim.vaskovtsov@flexdatabases.com
+[2021-10-18 16:53:20,541] INFO - email sent to itmail@redmond.company
+[2021-10-18 16:53:20,561] INFO - email sent to it@tps.com.ru
+[2021-10-18 16:53:20,582] INFO - email sent to ve@estp.ru
+[2021-10-18 16:53:20,601] INFO - email sent to a.yakimov@redmond-rus.com
+[2021-10-18 16:53:20,620] INFO - email sent to it@redmond.company
+[2021-10-18 16:53:20,642] INFO - email sent to anatoliy.tupitsin@flexdatabases.com
+[2021-10-18 16:53:20,669] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:20,755] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Люботинский, 8
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:20,781] INFO - email sent to memetdenis@yandex.ru
+[2021-10-18 16:53:20,839] INFO - email sent to mdn@kcit-ozd.ru
+[2021-10-18 16:53:20,862] INFO - email sent to mdn@kc-ozd.ru
+[2021-10-18 16:53:20,885] INFO - email sent to memetdenis@ya.ru
+[2021-10-18 16:53:20,922] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:20,939] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Коли Томчака, 20
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:20,960] INFO - email sent to sintez@flok.ru
+[2021-10-18 16:53:21,024] INFO - email sent to 12102002@mail.ru
+[2021-10-18 16:53:21,051] INFO - email sent to rufat3183@mail.ru
+[2021-10-18 16:53:21,074] INFO - email sent to svetabogd08@rambler.ru
+[2021-10-18 16:53:21,090] INFO - email sent to megainstrument@mail.ru
+[2021-10-18 16:53:21,115] INFO - email sent to admin@lash.ru
+[2021-10-18 16:53:21,136] INFO - email sent to g@spb-ppk.ru
+[2021-10-18 16:53:21,154] INFO - email sent to 8129218099@mail.ru
+[2021-10-18 16:53:21,173] INFO - email sent to olgazar@yandex.ru
+[2021-10-18 16:53:21,193] INFO - email sent to email@planta-a.sp.ru
+[2021-10-18 16:53:21,212] INFO - email sent to marcon163@yandex.ru
+[2021-10-18 16:53:21,233] INFO - email sent to info@spb-ppk.ru
+[2021-10-18 16:53:21,252] INFO - email sent to miestilo@inbox.ru
+[2021-10-18 16:53:21,273] INFO - email sent to b@spb-ppk.ru
+[2021-10-18 16:53:21,296] INFO - email sent to igor.meringer@gmail.com
+[2021-10-18 16:53:21,314] INFO - email sent to xkrinerx@gmail.com
+[2021-10-18 16:53:21,333] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:21,367] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Заставская, 22
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:21,397] INFO - email sent to alex.perspectiva@gmail.com
+[2021-10-18 16:53:21,430] INFO - email sent to antey43@yandex.ru
+[2021-10-18 16:53:21,465] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:21,484] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Цветочная, 17
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:21,508] INFO - email sent to 8603325@mail.ru
+[2021-10-18 16:53:21,590] INFO - email sent to e.tapinov@legalsw.ru
+[2021-10-18 16:53:21,666] INFO - email sent to portal.jurist@mail.ru
+[2021-10-18 16:53:21,720] INFO - email sent to e.tapinov@kogorta.ru
+[2021-10-18 16:53:21,739] INFO - email sent to pavlushof@mail.ru
+[2021-10-18 16:53:21,760] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:21,777] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Коли Томчака, 9
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:21,836] INFO - email sent to s.v.kulida@onegroup.ru
+[2021-10-18 16:53:21,859] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:21,897] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Заставская, 4
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:21,946] INFO - email sent to vl.filippov@intens-spb.ru
+[2021-10-18 16:53:21,976] INFO - email sent to info@intens-spb.ru
+[2021-10-18 16:53:22,003] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:22,033] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Коли Томчака, 1/6
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:22,053] INFO - email sent to fudtor@yandex.ru
+[2021-10-18 16:53:22,079] INFO - email sent to t0924290@gmail.com
+[2021-10-18 16:53:22,105] INFO - email sent to max.martoff@gmail.com
+[2021-10-18 16:53:22,129] INFO - email sent to auteka.adm@gmail.com
+[2021-10-18 16:53:22,152] INFO - email sent to mary.poltoratskaya@gmail.com
+[2021-10-18 16:53:22,175] INFO - email sent to frudtor@yandex.ru
+[2021-10-18 16:53:22,199] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:22,339] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Цветочная, 25
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:22,372] INFO - email sent to itkin@elstandart.spb.ru
+[2021-10-18 16:53:22,394] INFO - email sent to gamal@elstandart.spb.ru
+[2021-10-18 16:53:22,413] INFO - email sent to darkman@elstandart.spb.ru
+[2021-10-18 16:53:22,431] INFO - email sent to admin@ekaterinahotel.com
+[2021-10-18 16:53:22,453] INFO - email sent to r.kuznetsov@nekor.ru
+[2021-10-18 16:53:22,475] INFO - email sent to bes@elstandart.spb.ru
+[2021-10-18 16:53:22,551] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:23,107] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Коли Томчака, 25
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:23,129] INFO - email sent to bystrov.av@openbit.ru
+[2021-10-18 16:53:23,150] INFO - email sent to sale@arkadia.spb.ru
+[2021-10-18 16:53:23,179] INFO - email sent to support@spb.avantel.ru
+[2021-10-18 16:53:23,202] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>22.10.2021</b> г. в период с <b>06:00</b> до <b>08:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>5</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Витебский, 3
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-10-18 16:53:23,227] INFO - email sent to andrey.melnikov@sovavto.ru
+[2021-10-18 16:53:23,263] INFO - email sent to office@sovavto.ru
+[2021-10-18 16:53:23,290] INFO - email sent to vasily.berdnikov@sovavto.ru
+[2021-10-18 16:53:23,335] INFO - email sent to support@spb.avantel.ru
+[2021-10-19 11:14:19,816] INFO - DEV_ARRR 10.60.253.73 ['10.60.253.91']
+[2021-10-19 11:14:20,027] INFO - DEV_ARRR 10.60.253.77 ['10.60.253.91', '10.60.253.73']
+[2021-10-19 11:14:26,619] INFO - {'10.60.253.91': {'name': 'Medikov9-as3', 'ip': '10.60.253.91', 'host_id': '10637', 'address': '', 'uplink': '', 'cont_num': 3, 'unrecognized': 'OFF_0055-18', 'alive': 1, 'contracts': {'0248-17': 'levboyko@gmail.com, oksana_k@grafitart.com', '0111-18': 'zaicev1979@rambler.ru', '0171-21': 'tsay.al.vl@gmail.com'}}, '10.60.253.73': {'name': 'Medikov9-as5', 'ip': '10.60.253.73', 'host_id': '11526', 'address': '', 'uplink': 'Medikov9-as3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0058-19': 'igors@chipdip.ru'}}, '10.60.253.77': {'name': 'Medikov9-as4', 'ip': '10.60.253.77', 'host_id': '10638', 'address': '', 'uplink': 'Medikov9-as3', 'cont_num': 4, 'unrecognized': 'OFF(0081-18)', 'alive': 1, 'contracts': {'0115-18': 'info@mgsz.ru', '0312-18': 'kia@skatz.ru, mail@skatz.ru', '0021-20': 'kolosov@spm-log.ru', '0036-20': 'info@project-pharm.ru'}}}
+[2021-10-19 11:14:26,842] INFO - contract_dict: {'10.60.253.91': {'name': 'Medikov9-as3', 'ip': '10.60.253.91', 'host_id': '10637', 'address': 'г. Санкт-Петербург, пр-т Медиков, 9', 'uplink': '', 'cont_num': 3, 'unrecognized': 'OFF_0055-18', 'alive': 1, 'contracts': {'0248-17': 'levboyko@gmail.com, oksana_k@grafitart.com', '0111-18': 'zaicev1979@rambler.ru', '0171-21': 'tsay.al.vl@gmail.com'}, 'hostid': '10637', 'inventory': '1'}, '10.60.253.73': {'name': 'Medikov9-as5', 'ip': '10.60.253.73', 'host_id': '11526', 'address': 'г. Санкт-Петербург, пр-т Медиков, 9', 'uplink': 'Medikov9-as3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0058-19': 'igors@chipdip.ru'}, 'hostid': '11526', 'inventory': '1'}, '10.60.253.77': {'name': 'Medikov9-as4', 'ip': '10.60.253.77', 'host_id': '10638', 'address': 'г. Санкт-Петербург, пр-т Медиков, 9', 'uplink': 'Medikov9-as3', 'cont_num': 4, 'unrecognized': 'OFF(0081-18)', 'alive': 1, 'contracts': {'0115-18': 'info@mgsz.ru', '0312-18': 'kia@skatz.ru, mail@skatz.ru', '0021-20': 'kolosov@spm-log.ru', '0036-20': 'info@project-pharm.ru'}, 'hostid': '10638', 'inventory': '1'}}

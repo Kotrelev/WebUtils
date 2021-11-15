@@ -7,6 +7,16 @@
   </style>
 {% endblock %}
 {% block content %}
+<script type="text/javascript">
+    function loading() {
+        var l = document.getElementById("loader");
+        var c = document.getElementById("content");
+        l.style.display = "block";
+        c.style.display = "none";    
+    }
+</script>
+<div id="loader" class="loader"></div> 
+<div id="content">
 <img src="pic/obi-wan.jpg" width="500" height="300">
 <h1 style='color:blue'>Hello There!</h1>
     <form action="obi-wan-out" method="POST" onsubmit="return confirm('А надо ли?');">
@@ -35,5 +45,13 @@
         <input id="search_btn" type="submit" name="obi-wan-out" value="Send">
         <input type="reset">
     </form>
-    
+    <form action="loading_test" method="POST">
+        <input id="search_btn" 
+         type="submit" 
+         name="loading_test" 
+         value="Всем лежать пол часа" 
+         onclick="loading()">
+    </form>
+</div>
+<button class="InventorySrtButtons" onclick="loading()">Не в сети</button>
 {% endblock %}

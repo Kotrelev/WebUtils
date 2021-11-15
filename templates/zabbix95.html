@@ -14,11 +14,18 @@ function zabbix95_switch_form() {
     report.style.display = "none";
   }
 }
+    
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
 </script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
     <br>
     {% if validation_msg %}
     <div class="alarm">
-    <h3>{{ validation_msg|safe }}<h3>
+    <h3>{{ validation_msg|safe }}</h3>
     </div>
     <br>
     {% endif %}
@@ -47,7 +54,12 @@ function zabbix95_switch_form() {
                    name="zabbix95_report_date_to" 
                    form="zabbix95_report_form"
                    required>
-            <input id="search_btn" form="zabbix95_report_form" type="submit" name="zabbix95_report" value="Отчет">
+            <input id="search_btn" 
+                   form="zabbix95_report_form" 
+                   type="submit" 
+                   name="zabbix95_report" 
+                   value="Отчет" 
+                   onclick="loading()">
         </form>
         <br>
         <table id="zabbix95_table" class="sortable">
@@ -68,8 +80,8 @@ function zabbix95_switch_form() {
                             id="zabbix95_report_check"
                             form="zabbix95_report_form"
                             name="zabbix95_report_check" 
-                            value="{{ neighbour }}"></a></td>
-                <td rowspan="{{span_dict[neighbour]}}">{{ neighbour }}</a></td>
+                            value="{{ neighbour }}"></td>
+                <td rowspan="{{span_dict[neighbour]}}">{{ neighbour }}</td>
                 {% for node in zabbix95_ifaces[neighbour] %}
                     <td rowspan="{{zabbix95_ifaces[neighbour][node]|length}}">{{ node }}</td>
                     {% for interface in zabbix95_ifaces[neighbour][node] %}
@@ -174,4 +186,5 @@ function zabbix95_switch_form() {
     </div>
     <br>
     <br>
+</div>
 {% endblock %}

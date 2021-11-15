@@ -1,0 +1,378 @@
+{% extends "menu.html" %}
+{% block title %}Конфигуратор{% endblock %}
+{% block content %}
+<script type="text/javascript">
+
+function inet_create() {
+  document.getElementById("inet_form").style.display = "block";
+  document.getElementById("vlan_form").style.display = "none";
+  document.getElementById("active_list").style.display = "none";
+  document.getElementById("config_form").style.display = "none";
+  document.getElementById("error_message").style.display = "none";
+}
+function vlan_create() {
+  document.getElementById("inet_form").style.display = "none";
+  document.getElementById("vlan_form").style.display = "block";
+  document.getElementById("active_list").style.display = "none";
+  document.getElementById("config_form").style.display = "none";
+  document.getElementById("error_message").style.display = "none";
+}
+function active_show() {
+  document.getElementById("inet_form").style.display = "none";
+  document.getElementById("vlan_form").style.display = "none";
+  document.getElementById("active_list").style.display = "block";
+  document.getElementById("config_form").style.display = "none";
+  document.getElementById("error_message").style.display = "none";
+}
+function config_show() {
+  document.getElementById("inet_form").style.display = "none";
+  document.getElementById("vlan_form").style.display = "none";
+  document.getElementById("active_list").style.display = "none";
+  document.getElementById("config_form").style.display = "block";
+  document.getElementById("error_message").style.display = "none";
+}
+    
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
+    
+//$(document).ready(function() {
+//    
+//    $('input').on('blur', function() {
+//        if ($("#inet_create_form").valid()) {
+//            $('#inet_create_btn').prop('disabled', false);  
+//        } else {
+//            $('#inet_create_btn').prop('disabled', 'disabled');
+//        }
+//    });
+//    
+//    $("#inet_create_form").validate({
+//        rules: {
+//            hostname_fld: {
+//                required: true,
+//                minlength: 4
+//            },
+//            contract_fld: {
+//                required: true,
+//                minlength: 4
+//            }
+//        }
+//    });
+//
+//});
+    
+//function formValidation(oEvent) { 
+//oEvent = oEvent || window.event; 
+//var txtField = oEvent.target || oEvent.srcElement; 
+//
+//var t1ck=true;
+//var msg=" ";
+//if(document.getElementById("t1").value.length < 3 ){ t1ck=false; msg = msg + "Your name should be minimun 3 char length<br>";}
+//if(!document.getElementById("r1").checked && !document.getElementById("r2").checked){ t1ck=false;msg = msg + " Select your Gender<br>";}
+//if(document.getElementById("s1").value.length < 3 ){ t1ck=false;msg = msg + " Select one of the games <br>";}
+//if(!document.getElementById("c1").checked ){ t1ck=false;msg = msg + " You must agree to terms & conditions<br> ";}
+//
+////alert(msg + t1ck);
+//
+//if(t1ck){document.getElementById("btnSignUp").disabled = false;
+//msg=msg+ " <b> Submit Button is enabled </b>";
+// }
+//else{document.getElementById("btnSignUp").disabled = true; 
+//msg=msg+ " <b> Submit Button is disabled </b>";
+//}// end of if checking status of t1ck variable 
+//document.getElementById('my_msg').innerHTML=msg;
+//} 
+//
+//window.onload = function () { 
+//
+//var inet_create_btn = document.getElementById("inet_create_btn"); 
+//
+//var hn = document.getElementById("hostname_fld"); 
+//var ct = document.getElementById("contract_fld"); 
+//var rt = document.getElementById("rate_fld"); 
+//var nm = document.getElementById("name_fld");
+//var ln = document.getElementById("latname_fld");
+//var ad = document.getElementById("addr_fld");
+//var ai = document.getElementById("amountip_fld");
+//
+//var t1ck=false;
+//document.getElementById("inet_create_btn").disabled = true;
+//hn.onkeyup = formValidation; 
+//ct.onclick = formValidation; 
+//rt.onclick = formValidation; 
+//nm.onclick = formValidation; 
+//ln.onclick = formValidation;
+//ad.onclick = formValidation; 
+//ai.onclick = formValidation;
+//btnReset.onclick = resetForm;
+//}
+    
+</script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
+    <br>
+    <div class="NotifierButtonsGroup">
+        <input id="scale0" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale0" class="NotifierButtons" onclick="inet_create()">Инет</label>
+        <input id="scale1" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale1" class="NotifierButtons" onclick="vlan_create()">Влан</label>
+        <input id="scale2" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale2" class="NotifierButtons" onclick="active_show()">Активные</label>
+        <input id="scale3" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+        <label for="scale3" class="NotifierButtons" onclick="config_show()">Конфиг</label>
+    </div>
+    <br>
+    <br>
+    <div id="error_message" class="alarm">
+    <h3>{{ msg|safe }}</h3>
+    </div>
+    
+    <!-- INET FORM -->
+    <div id="inet_form" style="display:none">
+        <form id="inet_create_form" 
+              action="configurator_inet_create" 
+              method="POST">
+        <table>
+        <tr>
+        <td>
+        <label class="configurator_label" 
+               for="hostname_fld">Hostname:</label>
+        </td>
+        <td>
+        <input type="text" 
+            class="configurator_form" 
+            id="hostname_fld" 
+            name="hostname_fld"
+            autocomplete="off"            
+            placeholder="Hostname" 
+            list="hn_list" required><br>
+        <datalist id = "hn_list">
+            {% for host in hostname_list %}
+			<option value = "{{ host }}" label = "{{ host }}">
+			{% endfor %}
+		</datalist>	
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="contract_fld">Договор:</label>
+        </td>
+        <td>
+        <input type="text" 
+               class="configurator_form" 
+               id="contract_fld" 
+               name="contract_fld" 
+               autocomplete="off" 
+               placeholder="Contract" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="rate_fld">Тариф (мегабиты):</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="rate_fld" 
+               name="rate_fld" 
+               min="1" 
+               max="10000" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="name_fld">Организация:</label>
+        </td><td>
+        <input type="text" 
+               class="configurator_form" 
+               id="name_fld" 
+               name="name_fld" 
+               autocomplete="off" 
+               placeholder="Название организации" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="latname_fld">Организация (лат):</label>
+        </td><td>
+        <input type="text" 
+               class="configurator_form" 
+               id="latname_fld" 
+               name="latname_fld" 
+               autocomplete="off" 
+               placeholder="Nazvanie organizacii"
+               maxlength="16" 
+               oninvalid="this.setCustomValidity('Латиница only')"
+               onchange="try{setCustomValidity('')}catch(e){}"
+               oninput="setCustomValidity(' ')"
+               pattern = "^[A-Za-z0-9]{1,16}$" 
+               required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="addr_fld">Адрес:</label>
+        </td><td>
+        <input type="text" 
+               class="configurator_form" 
+               id="addr_fld" 
+               name="addr_fld" 
+               autocomplete="off" 
+               placeholder="Address" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="amountip_fld">Кол-во адресов:</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="amountip_fld" 
+               name="amountip_fld" 
+               min="1" 
+               max="253" 
+               value="1" required><br>
+        </td>
+        </tr>
+        </table>
+        <input id="inet_create_btn" 
+               type="submit" 
+               name="inet_create" 
+               value="Поехали">
+        </form>
+    </div>
+    
+    <!-- VLAN FORM -->
+    <div id="vlan_form" style="display:none">
+        <form action="configurator_vlan_create" method="POST">
+        <table>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="hostname1_fld">Hostname1:</label>
+        </td>
+        <td>
+        <input type="text" 
+            class="configurator_form" 
+            id="hostname1_fld" 
+            name="hostname1_fld"
+            autocomplete="off"            
+            placeholder="Hostname1" 
+            list="hn_list" required><br>
+        <datalist id = "hn_list">
+            {% for host in hostname_list %}
+			<option value = "{{ host }}" label = "{{ host }}">
+			{% endfor %}
+		</datalist>	
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="hostname2_fld">Hostname2:</label>
+        </td>
+        <td>
+        <input type="text" 
+            class="configurator_form" 
+            id="hostname2_fld" 
+            name="hostname2_fld"
+            autocomplete="off"            
+            placeholder="Hostname2" 
+            list="hn_list" required><br>
+        <datalist id = "hn_list">
+            {% for host in hostname_list %}
+			<option value = "{{ host }}" label = "{{ host }}">
+			{% endfor %}
+		</datalist>	
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_tag_fld">Влан (тэг):</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="vlan_tag_fld" 
+               name="vlan_tag_fld" 
+               min="2" 
+               max="4095" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_rate_fld">Тариф (мегабиты):</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="vlan_rate_fld" 
+               name="vlan_rate_fld" 
+               min="1" 
+               max="10000" required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_latname_fld">Организация (лат):</label>
+        </td><td>
+        <input type="text" 
+               class="configurator_form" 
+               id="vlan_latname_fld" 
+               name="vlan_latname_fld" 
+               autocomplete="off" 
+               placeholder="Nazvanie organizacii"
+               maxlength="16" 
+               oninvalid="this.setCustomValidity('Латиница only')"
+               onchange="try{setCustomValidity('')}catch(e){}"
+               oninput="setCustomValidity(' ')"
+               pattern = "^[A-Za-z0-9]{1,16}$" 
+               required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="mtu_fld">MTU:</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="mtu_fld" 
+               name="mtu_fld" 
+               min="1500" 
+               step="100"
+               max="9216" 
+               value="1500" required><br>
+        </td>
+        </tr>
+        </table>
+        <input id="vlan_create_btn" 
+               type="submit" 
+               name="vlan_create" 
+               value="Поехали">
+        </form>
+    </div>
+    <div id="active_list" style="display:none">
+        <br>
+        <br>
+    <h1>Under construction</h1>
+    </div>
+    <div id="config_form" style="display:none">
+        <br>
+        <br>
+    <h1>Under construction</h1>
+    </div>
+</div>
+{% endblock %}

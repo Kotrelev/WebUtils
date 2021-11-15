@@ -1,9 +1,24 @@
 {% extends "menu.html" %}
 {% block title %}Уведомление клиентов{% endblock %}
 {% block content %}
+<script type="text/javascript">
+    function loading() {
+        document.getElementById("loader_div").style.display = "block";
+        document.getElementById("content_div").style.display = "none";
+    }
+</script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
     <form action="client_notification_out" method="POST">
-        <input id="search_fld" type="text" name="text" placeholder="hostname">
-        <input id="search_btn" type="submit" name="client_notification_out" value="Send">
+        <input id="search_fld" 
+         type="text" 
+         name="text" 
+         placeholder="hostname">
+        <input id="search_btn" 
+         type="submit" 
+         name="client_notification_out" 
+         value="Send" 
+         onclick="loading()">
     </form>
     <p style="font-size: 12px; color: Grey">
         Можно ввести несколько hostname через запятую.<br>
@@ -38,4 +53,5 @@
     <br>
     <br>
     {% endif %}
+</div>
 {% endblock %}

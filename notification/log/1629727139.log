@@ -1,0 +1,952 @@
+[2021-08-23 16:58:59,090] INFO - Data to work with: {'addr_d': {'.': {'id': '0', 'name': 'Kursk27-ds1', 'all_emails': 'info@zdaspb.ru, office-spb@umbrellait.com, finance@umbrellait.com, belov@zdaspb.ru'}, 'г. Санкт-Петербург, пр-т Лиговский, 73': {'id': '1', 'name': 'Lig73-as1', 'all_emails': '9230688@bk.ru, andrievsky.d@gmail.com, mlvov@most6.ru, aleksandr.arsenov@teamgroup.ru, 9250688@mail.ru, tatiana.tarasova@datium.fi, aleksandra.dimova@teamgroup.ru, kozlikova@most6.ru, shilov@most6.ru, buh@most6.spb.ru, merkulov@canox.ru, kozlikova@most7.ru, it@most6.ru, semenova@most7.ru'}, 'г. Санкт-Петербург, пр-т Лиговский, 74': {'id': '1', 'name': 'Lig74-as1', 'all_emails': 'sveta-bugrova555@yandex.ru, mmv2006@mail.ru, mmv2006.61@mail.ru, lego@vitapool.ru, cniie_spb@mail.ru, akvatoryaspb@mail.ru'}, 'г. Санкт-Петербург, пр-т Лиговский, 92': {'id': '1', 'name': 'Lig92-as1', 'all_emails': '9506327@bk.ru, dima@pasportprosto.ru, office@prime-vent.ru, biks2005@list.ru, es@prosto.group, info@sppbureau.ru, tgonyaeva@inbox.ru, info@pasportprosto.ru, 9506327@mail.ru, tg@prosto.group, info@stk-formula.ru'}, 'г. Санкт-Петербург, ул. Седова, 12': {'id': '1', 'name': 'Sedova12-as1', 'all_emails': '3384646@bk.ru, bgt.rus1@gmail.com, sudakoff2005@ya.ru'}, 'г. Санкт-Петербург, ул. Маршала Говорова, 47': {'id': '1', 'name': 'Govorova47-as1', 'all_emails': 'sichkar@cavi.ru'}, 'г. Санкт-Петербург, ул. Заозёрная, 14': {'id': '1', 'name': 'Zaozer14-as2', 'all_emails': 'etrufanov@etm.ru, buh@garant-logistika.ru, denisov_ea@etm.ru, zakaz@garant-logistika.ru, e.ushakova@avantel.ru, amihaylov@nsk.etm.ru, kovaleva_jv@etm.ru, a.kolesnikov@avantel.ru, edenisov@spb.etm.ru, sgvbt@etm.ru, nemtenkova_em@etm.ru, smirnova_la@etm.ru, works@spb.avantel.ru, edenisov@etm.ru, nmakusheva@etm.ru, v.valt@avantel.ru, support@spb.avantel.ru'}, 'г. Санкт-Петербург, наб. Обводного канала, 199': {'id': '1', 'name': 'Obvod199-as1, Obvod199-as2', 'all_emails': 'anri@admiral.ru, reshke-aleksa@yandex.ru, ma_ra@mail.ru, bsmanufaktura@mail.ru, orlova@mfin.ru, rznspb@mail.ru, info@palmiraspb.com, rmkspb@bk.ru, print@fabrika4c.ru'}, 'г. Санкт-Петербург, ул. Курская, 21': {'id': '1', 'name': 'Kursk21-as1', 'all_emails': 'anna@art.su, s@art.su'}, 'г. Санкт-Петербург, ул. Промышленная, 38': {'id': '1', 'name': 'Promysh38-as1', 'all_emails': 'office@aplusdevelopment.ru, goosen@viamedis.ru, rt@kuvert.ru, denisov@ingliya.com, tsemisheva@aplusdevelopment.ru, jk@coffeenorth.ru, admin@aplusdevelopment.ru, mb@coffeenorth.ru, audinkan@aplusdevelopment.ru, ogavyrina@auroradevelopment.ru, info@dialogshipping.ru, akr@kuvert.ru, amolokanov@aplusdevelopment.ru, esenchenkov@aplusdevelopment.ru, vsolovev@aplusdevelopment.ru, npetlyuk@auroradevelopment.ru'}, 'г. Санкт-Петербург, ул. Большая Московская, 4б': {'id': '1', 'name': 'BMosk4B-as1', 'all_emails': 'ilkin@smspobeda.ru'}, 'г. Санкт-Петербург, наб. Обводного канала, 229': {'id': '1', 'name': 'Obvod229-as1', 'all_emails': 'ppanoff@bk.ru, lenesteit@ya.ru, mikhail@tropicmix.com, vyat-ka@yandex.ru, ivansurkov@gmail.com, info@promenergoltd.ru, info@cadl.spb.ru, tropicmix@tropicmix.com'}, 'г. Санкт-Петербург, ул. Корабельная, 6': {'id': '1', 'name': 'Korabel6-as3, Korabel6-as2', 'all_emails': 'termofit_olga@mail.ru, vimberg@mail.ru'}, 'г. Санкт-Петербург, ул. Тюшина, 11': {'id': '1', 'name': 'Tyushina11-as1', 'all_emails': 'it@sharpeyshop.ru, buh@sharpeyshop.ru'}, 'г. Санкт-Петербург, наб. Обводного канала, 187': {'id': '1', 'name': 'Obvod187-as1', 'all_emails': 'shatygin@infracom.ru, morvic@gmail.com, cigankova@afina-pet.ru, gavrilova@infracom.ru, sa@infracom.ru, info@rkcopy.ru'}, 'г. Санкт-Петербург, ул. Краснопутиловская, 5': {'id': '1', 'name': 'Krasnoputil5-as1', 'all_emails': 'iigor.yakubovich@teh-system.com, walkar.spb@gmail.com, info@teh-system.com'}, 'г. Санкт-Петербург, ул. Расстанная, 18': {'id': '1', 'name': 'Rasstan18-as1', 'all_emails': '5707590@mail.ru'}, 'г. Санкт-Петербург, ул. Трефолева, 1': {'id': '1', 'name': 'Trefoleva1-as1, Trefoleva1-as2', 'all_emails': 'etrufanov@etm.ru, l.shkodina@silmar-group.com, buh@minspb.ru, kirill@silmar.spb.ru, estarodubcev@etm-res.ru, svd@canat.spb.ru, info@etm-res.ru, kovaleva_jv@etm.ru, inmainc@mail.ru, a.trapeznikova@silmar.spb.ru, sgvbt@etm.ru, zaomin@mail.wplus.net, smirnova_la@etm.ru, edenisov@etm.ru, nmakusheva@etm.ru, commerce@hpt.ru, dillarionov@etm-res.ru'}, 'г. Санкт-Петербург, к-л Межевой, 3': {'id': '1', 'name': 'Mezhevoy3-2-as1', 'all_emails': 'severst@nevamt.spb.ru, odm@nevamt.spb.ru, vladislav@nevamt.spb.ru, nataly@nevamt.spb.ru'}, 'г. Санкт-Петербург, ул. Дровяная, 6': {'id': '1', 'name': 'Drovyan6-as1', 'all_emails': 'shatygin@infracom.ru, gavrilova@infracom.ru, sa@infracom.ru'}, 'г. Санкт-Петербург, ул. Марата, 69': {'id': '1', 'name': 'Marata69-as1', 'all_emails': 'elkina@unionbox.ru, glodev@unionbox.ru, admin@vipsgroup.com, volkovatv@unionbox.ru'}, 'г. Санкт-Петербург, ул. Боровая, 47 ': {'id': '1', 'name': 'Borov47k2-as1', 'all_emails': 'snabspb178@gmail.com,  yu.vahtenko@tc.rennagroup.ru, rosservis@bk.ru, yu.vahtenko@tc.rennagroup.ru, office@nordstroi.ru, dexter2901@bk.ru, denis.naftsiger@yandex.rio.ru, granit-invest@bk.ru, o.sedov@lco-op.ru, zk@displ.ru, alex.stotex@gmail.com, help@roxy-kids.ru, info@steadycar.ru, info@ehs.org.ru, grigorii.gorbulin@wika.com'}, 'г. Санкт-Петербург, ул. Краснопутиловская, 9': {'id': '1', 'name': 'Krasnoputil9a-as1', 'all_emails': 'roman.lutsenko@forsite-company.ru'}, 'г. Санкт-Петербург, ул. Стремянная, 7': {'id': '1', 'name': 'Stremyan7-as1', 'all_emails': 'nosarev@print.kella.ru'}, 'г. Санкт-Петербург, пр-т Нарвский, 22': {'id': '1', 'name': 'Narvsk22-as1', 'all_emails': 'admin@prometeyspb.com, contact@prometeyspb.com'}, 'г. Санкт-Петербург, ул. Социалистическая, 14': {'id': '1', 'name': 'Social14-as1', 'all_emails': 'admin-spb@cdek.ru, savchenko.a@cdek.ru, t.taltygin@cdek.ru'}, 'г. Санкт-Петербург, пр-т Невский, 137': {'id': '1', 'name': 'Nevsk137-as1', 'all_emails': 'elena.v.dmitrieva@raiffeisen.ru, 46698@raiffeisen.ru, sloktionov@raiffeisen.ru, galina.nikitina@raiffeisen.ru, 55408@raiffeisen.ru, anastasia.smokotina@raiffeisen.ru, gns@raiffeisen.ru  , rbru-ag_it_spb@raiffeisen.ru'}, 'г. Санкт-Петербург, ул. Промышленная, 6': {'id': '1', 'name': 'Promysh6-as1', 'all_emails': 'oplata@unistream.com, i.filatova@unistream.com'}, 'г. Санкт-Петербург, наб. реки Волковки, 7': {'id': '1', 'name': 'Volkovki7-as1', 'all_emails': 'o.v.artamonov@list.ru, pfr.tatiana@yandex.ru, central@sitistroj.ru, horkova@ktc.ru, sitistroj@list.ru, kl.sitistroj@mail.ru, o.artamonov@sitistroj.ru'}, 'г. Санкт-Петербург, ул. Курская, 27': {'id': '1', 'name': 'Kursk27-as1', 'all_emails': 'buh_spb2@muztorg.ru'}, 'г. Санкт-Петербург, ул. Расстанная, 2': {'id': '1', 'name': 'Rasstan2-as1', 'all_emails': 'foboss@baltbet.ru, elena.zhuravleva@ocrv.ru, svetlana.zakharova@ocrv.ru, dmitry.imanuilov@ocrv.ru, it@baltbet.ru, anna.tutykhina@ocrv.ru, foboss@mail.ru, natalia.budkova@colliers.com, ulia.goenko@ocrv.ru, wentmaster@mail.ru, tomsk@baltbet.ru, nsapozhkova@baltbet.ru'}, 'г. Санкт-Петербург, ул. Балтийская, 51': {'id': '1', 'name': 'Balt51-as2, Balt51-as1', 'all_emails': 'bort84@mail.ru, gp21@mail.ru, vedernikov@lenst.su, office@spb-house.ru, sv_prime@mail.ru, info@av-automatics.ru, info.lom@yandex.ru, buh@av-automatics.ru, 19761001b@gmail.com, skarn@skarn-spb.ru, soldatov@av-automatics.ru, sna80@ngs.ru, pkstpr.buh@gmail.com, mail@bigteks.ru, 9332444@gmail.com'}, 'г. Санкт-Петербург, ул. Маршала Говорова, 52': {'id': '1', 'name': 'Govorova52-as1, Govorova52-as2', 'all_emails': 'sale@forsite-company.ru, secretar@bmba-ustluga.com, korovin@alkotel.ru, roman.lutsenko@forsite-company.ru, pristansky.pv@pallet.ru, buh@ilovemakeup.ru, info@federalit.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '27.08.2021', 'time_start': '23:00', 'time_end': '06:00', 'time_span': '420'}, 'hostids': ['11515', '10611', '10615', '10616', '10782', '10892', '10856', '10718', '10822', '10585', '10749', '12099', '10780', '10719', '11517', '11518', '10717', '10573', '11519', '11968', '10823', '10652', '12062', '11965', '10492', '11520', '10926', '12043', '11823', '11997', '12093', '10806', '11912', '11600', '11522', '11211', '10703', '11620', '11668', '11670', '11516', '10752', '11691', '10520', '10824', '11585', '11883', '11950', '11842', '10666', '11491', '10661', '10668', '10670', '10673', '11895', '10665', '10660', '11762', '10662', '11490', '11368', '11947', '11673', '11669', '11850', '11946', '11944', '11966', '11551', '10672', '10793', '10795', '11622', '11493', '11492', '11314', '11907', '11943', '11835', '12029', '11945', '10794', '11494', '11776', '11976', '11910']}
+[2021-08-23 16:58:59,094] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-08-23 16:58:59,097] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: .
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:58:59,158] INFO - email sent to info@zdaspb.ru
+[2021-08-23 16:58:59,178] INFO - email sent to office-spb@umbrellait.com
+[2021-08-23 16:58:59,196] INFO - email sent to finance@umbrellait.com
+[2021-08-23 16:58:59,213] INFO - email sent to belov@zdaspb.ru
+[2021-08-23 16:58:59,233] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:58:59,250] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Лиговский, 73
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:58:59,267] INFO - email sent to 9230688@bk.ru
+[2021-08-23 16:58:59,296] INFO - email sent to andrievsky.d@gmail.com
+[2021-08-23 16:58:59,319] INFO - email sent to mlvov@most6.ru
+[2021-08-23 16:58:59,345] INFO - email sent to aleksandr.arsenov@teamgroup.ru
+[2021-08-23 16:58:59,366] INFO - email sent to 9250688@mail.ru
+[2021-08-23 16:58:59,384] INFO - email sent to tatiana.tarasova@datium.fi
+[2021-08-23 16:58:59,421] INFO - email sent to aleksandra.dimova@teamgroup.ru
+[2021-08-23 16:58:59,437] INFO - email sent to kozlikova@most6.ru
+[2021-08-23 16:58:59,453] INFO - email sent to shilov@most6.ru
+[2021-08-23 16:58:59,470] INFO - email sent to buh@most6.spb.ru
+[2021-08-23 16:58:59,488] INFO - email sent to merkulov@canox.ru
+[2021-08-23 16:58:59,505] INFO - email sent to kozlikova@most7.ru
+[2021-08-23 16:58:59,520] INFO - email sent to it@most6.ru
+[2021-08-23 16:58:59,536] INFO - email sent to semenova@most7.ru
+[2021-08-23 16:58:59,559] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:58:59,574] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Лиговский, 74
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:58:59,598] INFO - email sent to sveta-bugrova555@yandex.ru
+[2021-08-23 16:58:59,622] INFO - email sent to mmv2006@mail.ru
+[2021-08-23 16:58:59,640] INFO - email sent to mmv2006.61@mail.ru
+[2021-08-23 16:58:59,660] INFO - email sent to lego@vitapool.ru
+[2021-08-23 16:58:59,676] INFO - email sent to cniie_spb@mail.ru
+[2021-08-23 16:58:59,718] INFO - email sent to akvatoryaspb@mail.ru
+[2021-08-23 16:58:59,765] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:58:59,805] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Лиговский, 92
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:58:59,827] INFO - email sent to 9506327@bk.ru
+[2021-08-23 16:58:59,850] INFO - email sent to dima@pasportprosto.ru
+[2021-08-23 16:58:59,870] INFO - email sent to office@prime-vent.ru
+[2021-08-23 16:58:59,887] INFO - email sent to biks2005@list.ru
+[2021-08-23 16:58:59,906] INFO - email sent to es@prosto.group
+[2021-08-23 16:58:59,924] INFO - email sent to info@sppbureau.ru
+[2021-08-23 16:58:59,939] INFO - email sent to tgonyaeva@inbox.ru
+[2021-08-23 16:58:59,954] INFO - email sent to info@pasportprosto.ru
+[2021-08-23 16:58:59,970] INFO - email sent to 9506327@mail.ru
+[2021-08-23 16:58:59,986] INFO - email sent to tg@prosto.group
+[2021-08-23 16:59:00,003] INFO - email sent to info@stk-formula.ru
+[2021-08-23 16:59:00,021] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:00,035] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Седова, 12
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:00,052] INFO - email sent to 3384646@bk.ru
+[2021-08-23 16:59:00,067] INFO - email sent to bgt.rus1@gmail.com
+[2021-08-23 16:59:00,085] INFO - email sent to sudakoff2005@ya.ru
+[2021-08-23 16:59:00,117] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:00,246] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Маршала Говорова, 47
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:00,271] INFO - email sent to sichkar@cavi.ru
+[2021-08-23 16:59:00,290] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:00,335] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Заозёрная, 14
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:00,363] INFO - email sent to etrufanov@etm.ru
+[2021-08-23 16:59:00,389] INFO - email sent to buh@garant-logistika.ru
+[2021-08-23 16:59:00,407] INFO - email sent to denisov_ea@etm.ru
+[2021-08-23 16:59:00,427] INFO - email sent to zakaz@garant-logistika.ru
+[2021-08-23 16:59:00,446] INFO - email sent to e.ushakova@avantel.ru
+[2021-08-23 16:59:00,464] INFO - email sent to amihaylov@nsk.etm.ru
+[2021-08-23 16:59:00,481] INFO - email sent to kovaleva_jv@etm.ru
+[2021-08-23 16:59:00,497] INFO - email sent to a.kolesnikov@avantel.ru
+[2021-08-23 16:59:00,514] INFO - email sent to edenisov@spb.etm.ru
+[2021-08-23 16:59:00,533] INFO - email sent to sgvbt@etm.ru
+[2021-08-23 16:59:00,551] INFO - email sent to nemtenkova_em@etm.ru
+[2021-08-23 16:59:00,577] INFO - email sent to smirnova_la@etm.ru
+[2021-08-23 16:59:00,603] INFO - email sent to works@spb.avantel.ru
+[2021-08-23 16:59:00,621] INFO - email sent to edenisov@etm.ru
+[2021-08-23 16:59:00,656] INFO - email sent to nmakusheva@etm.ru
+[2021-08-23 16:59:00,677] INFO - email sent to v.valt@avantel.ru
+[2021-08-23 16:59:00,709] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:00,733] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:00,751] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. Обводного канала, 199
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:00,769] INFO - email sent to anri@admiral.ru
+[2021-08-23 16:59:00,786] INFO - email sent to reshke-aleksa@yandex.ru
+[2021-08-23 16:59:00,821] INFO - email sent to ma_ra@mail.ru
+[2021-08-23 16:59:00,854] INFO - email sent to bsmanufaktura@mail.ru
+[2021-08-23 16:59:00,876] INFO - email sent to orlova@mfin.ru
+[2021-08-23 16:59:00,900] INFO - email sent to rznspb@mail.ru
+[2021-08-23 16:59:00,918] INFO - email sent to info@palmiraspb.com
+[2021-08-23 16:59:00,938] INFO - email sent to rmkspb@bk.ru
+[2021-08-23 16:59:00,985] INFO - email sent to print@fabrika4c.ru
+[2021-08-23 16:59:01,329] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:01,365] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Курская, 21
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:01,394] INFO - email sent to anna@art.su
+[2021-08-23 16:59:01,414] INFO - email sent to s@art.su
+[2021-08-23 16:59:01,463] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:01,486] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Промышленная, 38
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:01,616] INFO - email sent to office@aplusdevelopment.ru
+[2021-08-23 16:59:01,651] INFO - email sent to goosen@viamedis.ru
+[2021-08-23 16:59:01,678] INFO - email sent to rt@kuvert.ru
+[2021-08-23 16:59:01,697] INFO - email sent to denisov@ingliya.com
+[2021-08-23 16:59:01,722] INFO - email sent to tsemisheva@aplusdevelopment.ru
+[2021-08-23 16:59:01,742] INFO - email sent to jk@coffeenorth.ru
+[2021-08-23 16:59:01,767] INFO - email sent to admin@aplusdevelopment.ru
+[2021-08-23 16:59:02,930] INFO - email sent to mb@coffeenorth.ru
+[2021-08-23 16:59:02,962] INFO - email sent to audinkan@aplusdevelopment.ru
+[2021-08-23 16:59:02,984] INFO - email sent to ogavyrina@auroradevelopment.ru
+[2021-08-23 16:59:03,007] INFO - email sent to info@dialogshipping.ru
+[2021-08-23 16:59:03,029] INFO - email sent to akr@kuvert.ru
+[2021-08-23 16:59:03,058] INFO - email sent to amolokanov@aplusdevelopment.ru
+[2021-08-23 16:59:03,078] INFO - email sent to esenchenkov@aplusdevelopment.ru
+[2021-08-23 16:59:03,099] INFO - email sent to vsolovev@aplusdevelopment.ru
+[2021-08-23 16:59:03,119] INFO - email sent to npetlyuk@auroradevelopment.ru
+[2021-08-23 16:59:03,140] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:03,179] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Большая Московская, 4б
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:03,206] INFO - email sent to ilkin@smspobeda.ru
+[2021-08-23 16:59:03,342] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:03,358] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. Обводного канала, 229
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:03,380] INFO - email sent to ppanoff@bk.ru
+[2021-08-23 16:59:03,400] INFO - email sent to lenesteit@ya.ru
+[2021-08-23 16:59:03,428] INFO - email sent to mikhail@tropicmix.com
+[2021-08-23 16:59:03,458] INFO - email sent to vyat-ka@yandex.ru
+[2021-08-23 16:59:03,497] INFO - email sent to ivansurkov@gmail.com
+[2021-08-23 16:59:03,522] INFO - email sent to info@promenergoltd.ru
+[2021-08-23 16:59:03,568] INFO - email sent to info@cadl.spb.ru
+[2021-08-23 16:59:03,590] INFO - email sent to tropicmix@tropicmix.com
+[2021-08-23 16:59:03,614] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:03,631] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Корабельная, 6
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:03,648] INFO - email sent to termofit_olga@mail.ru
+[2021-08-23 16:59:03,682] INFO - email sent to vimberg@mail.ru
+[2021-08-23 16:59:03,702] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:05,219] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Тюшина, 11
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:05,241] INFO - email sent to it@sharpeyshop.ru
+[2021-08-23 16:59:05,258] INFO - email sent to buh@sharpeyshop.ru
+[2021-08-23 16:59:05,280] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:06,210] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. Обводного канала, 187
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:06,256] INFO - email sent to shatygin@infracom.ru
+[2021-08-23 16:59:06,274] INFO - email sent to morvic@gmail.com
+[2021-08-23 16:59:06,290] INFO - email sent to cigankova@afina-pet.ru
+[2021-08-23 16:59:06,310] INFO - email sent to gavrilova@infracom.ru
+[2021-08-23 16:59:06,326] INFO - email sent to sa@infracom.ru
+[2021-08-23 16:59:06,343] INFO - email sent to info@rkcopy.ru
+[2021-08-23 16:59:06,362] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:06,379] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Краснопутиловская, 5
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:06,410] INFO - email sent to iigor.yakubovich@teh-system.com
+[2021-08-23 16:59:06,427] INFO - email sent to walkar.spb@gmail.com
+[2021-08-23 16:59:06,444] INFO - email sent to info@teh-system.com
+[2021-08-23 16:59:06,554] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:06,582] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Расстанная, 18
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:06,627] INFO - email sent to 5707590@mail.ru
+[2021-08-23 16:59:06,652] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:06,839] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Трефолева, 1
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:06,857] INFO - email sent to etrufanov@etm.ru
+[2021-08-23 16:59:06,876] INFO - email sent to l.shkodina@silmar-group.com
+[2021-08-23 16:59:06,901] INFO - email sent to buh@minspb.ru
+[2021-08-23 16:59:06,920] INFO - email sent to kirill@silmar.spb.ru
+[2021-08-23 16:59:06,939] INFO - email sent to estarodubcev@etm-res.ru
+[2021-08-23 16:59:06,957] INFO - email sent to svd@canat.spb.ru
+[2021-08-23 16:59:06,976] INFO - email sent to info@etm-res.ru
+[2021-08-23 16:59:06,998] INFO - email sent to kovaleva_jv@etm.ru
+[2021-08-23 16:59:07,021] INFO - email sent to inmainc@mail.ru
+[2021-08-23 16:59:07,047] INFO - email sent to a.trapeznikova@silmar.spb.ru
+[2021-08-23 16:59:07,072] INFO - email sent to sgvbt@etm.ru
+[2021-08-23 16:59:07,097] INFO - email sent to zaomin@mail.wplus.net
+[2021-08-23 16:59:07,125] INFO - email sent to smirnova_la@etm.ru
+[2021-08-23 16:59:07,147] INFO - email sent to edenisov@etm.ru
+[2021-08-23 16:59:07,189] INFO - email sent to nmakusheva@etm.ru
+[2021-08-23 16:59:07,208] INFO - email sent to commerce@hpt.ru
+[2021-08-23 16:59:07,226] INFO - email sent to dillarionov@etm-res.ru
+[2021-08-23 16:59:07,246] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:07,276] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, к-л Межевой, 3
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:07,314] INFO - email sent to severst@nevamt.spb.ru
+[2021-08-23 16:59:07,340] INFO - email sent to odm@nevamt.spb.ru
+[2021-08-23 16:59:07,363] INFO - email sent to vladislav@nevamt.spb.ru
+[2021-08-23 16:59:07,385] INFO - email sent to nataly@nevamt.spb.ru
+[2021-08-23 16:59:07,413] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:07,510] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Дровяная, 6
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:07,528] INFO - email sent to shatygin@infracom.ru
+[2021-08-23 16:59:07,552] INFO - email sent to gavrilova@infracom.ru
+[2021-08-23 16:59:07,579] INFO - email sent to sa@infracom.ru
+[2021-08-23 16:59:07,604] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:07,644] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Марата, 69
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:07,669] INFO - email sent to elkina@unionbox.ru
+[2021-08-23 16:59:07,698] INFO - email sent to glodev@unionbox.ru
+[2021-08-23 16:59:07,719] INFO - email sent to admin@vipsgroup.com
+[2021-08-23 16:59:07,736] INFO - email sent to volkovatv@unionbox.ru
+[2021-08-23 16:59:07,757] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:07,780] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Боровая, 47 
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:07,815] INFO - email sent to snabspb178@gmail.com
+[2021-08-23 16:59:07,834] INFO - email sent to  yu.vahtenko@tc.rennagroup.ru
+[2021-08-23 16:59:07,885] INFO - email sent to rosservis@bk.ru
+[2021-08-23 16:59:07,934] INFO - email sent to yu.vahtenko@tc.rennagroup.ru
+[2021-08-23 16:59:07,978] INFO - email sent to office@nordstroi.ru
+[2021-08-23 16:59:07,998] INFO - email sent to dexter2901@bk.ru
+[2021-08-23 16:59:08,023] INFO - email sent to denis.naftsiger@yandex.rio.ru
+[2021-08-23 16:59:08,042] INFO - email sent to granit-invest@bk.ru
+[2021-08-23 16:59:08,071] INFO - email sent to o.sedov@lco-op.ru
+[2021-08-23 16:59:08,092] INFO - email sent to zk@displ.ru
+[2021-08-23 16:59:08,123] INFO - email sent to alex.stotex@gmail.com
+[2021-08-23 16:59:08,144] INFO - email sent to help@roxy-kids.ru
+[2021-08-23 16:59:08,166] INFO - email sent to info@steadycar.ru
+[2021-08-23 16:59:08,187] INFO - email sent to info@ehs.org.ru
+[2021-08-23 16:59:08,205] INFO - email sent to grigorii.gorbulin@wika.com
+[2021-08-23 16:59:08,262] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:08,302] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Краснопутиловская, 9
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:08,346] INFO - email sent to roman.lutsenko@forsite-company.ru
+[2021-08-23 16:59:08,386] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:08,405] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Стремянная, 7
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:08,463] INFO - email sent to nosarev@print.kella.ru
+[2021-08-23 16:59:08,568] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:08,586] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Нарвский, 22
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:08,614] INFO - email sent to admin@prometeyspb.com
+[2021-08-23 16:59:08,636] INFO - email sent to contact@prometeyspb.com
+[2021-08-23 16:59:08,663] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:08,694] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Социалистическая, 14
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:08,759] INFO - email sent to admin-spb@cdek.ru
+[2021-08-23 16:59:08,808] INFO - email sent to savchenko.a@cdek.ru
+[2021-08-23 16:59:08,835] INFO - email sent to t.taltygin@cdek.ru
+[2021-08-23 16:59:08,857] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:08,893] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, пр-т Невский, 137
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:08,909] INFO - email sent to elena.v.dmitrieva@raiffeisen.ru
+[2021-08-23 16:59:08,933] INFO - email sent to 46698@raiffeisen.ru
+[2021-08-23 16:59:08,972] INFO - email sent to sloktionov@raiffeisen.ru
+[2021-08-23 16:59:08,995] INFO - email sent to galina.nikitina@raiffeisen.ru
+[2021-08-23 16:59:09,018] INFO - email sent to 55408@raiffeisen.ru
+[2021-08-23 16:59:09,038] INFO - email sent to anastasia.smokotina@raiffeisen.ru
+[2021-08-23 16:59:09,055] INFO - email sent to gns@raiffeisen.ru  
+[2021-08-23 16:59:09,073] INFO - email sent to rbru-ag_it_spb@raiffeisen.ru
+[2021-08-23 16:59:09,106] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:09,185] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Промышленная, 6
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:09,228] INFO - email sent to oplata@unistream.com
+[2021-08-23 16:59:09,308] INFO - email sent to i.filatova@unistream.com
+[2021-08-23 16:59:09,336] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:09,362] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, наб. реки Волковки, 7
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:09,397] INFO - email sent to o.v.artamonov@list.ru
+[2021-08-23 16:59:09,422] INFO - email sent to pfr.tatiana@yandex.ru
+[2021-08-23 16:59:09,446] INFO - email sent to central@sitistroj.ru
+[2021-08-23 16:59:09,468] INFO - email sent to horkova@ktc.ru
+[2021-08-23 16:59:09,494] INFO - email sent to sitistroj@list.ru
+[2021-08-23 16:59:09,514] INFO - email sent to kl.sitistroj@mail.ru
+[2021-08-23 16:59:09,529] INFO - email sent to o.artamonov@sitistroj.ru
+[2021-08-23 16:59:09,552] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:09,573] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Курская, 27
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:09,603] INFO - email sent to buh_spb2@muztorg.ru
+[2021-08-23 16:59:09,657] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:09,744] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Расстанная, 2
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:09,783] INFO - email sent to foboss@baltbet.ru
+[2021-08-23 16:59:09,830] INFO - email sent to elena.zhuravleva@ocrv.ru
+[2021-08-23 16:59:09,878] INFO - email sent to svetlana.zakharova@ocrv.ru
+[2021-08-23 16:59:09,899] INFO - email sent to dmitry.imanuilov@ocrv.ru
+[2021-08-23 16:59:09,920] INFO - email sent to it@baltbet.ru
+[2021-08-23 16:59:09,938] INFO - email sent to anna.tutykhina@ocrv.ru
+[2021-08-23 16:59:09,961] INFO - email sent to foboss@mail.ru
+[2021-08-23 16:59:09,990] INFO - email sent to natalia.budkova@colliers.com
+[2021-08-23 16:59:10,009] INFO - email sent to ulia.goenko@ocrv.ru
+[2021-08-23 16:59:10,030] INFO - email sent to wentmaster@mail.ru
+[2021-08-23 16:59:10,050] INFO - email sent to tomsk@baltbet.ru
+[2021-08-23 16:59:10,069] INFO - email sent to nsapozhkova@baltbet.ru
+[2021-08-23 16:59:10,098] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:10,169] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Балтийская, 51
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:10,189] INFO - email sent to bort84@mail.ru
+[2021-08-23 16:59:10,209] INFO - email sent to gp21@mail.ru
+[2021-08-23 16:59:10,238] INFO - email sent to vedernikov@lenst.su
+[2021-08-23 16:59:10,282] INFO - email sent to office@spb-house.ru
+[2021-08-23 16:59:10,299] INFO - email sent to sv_prime@mail.ru
+[2021-08-23 16:59:10,319] INFO - email sent to info@av-automatics.ru
+[2021-08-23 16:59:10,338] INFO - email sent to info.lom@yandex.ru
+[2021-08-23 16:59:10,354] INFO - email sent to buh@av-automatics.ru
+[2021-08-23 16:59:10,372] INFO - email sent to 19761001b@gmail.com
+[2021-08-23 16:59:10,391] INFO - email sent to skarn@skarn-spb.ru
+[2021-08-23 16:59:10,410] INFO - email sent to soldatov@av-automatics.ru
+[2021-08-23 16:59:10,429] INFO - email sent to sna80@ngs.ru
+[2021-08-23 16:59:10,450] INFO - email sent to pkstpr.buh@gmail.com
+[2021-08-23 16:59:10,469] INFO - email sent to mail@bigteks.ru
+[2021-08-23 16:59:10,489] INFO - email sent to 9332444@gmail.com
+[2021-08-23 16:59:10,508] INFO - email sent to support@spb.avantel.ru
+[2021-08-23 16:59:10,698] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>27.08.2021</b> г. в период с <b>23:00</b> до <b>06:00</b> (мск)
+будут проведены планово-профилактические работы.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>420</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ул. Маршала Говорова, 52
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-08-23 16:59:10,717] INFO - email sent to sale@forsite-company.ru
+[2021-08-23 16:59:10,738] INFO - email sent to secretar@bmba-ustluga.com
+[2021-08-23 16:59:10,756] INFO - email sent to korovin@alkotel.ru
+[2021-08-23 16:59:10,772] INFO - email sent to roman.lutsenko@forsite-company.ru
+[2021-08-23 16:59:10,797] INFO - email sent to pristansky.pv@pallet.ru
+[2021-08-23 16:59:10,824] INFO - email sent to buh@ilovemakeup.ru
+[2021-08-23 16:59:10,849] INFO - email sent to info@federalit.ru
+[2021-08-23 16:59:10,869] INFO - email sent to support@spb.avantel.ru
+[2021-08-24 13:18:41,927] INFO - {'10.60.240.19': {'name': 'P.Tinkov7-as1', 'ip': '10.60.240.19', 'host_id': '10815', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'P.Tinkov7-as6_s1, P.Tinkov7-as2, P.Tinkov7-as5_g2, P.Saper79-as1_g1, P.Tinkov7a-as7, UPS', 'alive': 1, 'contracts': {'00431': 'dburimova@property-m.ru, vprokopyuk@aplusdevelopment.ru, iryabchikov@aplusdevelopment.ru, amolokanov@aplusdevelopment.ru, vsolovev@aplusdevelopment.ru'}}}
+[2021-08-24 13:18:42,097] INFO - contract_dict: {'10.60.240.19': {'name': 'P.Tinkov7-as1', 'ip': '10.60.240.19', 'host_id': '10815', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'P.Tinkov7-as6_s1, P.Tinkov7-as2, P.Tinkov7-as5_g2, P.Saper79-as1_g1, P.Tinkov7a-as7, UPS', 'alive': 1, 'contracts': {'00431': 'dburimova@property-m.ru, vprokopyuk@aplusdevelopment.ru, iryabchikov@aplusdevelopment.ru, amolokanov@aplusdevelopment.ru, vsolovev@aplusdevelopment.ru'}, 'hostid': '10815', 'inventory': '1'}}
+[2021-08-25 13:40:16,685] INFO - DEV_ARRR 10.60.245.177 ['10.60.69.26']
+[2021-08-25 13:40:16,877] INFO - DEV_ARRR 10.60.241.208 ['10.60.69.26', '10.60.245.177']
+[2021-08-25 13:40:17,059] INFO - DEV_ARRR 10.60.245.162 ['10.60.69.26', '10.60.245.177', '10.60.241.208']
+[2021-08-25 13:40:19,573] INFO - DEV_ARRR 10.60.242.5 ['10.60.241.208', '10.60.245.162']
+[2021-08-25 13:40:19,844] INFO - DEV_ARRR 10.60.242.6 ['10.60.241.208', '10.60.245.162', '10.60.242.5']
+[2021-08-25 13:40:20,038] INFO - DEV_ARRR 10.60.242.7 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6']
+[2021-08-25 13:40:20,233] INFO - DEV_ARRR 10.60.245.164 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7']
+[2021-08-25 13:40:20,416] INFO - DEV_ARRR 10.60.242.8 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164']
+[2021-08-25 13:40:20,661] INFO - DEV_ARRR 10.60.242.11 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8']
+[2021-08-25 13:40:20,869] INFO - DEV_ARRR 10.60.242.14 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11']
+[2021-08-25 13:40:21,066] INFO - DEV_ARRR 10.60.241.200 ['10.60.241.208', '10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14']
+[2021-08-25 13:40:23,056] INFO - DEV_ARRR 10.60.254.68 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200']
+[2021-08-25 13:40:23,266] INFO - DEV_ARRR 10.60.254.85 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68']
+[2021-08-25 13:40:23,476] INFO - DEV_ARRR 10.60.241.207 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85']
+[2021-08-25 13:40:23,685] INFO - DEV_ARRR 10.60.242.3 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207']
+[2021-08-25 13:40:23,880] INFO - DEV_ARRR 10.60.254.79 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3']
+[2021-08-25 13:40:24,068] INFO - DEV_ARRR 10.60.254.69 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79']
+[2021-08-25 13:40:24,262] INFO - DEV_ARRR 10.60.254.74 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69']
+[2021-08-25 13:40:24,454] INFO - DEV_ARRR 10.60.254.77 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74']
+[2021-08-25 13:40:24,649] INFO - DEV_ARRR 10.60.254.82 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77']
+[2021-08-25 13:40:24,846] INFO - DEV_ARRR 10.60.245.179 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82']
+[2021-08-25 13:40:25,051] INFO - DEV_ARRR 10.60.241.214 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179']
+[2021-08-25 13:40:25,273] INFO - DEV_ARRR 10.60.254.80 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214']
+[2021-08-25 13:40:25,529] INFO - DEV_ARRR 10.60.242.12 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80']
+[2021-08-25 13:40:25,730] INFO - DEV_ARRR 10.60.254.88 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12']
+[2021-08-25 13:40:25,925] INFO - DEV_ARRR 10.60.241.205 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88']
+[2021-08-25 13:40:26,120] INFO - DEV_ARRR 10.60.254.93 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205']
+[2021-08-25 13:40:26,318] INFO - DEV_ARRR 10.60.245.167 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93']
+[2021-08-25 13:40:26,530] INFO - DEV_ARRR 10.60.241.221 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167']
+[2021-08-25 13:40:26,725] INFO - DEV_ARRR 10.60.254.72 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221']
+[2021-08-25 13:40:26,913] INFO - DEV_ARRR 10.60.241.195 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72']
+[2021-08-25 13:40:27,102] INFO - DEV_ARRR 10.60.242.9 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195']
+[2021-08-25 13:40:27,308] INFO - DEV_ARRR 10.60.241.204 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9']
+[2021-08-25 13:40:27,511] INFO - DEV_ARRR 10.60.254.90 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204']
+[2021-08-25 13:40:27,709] INFO - DEV_ARRR 10.60.241.206 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90']
+[2021-08-25 13:40:27,913] INFO - DEV_ARRR 10.60.245.171 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206']
+[2021-08-25 13:40:28,102] INFO - DEV_ARRR 10.60.241.222 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171']
+[2021-08-25 13:40:28,372] INFO - DEV_ARRR 10.60.245.173 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222']
+[2021-08-25 13:40:28,562] INFO - DEV_ARRR 10.60.241.216 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173']
+[2021-08-25 13:40:28,748] INFO - DEV_ARRR 10.60.241.219 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216']
+[2021-08-25 13:40:28,994] INFO - DEV_ARRR 10.60.254.78 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219']
+[2021-08-25 13:40:29,187] INFO - DEV_ARRR 10.60.254.91 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78']
+[2021-08-25 13:40:29,387] INFO - DEV_ARRR 10.60.241.194 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91']
+[2021-08-25 13:40:29,582] INFO - DEV_ARRR 10.60.245.170 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194']
+[2021-08-25 13:40:29,793] INFO - DEV_ARRR 10.60.241.209 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170']
+[2021-08-25 13:40:29,982] INFO - DEV_ARRR 10.60.245.166 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209']
+[2021-08-25 13:40:30,180] INFO - DEV_ARRR 10.60.245.172 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166']
+[2021-08-25 13:40:31,486] INFO - DEV_ARRR 10.60.245.176 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172']
+[2021-08-25 13:40:31,674] INFO - DEV_ARRR 10.60.245.165 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176']
+[2021-08-25 13:40:31,855] INFO - DEV_ARRR 10.60.254.71 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165']
+[2021-08-25 13:40:33,157] INFO - DEV_ARRR 10.60.245.178 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71']
+[2021-08-25 13:40:35,784] INFO - DEV_ARRR 10.60.254.70 ['10.60.245.162', '10.60.242.5', '10.60.242.6', '10.60.242.7', '10.60.245.164', '10.60.242.8', '10.60.242.11', '10.60.242.14', '10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178']
+[2021-08-25 13:40:45,466] INFO - DEV_ARRR 10.60.241.203 ['10.60.241.200', '10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70']
+[2021-08-25 13:40:47,170] INFO - DEV_ARRR 10.60.254.76 ['10.60.254.68', '10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203']
+[2021-08-25 13:40:48,823] INFO - DEV_ARRR 10.60.254.92 ['10.60.254.85', '10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76']
+[2021-08-25 13:40:51,678] INFO - DEV_ARRR 10.60.241.202 ['10.60.241.207', '10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92']
+[2021-08-25 13:41:00,241] INFO - DEV_ARRR 10.60.242.2 ['10.60.242.3', '10.60.254.79', '10.60.254.69', '10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202']
+[2021-08-25 13:41:03,079] INFO - DEV_ARRR 10.60.254.81 ['10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2']
+[2021-08-25 13:41:03,304] INFO - DEV_ARRR 10.60.241.197 ['10.60.254.74', '10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81']
+[2021-08-25 13:41:06,149] INFO - DEV_ARRR 10.60.254.66 ['10.60.254.77', '10.60.254.82', '10.60.245.179', '10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197']
+[2021-08-25 13:41:20,078] INFO - DEV_ARRR 10.60.241.199 ['10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66']
+[2021-08-25 13:41:20,259] INFO - DEV_ARRR 10.60.241.211 ['10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199']
+[2021-08-25 13:41:20,444] INFO - DEV_ARRR 10.60.245.175 ['10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211']
+[2021-08-25 13:41:20,615] INFO - DEV_ARRR 10.60.241.210 ['10.60.241.214', '10.60.254.80', '10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175']
+[2021-08-25 13:41:21,693] INFO - DEV_ARRR 10.60.242.13 ['10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210']
+[2021-08-25 13:41:21,878] INFO - DEV_ARRR 10.60.242.15 ['10.60.242.12', '10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13']
+[2021-08-25 13:41:23,835] INFO - DEV_ARRR 10.60.241.198 ['10.60.254.88', '10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15']
+[2021-08-25 13:41:24,588] INFO - DEV_ARRR 10.60.81.35 ['10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198']
+[2021-08-25 13:41:24,804] INFO - DEV_ARRR 10.60.241.215 ['10.60.241.205', '10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35']
+[2021-08-25 13:41:29,083] INFO - DEV_ARRR 10.60.254.67 ['10.60.254.93', '10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215']
+[2021-08-25 13:41:35,790] INFO - DEV_ARRR 10.60.245.168 ['10.60.245.167', '10.60.241.221', '10.60.254.72', '10.60.241.195', '10.60.242.9', '10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67']
+[2021-08-25 13:41:43,913] INFO - DEV_ARRR 10.60.241.218 ['10.60.241.204', '10.60.254.90', '10.60.241.206', '10.60.245.171', '10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168']
+[2021-08-25 13:41:47,253] INFO - DEV_ARRR 10.60.241.212 ['10.60.241.222', '10.60.245.173', '10.60.241.216', '10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218']
+[2021-08-25 13:41:48,457] INFO - DEV_ARRR 10.60.241.217 ['10.60.241.219', '10.60.254.78', '10.60.254.91', '10.60.241.194', '10.60.245.170', '10.60.241.209', '10.60.245.166', '10.60.245.172', '10.60.245.176', '10.60.245.165', '10.60.254.71', '10.60.245.178', '10.60.254.70', '10.60.241.203', '10.60.254.76', '10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218', '10.60.241.212']
+[2021-08-25 13:42:05,529] INFO - DEV_ARRR 10.60.254.89 ['10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218', '10.60.241.212', '10.60.241.217']
+[2021-08-25 13:42:05,722] INFO - DEV_ARRR 10.60.254.87 ['10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218', '10.60.241.212', '10.60.241.217', '10.60.254.89']
+[2021-08-25 13:42:05,918] INFO - DEV_ARRR 10.60.254.84 ['10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218', '10.60.241.212', '10.60.241.217', '10.60.254.89', '10.60.254.87']
+[2021-08-25 13:42:06,116] INFO - DEV_ARRR 10.60.254.94 ['10.60.254.92', '10.60.241.202', '10.60.242.2', '10.60.254.81', '10.60.241.197', '10.60.254.66', '10.60.241.199', '10.60.241.211', '10.60.245.175', '10.60.241.210', '10.60.242.13', '10.60.242.15', '10.60.241.198', '10.60.81.35', '10.60.241.215', '10.60.254.67', '10.60.245.168', '10.60.241.218', '10.60.241.212', '10.60.241.217', '10.60.254.89', '10.60.254.87', '10.60.254.84']
+[2021-08-25 13:42:55,456] INFO - {'10.60.69.26': {'name': 'bmor18-cs1', 'ip': '10.60.69.26', 'host_id': '11900', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'TKS-Severo-Zapad, Rostelecom, Piter-IX, ReTN, Rascom, TTK, Data-IX, Pirog17-bg1 xe-0/1/1, UP_BMor18-cr1_et-0/0/0, SKAT-40G-Right', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.177': {'name': 'BMor18-ds4', 'ip': '10.60.245.177', 'host_id': '11917', 'address': '', 'uplink': 'bmor18-cs1', 'cont_num': 1, 'unrecognized': '899956_AvanMSK-Beliton, BM18-WiFi, SKAT-eth0, SMG-Gazprom, L2-Gazprom-10Krasnoarm22, SMG2016, Quantum (ptl.ru), Beeline, ISP_RedStar_Trunk, ISP_ERTelecom/Interzet/Westcall_Trunk, ChaykaTelecom-QnQ-to-MSK, IPTV-Mediaoperator, SumTel, Teleport, ISP_Megafon_Trunk, Comlink Telecom (cmk.ru), ===SFP-tx1310_3km===, ===SFP-tx1310_20km===', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.208': {'name': 'BMor18-ds3', 'ip': '10.60.241.208', 'host_id': '11797', 'address': '', 'uplink': 'bmor18-cs1', 'cont_num': 1, 'unrecognized': 'Prometey, UPS(10.60.245.163), SDH, AK-05bz10_Comfortel, BetaTelecom, SKAT-iLo, V1133_UFSB_L2_989133, SP-Line, Kosaya16-as1 #875857', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.162': {'name': 'BMor18-ds2', 'ip': '10.60.245.162', 'host_id': '10440', 'address': '', 'uplink': 'bmor18-cs1', 'cont_num': 4, 'unrecognized': 'Gazprom-Telecom, Telecom5, ===SFP-tx1310===', 'alive': 1, 'contracts': {'00386': 'yaroslav1972@gmail.com, info@pion.su, marina@pion.su', '00334': 'sveta2015-tdg@mail.ru, allatdg011@mail.ru', '0199-17': 'i.glazunov@edinros.ru, an.kornev@spb.er.ru, a.chudinov@edinros.ru', '0003-17': '6321752@mail.ru, admin@ekaterinahotel.com, 315-51-15@inbox.ru, info@mariotrattoria.ru'}}, '10.60.242.5': {'name': 'Liteyniy22-as1', 'ip': '10.60.242.5', 'host_id': '11829', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 3, 'unrecognized': '', 'alive': 1, 'contracts': {'0382-20': 'timofeyt@xcritical.software, tatyana@123service.ru, svetlanas@xcritical.software', '0070-21': 'lyusinv@yandex.ru, luisinv@yandex.ru', '0366-21': 'archipes2017@mail.ru'}}, '10.60.242.6': {'name': 'MMor8-as1', 'ip': '10.60.242.6', 'host_id': '11848', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0285-20': 'admin@minjust47.ru'}}, '10.60.242.7': {'name': 'Moyka26-as1', 'ip': '10.60.242.7', 'host_id': '11904', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com'}}, '10.60.245.164': {'name': 'Italjan11-as1', 'ip': '10.60.245.164', 'host_id': '11909', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0393-20': 'tell.anatoly@gmail.com'}}, '10.60.242.8': {'name': 'AleksGrin1-as1', 'ip': '10.60.242.8', 'host_id': '11942', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0372-20': 'levchenko@sevensuns.ru'}}, '10.60.242.11': {'name': 'MMor23-as1', 'ip': '10.60.242.11', 'host_id': '12025', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '1_NNGS_V1719, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.242.14': {'name': 'Liteyniy46-as1', 'ip': '10.60.242.14', 'host_id': '12086', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '1_970678_AvanNSK, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.200': {'name': 'Shkiper12a-as1', 'ip': '10.60.241.200', 'host_id': '11981', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.68': {'name': 'Moyka18-as1', 'ip': '10.60.254.68', 'host_id': '10680', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'VoIP SPA8000', 'alive': 1, 'contracts': {'0085-15': '858416@mail.ru, mironova@farlows.ru'}}, '10.60.254.85': {'name': 'Moyka85-as1', 'ip': '10.60.254.85', 'host_id': '10690', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0111-15': 'argusbuh@argus-spectr.ru, dmitry.ivanov@argus-spectr.ru'}}, '10.60.241.207': {'name': '7LiniyaVO44-as1', 'ip': '10.60.241.207', 'host_id': '10828', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'OFF(0230-19)', 'alive': 1, 'contracts': {'0006-18': '9603000@bk.ru', '0330-20': 'lu.fit.ru@mail.ru'}}, '10.60.242.3': {'name': 'Konstantin11-as1', 'ip': '10.60.242.3', 'host_id': '11779', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0237-17': 'o.k.1275@mail.ru, sergey@torrowtech.com, 7436357@mail.ru, bills@torrowtech.com', '0208-18': '9853554@mail.ru', '0010-21': 'timur@magentaco.ru', '0118-21': 'pvz.spb247@gmal.com, pvz.spb247@gmail.com', '0124-21': 'stecospb@mail.ru', '0033-20': 'info@uflor.ru', '0085-21': 'nic@realweb.ru, doc@realweb.ru'}}, '10.60.254.79': {'name': 'Konnogvard4-as2', 'ip': '10.60.254.79', 'host_id': '11509', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179_NNGS(V1022)', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.69': {'name': 'MalSadovaya3-as1', 'ip': '10.60.254.69', 'host_id': '10706', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0297-17': 'n.karaenkina@mail.ru, bv@c-mit.ru, opening_01@mail.ru'}}, '10.60.254.74': {'name': 'Moyka36-as1', 'ip': '10.60.254.74', 'host_id': '10682', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'RFB_Moyki36-hs4', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.77': {'name': 'Moyka11-as1', 'ip': '10.60.254.77', 'host_id': '10678', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'OFF_00674_Manskiy, UPS', 'alive': 1, 'contracts': {'00606': 'moika-11@rambler.ru', '0247-16': 'a.grigoreva@piter-trust.ru, v.panova@piter-trust.ru, a.kozin@advikon.ru'}}, '10.60.254.82': {'name': 'Kovensk5-as1', 'ip': '10.60.254.82', 'host_id': '10571', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0074-15': 'nshakshina@oct-clinicaltrials.com, anikolaev@dm-matrix.com, rimanov@oct-clinicaltrials.com, nkorotaeva@oct-clinicaltrials.com, asamkina@oct-clinicaltrials.com'}}, '10.60.245.179': {'name': 'Chernysh17A-as1', 'ip': '10.60.245.179', 'host_id': '12125', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}}, '10.60.241.214': {'name': 'Ryleeva11-as0', 'ip': '10.60.241.214', 'host_id': '11433', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.80': {'name': 'Moiseenko28-as1', 'ip': '10.60.254.80', 'host_id': '11510', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'V1133_UFSB_L2_989133, 0272-16_Morskoy_Registr', 'alive': 1, 'contracts': {'': ''}}, '10.60.242.12': {'name': 'Shpaler52-as1', 'ip': '10.60.242.12', 'host_id': '12058', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.88': {'name': 'Million10-as1', 'ip': '10.60.254.88', 'host_id': '10654', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com'}}, '10.60.241.205': {'name': 'Degtyar11-as1', 'ip': '10.60.241.205', 'host_id': '10488', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 3, 'unrecognized': '16-03_179_NNGS(L2_1001), 16-03_179_NNGS(L2_1006), Degtyarn11-ups1(10.60.241.213)', 'alive': 1, 'contracts': {'0224-18': 'alexey.shibanov@geropharm.com, dmitriy.vodennikov@geropharm.com, admin@geropharm.com', '0066-21': 'matytsin@omtobacco.ru, maevskiy@omtobacco.ru, butorina@omtobacco.ru, antonenko@sashiko.org', '0007-19': 'info@siteintop.spb.ru'}}, '10.60.254.93': {'name': 'Shpaler2-as1', 'ip': '10.60.254.93', 'host_id': '10786', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'OFF(0043-20), OFF(0198-17)', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.167': {'name': 'Kiroch9-as1', 'ip': '10.60.245.167', 'host_id': '10553', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 6, 'unrecognized': 'OFF(0173-18)', 'alive': 1, 'contracts': {'0273-20': 'info.re-centr@mail.ru', '0342-21': 'i.burdina@sferallc.spb.ru', '0017-17': ' info@ctrust.org, alex@ctrust.org', '0375-20': 'daryassigma@gmail.com, official@sigmascouting.com', '0077-21': 'afanasev.estate@gmail.com', '0288-21': 'rianmed16@gmail.com'}}, '10.60.241.221': {'name': '8sovet31-as1', 'ip': '10.60.241.221', 'host_id': '10879', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'MSK_L2_V0873, MSK_L2_3037(QnQ_Tekon), MSK_Tekona_Inet', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.72': {'name': 'Nevsk22-as1', 'ip': '10.60.254.72', 'host_id': '10900', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0303-18': 'm.solomatnikov@gwd.ru, pea@gwd.ru'}}, '10.60.241.195': {'name': '9Sovet2-as1', 'ip': '10.60.241.195', 'host_id': '10417', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'etrufanov@etm.ru, kovaleva_jv@etm.ru, sgvbt@etm.ru, smirnova_la@etm.ru, edenisov@etm.ru, nmakusheva@etm.ru'}}, '10.60.242.9': {'name': 'BPetrograd76-as1', 'ip': '10.60.242.9', 'host_id': '11973', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0078-21': 'info@hr-profi.ru, kuznetsova@hr-profi.ru'}}, '10.60.241.204': {'name': 'MKonyshen1k3-as1', 'ip': '10.60.241.204', 'host_id': '10622', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0403-19': 'a.vasilevskiy@etpgpb.ru'}}, '10.60.254.90': {'name': 'Moyka15-as1', 'ip': '10.60.254.90', 'host_id': '11511', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'RMRS', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.206': {'name': 'Million8-as1', 'ip': '10.60.241.206', 'host_id': '10655', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00497': 'titov@78stroy.ru'}}, '10.60.245.171': {'name': 'Kazan37-as1', 'ip': '10.60.245.171', 'host_id': '11512', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0086-19': 'info@ilove-sport.ru, buh@ilove-sport.ru, op@ilove-sport.ru'}}, '10.60.241.222': {'name': 'Yakub24-as1', 'ip': '10.60.241.222', 'host_id': '10851', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179(VLAN1008), 16-03/179(VLAN1007)', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.173': {'name': 'Furshtat10-as1', 'ip': '10.60.245.173', 'host_id': '11405', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_790258_avanmsk, 2_790258_avanmsk, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.216': {'name': 'Pochtamt4-as1', 'ip': '10.60.241.216', 'host_id': '10744', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'none, Mediaoperator-IPTV', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.219': {'name': 'Moyka74-as1', 'ip': '10.60.241.219', 'host_id': '10689', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16/03-79_NNGS(V1015-200m), 16/03-79_NNGS(V1014-300m), 16/03-79_NNGS(V1016-380m), UPS_Moyka74-ups1', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.78': {'name': 'Moyka61-as1', 'ip': '10.60.254.78', 'host_id': '10931', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179_NNGS(V1803), Bonch-IT', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.91': {'name': 'Artiller1-as1', 'ip': '10.60.254.91', 'host_id': '10432', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0030-18': 'oleg.zinkovsky@infotecs.ru, aleksey.balebin@infotecs.ru, acc-tom@infotecs.ru, mikhail.prodma@infotecs.ru, dyubkinmn@infotecs.ru'}}, '10.60.241.194': {'name': 'Nevsk10-as1', 'ip': '10.60.241.194', 'host_id': '11513', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0295-19': 'alexander.ulanov@perfectart.com, roman.kharevsky@perfectart.com, dmitry.ganin@perfectart.com', '0352-21': 'm.sedyh@electro.cars'}}, '10.60.245.170': {'name': 'Vosstan8-as1', 'ip': '10.60.245.170', 'host_id': '11514', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0058-19': 'igors@chipdip.ru'}}, '10.60.241.209': {'name': 'MalyiPetSt5-as1', 'ip': '10.60.241.209', 'host_id': '10728', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0186-16': 'nsemenov@a24-team.ru, finance@a24-team.ru'}}, '10.60.245.166': {'name': 'Efimova4-as1', 'ip': '10.60.245.166', 'host_id': '10494', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_HotSpot, 2_L3VPN-3731, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.172': {'name': 'Chaikov26-as1', 'ip': '10.60.245.172', 'host_id': '11318', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port1, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.176': {'name': 'Anglisk-nab70-as1', 'ip': '10.60.245.176', 'host_id': '11473', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_NNGS_1025, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.165': {'name': 'Kiroch24-as1', 'ip': '10.60.245.165', 'host_id': '10552', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1-HotSpot, Port2, 3-L3VPN-V3737, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.71': {'name': 'Srednij48-27-as1', 'ip': '10.60.254.71', 'host_id': '11636', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0067-20': 'etimofeev@veronica.ru'}}, '10.60.245.178': {'name': 'Korpusnaja12-as1', 'ip': '10.60.245.178', 'host_id': '11935', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0290-18': 'vladimir@computer-spb.ru, it@microt.ru, buh1@microt.ru, buh3@microt.ru, secretary@microt.ru', '0006-21': 'ilseral@ya.ru, info@tehnoavtomatika.com'}}, '10.60.254.70': {'name': 'Odoevsk5-as1', 'ip': '10.60.254.70', 'host_id': '11940', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'Askon-IPv6-TEST', 'alive': 1, 'contracts': {'0042-18': 'soloveva_ea@ascon.ru, to@ascon.ru, karnyushin@ascon.ru, chekalin_as@ascon.ru', '0019-17': 'karnyushin@ascon.ru'}}, '10.60.241.203': {'name': 'Shkiper12a-as2', 'ip': '10.60.241.203', 'host_id': '11993', 'address': '', 'uplink': 'Shkiper12a-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0105-21': 'nekratov_bn@baltchemc.ru, iglenkov_in@baltchemc.ru'}}, '10.60.254.76': {'name': 'Moyka18-as2', 'ip': '10.60.254.76', 'host_id': '10681', 'address': '', 'uplink': 'Moyka18-as1', 'cont_num': 1, 'unrecognized': 'no', 'alive': 1, 'contracts': {'00382': 'mark@3s-it.ru, pay@3s-it.ru, buh@3s-it.ru, sshulpin@gmail.com'}}, '10.60.254.92': {'name': 'Grivcova4-as1', 'ip': '10.60.254.92', 'host_id': '11583', 'address': '', 'uplink': 'Moyka85-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.202': {'name': '7LiniyaVO44-as2', 'ip': '10.60.241.202', 'host_id': '10829', 'address': '', 'uplink': '7LiniyaVO44-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0082-21': 'sarukhanov@tsm-msk.ru, 79675917587@yandex.ru', '0019-17': 'karnyushin@ascon.ru'}}, '10.60.242.2': {'name': 'Konstantin11-as3', 'ip': '10.60.242.2', 'host_id': '11507', 'address': '', 'uplink': 'Konstantin11-as1', 'cont_num': 1, 'unrecognized': 'Konstantin11-as2', 'alive': 1, 'contracts': {'0130-21': 'pbu_2004@mail.ru, tsrner-pp@videofor.ru'}}, '10.60.254.81': {'name': 'Moyka36-as6', 'ip': '10.60.254.81', 'host_id': '10687', 'address': '', 'uplink': 'Moyka36-as1', 'cont_num': 1, 'unrecognized': 'RFB_Moyki36-hs3, RFB_Moyki36-hs1(MC), RFB_Moyki36-hs2, IPTV_Raiffeisenbank, TEST_L3VPN_RFB, L3VPN_Raiffeisenbank', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.197': {'name': 'Moyka36-as2', 'ip': '10.60.241.197', 'host_id': '10683', 'address': '', 'uplink': 'Moyka36-as1', 'cont_num': 1, 'unrecognized': 'Mediaoperator, Raiffayzenbank Kanal to CB, Raiffayzenbank L3VPN, Mediaoperator', 'alive': 1, 'contracts': {'0018-15': 'elena.v.dmitrieva@raiffeisen.ru, 46698@raiffeisen.ru, sloktionov@raiffeisen.ru, 55408@raiffeisen.ru, anastasia.smokotina@raiffeisen.ru, gns@raiffeisen.ru  , galina.nikitina@raiffeisen.ru, rbru-ag_it_spb@raiffeisen.ru'}}, '10.60.254.66': {'name': 'Moyka11-as2', 'ip': '10.60.254.66', 'host_id': '10679', 'address': '', 'uplink': 'Moyka11-as1', 'cont_num': 3, 'unrecognized': 'OFF(0153-17)', 'alive': 1, 'contracts': {'00606': 'moika-11@rambler.ru', '0247-16': 'a.grigoreva@piter-trust.ru, v.panova@piter-trust.ru, a.kozin@advikon.ru', '0372-19': 'info@malashin.spb.ru, vladimirspb@me.com'}}, '10.60.241.199': {'name': 'Ryleeva11-as2', 'ip': '10.60.241.199', 'host_id': '10774', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0086-18': 'kristina@eid.spb.ru, lihanova@eid.spb.ru'}}, '10.60.241.211': {'name': 'Ryleeva11-as3', 'ip': '10.60.241.211', 'host_id': '10775', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 2, 'unrecognized': 'OFF(0090-19)', 'alive': 1, 'contracts': {'0145-18': 'maozet@mail.ru, blackstone@securitygroup.online', '0149-17': 'vb@arhmc.ru, adm@arhmc.ru'}}, '10.60.245.175': {'name': 'Ryleeva11-as4', 'ip': '10.60.245.175', 'host_id': '11438', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': '425-19_PozitivTe, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.210': {'name': 'Ryleeva11-as1', 'ip': '10.60.241.210', 'host_id': '10773', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': 'SPA122-10.60.68.10, MC, Ryleeva11-ups1', 'alive': 1, 'contracts': {'0149-17': 'vb@arhmc.ru, adm@arhmc.ru'}}, '10.60.242.13': {'name': 'Shpaler52-as2', 'ip': '10.60.242.13', 'host_id': '12059', 'address': '', 'uplink': 'Shpaler52-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0233-21': 'sblenstroy@gmail.com'}}, '10.60.242.15': {'name': 'Shpaler52-as3', 'ip': '10.60.242.15', 'host_id': '12117', 'address': '', 'uplink': 'Shpaler52-as1', 'cont_num': 1, 'unrecognized': 'V0002_MGMT, Mikrotik-Petergof, IDRAC-SERV1, PROXMOX_NODE, SERLES, SERV2, SERV3, SERVERM, SERV9, SERV9-2, RS3, DSO1, DSO2, Cisco-3925-gi0/1, Cisco-3925-gi0/2', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.198': {'name': 'Million4-as1', 'ip': '10.60.241.198', 'host_id': '10429', 'address': '', 'uplink': 'Million10-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com', '0212-19': '9463232@mail.ru'}}, '10.60.81.35': {'name': 'Degtyar11-as3', 'ip': '10.60.81.35', 'host_id': '11453', 'address': '', 'uplink': 'Degtyar11-as1', 'cont_num': 1, 'unrecognized': 'Agrikole_L2', 'alive': 1, 'contracts': {'0101-19': 'konsau1@yandex.ru'}}, '10.60.241.215': {'name': 'Degtyar11-as4', 'ip': '10.60.241.215', 'host_id': '10490', 'address': '', 'uplink': 'Degtyar11-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0171-18': 'maia.kabanova@quehenberger.ru, infostp@quehenberger.ru, nastya.vorobieva@quehenberger.ru, boris@quehenberger.ru, infosib@quehenberger.ru'}}, '10.60.254.67': {'name': 'Shpaler2-as2', 'ip': '10.60.254.67', 'host_id': '12074', 'address': '', 'uplink': 'Shpaler2-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0260-21': 've@estp.ru'}}, '10.60.245.168': {'name': 'Kiroch9-as2', 'ip': '10.60.245.168', 'host_id': '10554', 'address': '', 'uplink': 'Kiroch9-as1', 'cont_num': 3, 'unrecognized': 'OFF(0296-17), OFF(0029-20), BAD', 'alive': 1, 'contracts': {'0017-17': ' info@ctrust.org, alex@ctrust.org', '0228-17': 'verynchikmama@yandex.ru, 28march89@mail.ru, lingerie_by_victory@gmail.com', '0013-21': 'kirsanpavel@yandex.ru'}}, '10.60.241.218': {'name': 'MKonyshen1k3-as2', 'ip': '10.60.241.218', 'host_id': '10878', 'address': '', 'uplink': 'MKonyshen1k3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0012-19': 'wss.russia.finance@wilhelm-sen.com, wss.russia.finance@wilhelmsen.com'}}, '10.60.241.212': {'name': 'Yakub24-as2', 'ip': '10.60.241.212', 'host_id': '11948', 'address': '', 'uplink': 'Yakub24-as1', 'cont_num': 1, 'unrecognized': '1_16-03/179_NNGS, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.217': {'name': 'Moyka74-as2', 'ip': '10.60.241.217', 'host_id': '10860', 'address': '', 'uplink': 'Moyka74-as1', 'cont_num': 1, 'unrecognized': '16/03-79_NNGS_L2(VLAN1017), 16/03-79_NNGS_L2(VLAN1018)', 'alive': 1, 'contracts': {'': ''}}, '10.60.254.89': {'name': 'Grivcova4-as2', 'ip': '10.60.254.89', 'host_id': '10527', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0114-15': 'yandimirov@slaviabank.ru, petuhov@slaviabank.ru, stanovova@slaviabank.ru'}}, '10.60.254.87': {'name': 'Grivcova4-as3', 'ip': '10.60.254.87', 'host_id': '11584', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0317-19': 'ksazonov@tradingview.com'}}, '10.60.254.84': {'name': 'Grivcova4-as4', 'ip': '10.60.254.84', 'host_id': '12015', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}}, '10.60.254.94': {'name': 'Grivcova4-as5', 'ip': '10.60.254.94', 'host_id': '12035', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '1_16-03/179_NNGS, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}}}
+[2021-08-25 13:42:57,812] INFO - contract_dict: {'10.60.69.26': {'name': 'bmor18-cs1', 'ip': '10.60.69.26', 'host_id': '11900', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'TKS-Severo-Zapad, Rostelecom, Piter-IX, ReTN, Rascom, TTK, Data-IX, Pirog17-bg1 xe-0/1/1, UP_BMor18-cr1_et-0/0/0, SKAT-40G-Right', 'alive': 1, 'contracts': {'': ''}}, '10.60.245.177': {'name': 'BMor18-ds4', 'ip': '10.60.245.177', 'host_id': '11917', 'address': '', 'uplink': 'bmor18-cs1', 'cont_num': 1, 'unrecognized': '899956_AvanMSK-Beliton, BM18-WiFi, SKAT-eth0, SMG-Gazprom, L2-Gazprom-10Krasnoarm22, SMG2016, Quantum (ptl.ru), Beeline, ISP_RedStar_Trunk, ISP_ERTelecom/Interzet/Westcall_Trunk, ChaykaTelecom-QnQ-to-MSK, IPTV-Mediaoperator, SumTel, Teleport, ISP_Megafon_Trunk, Comlink Telecom (cmk.ru), ===SFP-tx1310_3km===, ===SFP-tx1310_20km===', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11917', 'inventory': '1'}, '10.60.241.208': {'name': 'BMor18-ds3', 'ip': '10.60.241.208', 'host_id': '11797', 'address': 'г. Санкт-Петербург, ул. Большая Морская, 18', 'uplink': 'bmor18-cs1', 'cont_num': 1, 'unrecognized': 'Prometey, UPS(10.60.245.163), SDH, AK-05bz10_Comfortel, BetaTelecom, SKAT-iLo, V1133_UFSB_L2_989133, SP-Line, Kosaya16-as1 #875857', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11797', 'inventory': '1'}, '10.60.245.162': {'name': 'BMor18-ds2', 'ip': '10.60.245.162', 'host_id': '10440', 'address': 'г. Санкт-Петербург, ул. Большая Морская, 18', 'uplink': 'bmor18-cs1', 'cont_num': 4, 'unrecognized': 'Gazprom-Telecom, Telecom5, ===SFP-tx1310===', 'alive': 1, 'contracts': {'00386': 'yaroslav1972@gmail.com, info@pion.su, marina@pion.su', '00334': 'sveta2015-tdg@mail.ru, allatdg011@mail.ru', '0199-17': 'i.glazunov@edinros.ru, an.kornev@spb.er.ru, a.chudinov@edinros.ru', '0003-17': '6321752@mail.ru, admin@ekaterinahotel.com, 315-51-15@inbox.ru, info@mariotrattoria.ru'}, 'hostid': '10440', 'inventory': '1'}, '10.60.242.5': {'name': 'Liteyniy22-as1', 'ip': '10.60.242.5', 'host_id': '11829', 'address': 'г. Санкт-Петербург, пр-т Литейный, 22', 'uplink': 'BMor18-ds3', 'cont_num': 3, 'unrecognized': '', 'alive': 1, 'contracts': {'0382-20': 'timofeyt@xcritical.software, tatyana@123service.ru, svetlanas@xcritical.software', '0070-21': 'lyusinv@yandex.ru, luisinv@yandex.ru', '0366-21': 'archipes2017@mail.ru'}, 'hostid': '11829', 'inventory': '1'}, '10.60.242.6': {'name': 'MMor8-as1', 'ip': '10.60.242.6', 'host_id': '11848', 'address': 'г. Санкт-Петербург, ул. Малая Морская, 8', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0285-20': 'admin@minjust47.ru'}, 'hostid': '11848', 'inventory': '1'}, '10.60.242.7': {'name': 'Moyka26-as1', 'ip': '10.60.242.7', 'host_id': '11904', 'address': 'г. Санкт-Петербург, наб. реки Мойки, 26', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com'}, 'hostid': '11904', 'inventory': '1'}, '10.60.245.164': {'name': 'Italjan11-as1', 'ip': '10.60.245.164', 'host_id': '11909', 'address': 'г. Санкт-Петербург, ул. Итальянская, 11', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0393-20': 'tell.anatoly@gmail.com'}, 'hostid': '11909', 'inventory': '1'}, '10.60.242.8': {'name': 'AleksGrin1-as1', 'ip': '10.60.242.8', 'host_id': '11942', 'address': 'г. Санкт-Петербург, б. Александра Грина, 1', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0372-20': 'levchenko@sevensuns.ru'}, 'hostid': '11942', 'inventory': '1'}, '10.60.242.11': {'name': 'MMor23-as1', 'ip': '10.60.242.11', 'host_id': '12025', 'address': 'г. Санкт-Петербург, ул. Малая Морская, 23', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '1_NNGS_V1719, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12025', 'inventory': '1'}, '10.60.242.14': {'name': 'Liteyniy46-as1', 'ip': '10.60.242.14', 'host_id': '12086', 'address': '', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '1_970678_AvanNSK, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12086', 'inventory': '1'}, '10.60.241.200': {'name': 'Shkiper12a-as1', 'ip': '10.60.241.200', 'host_id': '11981', 'address': 'г. Санкт-Петербург, ул. Шкиперский проток, 12 литер А', 'uplink': 'BMor18-ds3', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11981', 'inventory': '1'}, '10.60.254.68': {'name': 'Moyka18-as1', 'ip': '10.60.254.68', 'host_id': '10680', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'VoIP SPA8000', 'alive': 1, 'contracts': {'0085-15': '858416@mail.ru, mironova@farlows.ru'}, 'hostid': '10680', 'inventory': '1'}, '10.60.254.85': {'name': 'Moyka85-as1', 'ip': '10.60.254.85', 'host_id': '10690', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0111-15': 'argusbuh@argus-spectr.ru, dmitry.ivanov@argus-spectr.ru'}, 'hostid': '10690', 'inventory': '1'}, '10.60.241.207': {'name': '7LiniyaVO44-as1', 'ip': '10.60.241.207', 'host_id': '10828', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'OFF(0230-19)', 'alive': 1, 'contracts': {'0006-18': '9603000@bk.ru', '0330-20': 'lu.fit.ru@mail.ru'}, 'hostid': '10828', 'inventory': '1'}, '10.60.242.3': {'name': 'Konstantin11-as1', 'ip': '10.60.242.3', 'host_id': '11779', 'address': 'г. Санкт-Петербург, пр-т Константиновский, 11', 'uplink': 'BMor18-ds2', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0237-17': 'o.k.1275@mail.ru, sergey@torrowtech.com, 7436357@mail.ru, bills@torrowtech.com', '0208-18': '9853554@mail.ru', '0010-21': 'timur@magentaco.ru', '0118-21': 'pvz.spb247@gmal.com, pvz.spb247@gmail.com', '0124-21': 'stecospb@mail.ru', '0033-20': 'info@uflor.ru', '0085-21': 'nic@realweb.ru, doc@realweb.ru'}, 'hostid': '11779', 'inventory': '1'}, '10.60.254.79': {'name': 'Konnogvard4-as2', 'ip': '10.60.254.79', 'host_id': '11509', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179_NNGS(V1022)', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11509', 'inventory': '1'}, '10.60.254.69': {'name': 'MalSadovaya3-as1', 'ip': '10.60.254.69', 'host_id': '10706', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0297-17': 'n.karaenkina@mail.ru, bv@c-mit.ru, opening_01@mail.ru'}, 'hostid': '10706', 'inventory': '1'}, '10.60.254.74': {'name': 'Moyka36-as1', 'ip': '10.60.254.74', 'host_id': '10682', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'RFB_Moyki36-hs4', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10682', 'inventory': '1'}, '10.60.254.77': {'name': 'Moyka11-as1', 'ip': '10.60.254.77', 'host_id': '10678', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'OFF_00674_Manskiy, UPS', 'alive': 1, 'contracts': {'00606': 'moika-11@rambler.ru', '0247-16': 'a.grigoreva@piter-trust.ru, v.panova@piter-trust.ru, a.kozin@advikon.ru'}, 'hostid': '10678', 'inventory': '1'}, '10.60.254.82': {'name': 'Kovensk5-as1', 'ip': '10.60.254.82', 'host_id': '10571', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0074-15': 'nshakshina@oct-clinicaltrials.com, anikolaev@dm-matrix.com, rimanov@oct-clinicaltrials.com, nkorotaeva@oct-clinicaltrials.com, asamkina@oct-clinicaltrials.com'}, 'hostid': '10571', 'inventory': '1'}, '10.60.245.179': {'name': 'Chernysh17A-as1', 'ip': '10.60.245.179', 'host_id': '12125', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}, 'hostid': '12125', 'inventory': '1'}, '10.60.241.214': {'name': 'Ryleeva11-as0', 'ip': '10.60.241.214', 'host_id': '11433', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11433', 'inventory': '1'}, '10.60.254.80': {'name': 'Moiseenko28-as1', 'ip': '10.60.254.80', 'host_id': '11510', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'V1133_UFSB_L2_989133, 0272-16_Morskoy_Registr', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11510', 'inventory': '1'}, '10.60.242.12': {'name': 'Shpaler52-as1', 'ip': '10.60.242.12', 'host_id': '12058', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12058', 'inventory': '1'}, '10.60.254.88': {'name': 'Million10-as1', 'ip': '10.60.254.88', 'host_id': '10654', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com'}, 'hostid': '10654', 'inventory': '1'}, '10.60.241.205': {'name': 'Degtyar11-as1', 'ip': '10.60.241.205', 'host_id': '10488', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 3, 'unrecognized': '16-03_179_NNGS(L2_1001), 16-03_179_NNGS(L2_1006), Degtyarn11-ups1(10.60.241.213)', 'alive': 1, 'contracts': {'0224-18': 'alexey.shibanov@geropharm.com, dmitriy.vodennikov@geropharm.com, admin@geropharm.com', '0066-21': 'matytsin@omtobacco.ru, maevskiy@omtobacco.ru, butorina@omtobacco.ru, antonenko@sashiko.org', '0007-19': 'info@siteintop.spb.ru'}, 'hostid': '10488', 'inventory': '1'}, '10.60.254.93': {'name': 'Shpaler2-as1', 'ip': '10.60.254.93', 'host_id': '10786', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'OFF(0043-20), OFF(0198-17)', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10786', 'inventory': '1'}, '10.60.245.167': {'name': 'Kiroch9-as1', 'ip': '10.60.245.167', 'host_id': '10553', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 6, 'unrecognized': 'OFF(0173-18)', 'alive': 1, 'contracts': {'0273-20': 'info.re-centr@mail.ru', '0342-21': 'i.burdina@sferallc.spb.ru', '0017-17': ' info@ctrust.org, alex@ctrust.org', '0375-20': 'daryassigma@gmail.com, official@sigmascouting.com', '0077-21': 'afanasev.estate@gmail.com', '0288-21': 'rianmed16@gmail.com'}, 'hostid': '10553', 'inventory': '1'}, '10.60.241.221': {'name': '8sovet31-as1', 'ip': '10.60.241.221', 'host_id': '10879', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'MSK_L2_V0873, MSK_L2_3037(QnQ_Tekon), MSK_Tekona_Inet', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10879', 'inventory': '1'}, '10.60.254.72': {'name': 'Nevsk22-as1', 'ip': '10.60.254.72', 'host_id': '10900', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0303-18': 'm.solomatnikov@gwd.ru, pea@gwd.ru'}, 'hostid': '10900', 'inventory': '1'}, '10.60.241.195': {'name': '9Sovet2-as1', 'ip': '10.60.241.195', 'host_id': '10417', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'etrufanov@etm.ru, kovaleva_jv@etm.ru, sgvbt@etm.ru, smirnova_la@etm.ru, edenisov@etm.ru, nmakusheva@etm.ru'}, 'hostid': '10417', 'inventory': '1'}, '10.60.242.9': {'name': 'BPetrograd76-as1', 'ip': '10.60.242.9', 'host_id': '11973', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0078-21': 'info@hr-profi.ru, kuznetsova@hr-profi.ru'}, 'hostid': '11973', 'inventory': '1'}, '10.60.241.204': {'name': 'MKonyshen1k3-as1', 'ip': '10.60.241.204', 'host_id': '10622', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0403-19': 'a.vasilevskiy@etpgpb.ru'}, 'hostid': '10622', 'inventory': '1'}, '10.60.254.90': {'name': 'Moyka15-as1', 'ip': '10.60.254.90', 'host_id': '11511', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'RMRS', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11511', 'inventory': '1'}, '10.60.241.206': {'name': 'Million8-as1', 'ip': '10.60.241.206', 'host_id': '10655', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00497': 'titov@78stroy.ru'}, 'hostid': '10655', 'inventory': '1'}, '10.60.245.171': {'name': 'Kazan37-as1', 'ip': '10.60.245.171', 'host_id': '11512', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0086-19': 'info@ilove-sport.ru, buh@ilove-sport.ru, op@ilove-sport.ru'}, 'hostid': '11512', 'inventory': '1'}, '10.60.241.222': {'name': 'Yakub24-as1', 'ip': '10.60.241.222', 'host_id': '10851', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179(VLAN1008), 16-03/179(VLAN1007)', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10851', 'inventory': '1'}, '10.60.245.173': {'name': 'Furshtat10-as1', 'ip': '10.60.245.173', 'host_id': '11405', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_790258_avanmsk, 2_790258_avanmsk, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11405', 'inventory': '1'}, '10.60.241.216': {'name': 'Pochtamt4-as1', 'ip': '10.60.241.216', 'host_id': '10744', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'none, Mediaoperator-IPTV', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10744', 'inventory': '1'}, '10.60.241.219': {'name': 'Moyka74-as1', 'ip': '10.60.241.219', 'host_id': '10689', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16/03-79_NNGS(V1015-200m), 16/03-79_NNGS(V1014-300m), 16/03-79_NNGS(V1016-380m), UPS_Moyka74-ups1', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10689', 'inventory': '1'}, '10.60.254.78': {'name': 'Moyka61-as1', 'ip': '10.60.254.78', 'host_id': '10931', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '16-03/179_NNGS(V1803), Bonch-IT', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10931', 'inventory': '1'}, '10.60.254.91': {'name': 'Artiller1-as1', 'ip': '10.60.254.91', 'host_id': '10432', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0030-18': 'oleg.zinkovsky@infotecs.ru, aleksey.balebin@infotecs.ru, acc-tom@infotecs.ru, mikhail.prodma@infotecs.ru, dyubkinmn@infotecs.ru'}, 'hostid': '10432', 'inventory': '1'}, '10.60.241.194': {'name': 'Nevsk10-as1', 'ip': '10.60.241.194', 'host_id': '11513', 'address': 'г. Санкт-Петербург, пр-т Невский, 10', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0295-19': 'alexander.ulanov@perfectart.com, roman.kharevsky@perfectart.com, dmitry.ganin@perfectart.com', '0352-21': 'm.sedyh@electro.cars'}, 'hostid': '11513', 'inventory': '1'}, '10.60.245.170': {'name': 'Vosstan8-as1', 'ip': '10.60.245.170', 'host_id': '11514', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0058-19': 'igors@chipdip.ru'}, 'hostid': '11514', 'inventory': '1'}, '10.60.241.209': {'name': 'MalyiPetSt5-as1', 'ip': '10.60.241.209', 'host_id': '10728', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0186-16': 'nsemenov@a24-team.ru, finance@a24-team.ru'}, 'hostid': '10728', 'inventory': '1'}, '10.60.245.166': {'name': 'Efimova4-as1', 'ip': '10.60.245.166', 'host_id': '10494', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_HotSpot, 2_L3VPN-3731, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10494', 'inventory': '1'}, '10.60.245.172': {'name': 'Chaikov26-as1', 'ip': '10.60.245.172', 'host_id': '11318', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port1, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11318', 'inventory': '1'}, '10.60.245.176': {'name': 'Anglisk-nab70-as1', 'ip': '10.60.245.176', 'host_id': '11473', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1_NNGS_1025, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11473', 'inventory': '1'}, '10.60.245.165': {'name': 'Kiroch24-as1', 'ip': '10.60.245.165', 'host_id': '10552', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': '1-HotSpot, Port2, 3-L3VPN-V3737, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10552', 'inventory': '1'}, '10.60.254.71': {'name': 'Srednij48-27-as1', 'ip': '10.60.254.71', 'host_id': '11636', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0067-20': 'etimofeev@veronica.ru'}, 'hostid': '11636', 'inventory': '1'}, '10.60.245.178': {'name': 'Korpusnaja12-as1', 'ip': '10.60.245.178', 'host_id': '11935', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'Port3, Port4, Port5', 'alive': 1, 'contracts': {'0290-18': 'vladimir@computer-spb.ru, it@microt.ru, buh1@microt.ru, buh3@microt.ru, secretary@microt.ru', '0006-21': 'ilseral@ya.ru, info@tehnoavtomatika.com'}, 'hostid': '11935', 'inventory': '1'}, '10.60.254.70': {'name': 'Odoevsk5-as1', 'ip': '10.60.254.70', 'host_id': '11940', 'address': '', 'uplink': 'BMor18-ds2', 'cont_num': 2, 'unrecognized': 'Askon-IPv6-TEST', 'alive': 1, 'contracts': {'0042-18': 'soloveva_ea@ascon.ru, to@ascon.ru, karnyushin@ascon.ru, chekalin_as@ascon.ru', '0019-17': 'karnyushin@ascon.ru'}, 'hostid': '11940', 'inventory': '1'}, '10.60.241.203': {'name': 'Shkiper12a-as2', 'ip': '10.60.241.203', 'host_id': '11993', 'address': 'г. Санкт-Петербург, ул. Шкиперский проток, 12 литер А', 'uplink': 'Shkiper12a-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0105-21': 'nekratov_bn@baltchemc.ru, iglenkov_in@baltchemc.ru'}, 'hostid': '11993', 'inventory': '1'}, '10.60.254.76': {'name': 'Moyka18-as2', 'ip': '10.60.254.76', 'host_id': '10681', 'address': '', 'uplink': 'Moyka18-as1', 'cont_num': 1, 'unrecognized': 'no', 'alive': 1, 'contracts': {'00382': 'mark@3s-it.ru, pay@3s-it.ru, buh@3s-it.ru, sshulpin@gmail.com'}, 'hostid': '10681', 'inventory': '1'}, '10.60.254.92': {'name': 'Grivcova4-as1', 'ip': '10.60.254.92', 'host_id': '11583', 'address': '', 'uplink': 'Moyka85-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11583', 'inventory': '1'}, '10.60.241.202': {'name': '7LiniyaVO44-as2', 'ip': '10.60.241.202', 'host_id': '10829', 'address': '', 'uplink': '7LiniyaVO44-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0082-21': 'sarukhanov@tsm-msk.ru, 79675917587@yandex.ru', '0019-17': 'karnyushin@ascon.ru'}, 'hostid': '10829', 'inventory': '1'}, '10.60.242.2': {'name': 'Konstantin11-as3', 'ip': '10.60.242.2', 'host_id': '11507', 'address': 'г. Санкт-Петербург, пр-т Константиновский, 11', 'uplink': 'Konstantin11-as1', 'cont_num': 1, 'unrecognized': 'Konstantin11-as2', 'alive': 1, 'contracts': {'0130-21': 'pbu_2004@mail.ru, tsrner-pp@videofor.ru'}, 'hostid': '11507', 'inventory': '1'}, '10.60.254.81': {'name': 'Moyka36-as6', 'ip': '10.60.254.81', 'host_id': '10687', 'address': '', 'uplink': 'Moyka36-as1', 'cont_num': 1, 'unrecognized': 'RFB_Moyki36-hs3, RFB_Moyki36-hs1(MC), RFB_Moyki36-hs2, IPTV_Raiffeisenbank, TEST_L3VPN_RFB, L3VPN_Raiffeisenbank', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10687', 'inventory': '1'}, '10.60.241.197': {'name': 'Moyka36-as2', 'ip': '10.60.241.197', 'host_id': '10683', 'address': '', 'uplink': 'Moyka36-as1', 'cont_num': 1, 'unrecognized': 'Mediaoperator, Raiffayzenbank Kanal to CB, Raiffayzenbank L3VPN, Mediaoperator', 'alive': 1, 'contracts': {'0018-15': 'elena.v.dmitrieva@raiffeisen.ru, 46698@raiffeisen.ru, sloktionov@raiffeisen.ru, 55408@raiffeisen.ru, anastasia.smokotina@raiffeisen.ru, gns@raiffeisen.ru  , galina.nikitina@raiffeisen.ru, rbru-ag_it_spb@raiffeisen.ru'}, 'hostid': '10683', 'inventory': '1'}, '10.60.254.66': {'name': 'Moyka11-as2', 'ip': '10.60.254.66', 'host_id': '10679', 'address': '', 'uplink': 'Moyka11-as1', 'cont_num': 3, 'unrecognized': 'OFF(0153-17)', 'alive': 1, 'contracts': {'00606': 'moika-11@rambler.ru', '0247-16': 'a.grigoreva@piter-trust.ru, v.panova@piter-trust.ru, a.kozin@advikon.ru', '0372-19': 'info@malashin.spb.ru, vladimirspb@me.com'}, 'hostid': '10679', 'inventory': '1'}, '10.60.241.199': {'name': 'Ryleeva11-as2', 'ip': '10.60.241.199', 'host_id': '10774', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0086-18': 'kristina@eid.spb.ru, lihanova@eid.spb.ru'}, 'hostid': '10774', 'inventory': '1'}, '10.60.241.211': {'name': 'Ryleeva11-as3', 'ip': '10.60.241.211', 'host_id': '10775', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 2, 'unrecognized': 'OFF(0090-19)', 'alive': 1, 'contracts': {'0145-18': 'maozet@mail.ru, blackstone@securitygroup.online', '0149-17': 'vb@arhmc.ru, adm@arhmc.ru'}, 'hostid': '10775', 'inventory': '1'}, '10.60.245.175': {'name': 'Ryleeva11-as4', 'ip': '10.60.245.175', 'host_id': '11438', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': '425-19_PozitivTe, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11438', 'inventory': '1'}, '10.60.241.210': {'name': 'Ryleeva11-as1', 'ip': '10.60.241.210', 'host_id': '10773', 'address': '', 'uplink': 'Ryleeva11-as0', 'cont_num': 1, 'unrecognized': 'SPA122-10.60.68.10, MC, Ryleeva11-ups1', 'alive': 1, 'contracts': {'0149-17': 'vb@arhmc.ru, adm@arhmc.ru'}, 'hostid': '10773', 'inventory': '1'}, '10.60.242.13': {'name': 'Shpaler52-as2', 'ip': '10.60.242.13', 'host_id': '12059', 'address': '', 'uplink': 'Shpaler52-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0233-21': 'sblenstroy@gmail.com'}, 'hostid': '12059', 'inventory': '1'}, '10.60.242.15': {'name': 'Shpaler52-as3', 'ip': '10.60.242.15', 'host_id': '12117', 'address': '', 'uplink': 'Shpaler52-as1', 'cont_num': 1, 'unrecognized': 'V0002_MGMT, Mikrotik-Petergof, IDRAC-SERV1, PROXMOX_NODE, SERLES, SERV2, SERV3, SERVERM, SERV9, SERV9-2, RS3, DSO1, DSO2, Cisco-3925-gi0/1, Cisco-3925-gi0/2', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12117', 'inventory': '1'}, '10.60.241.198': {'name': 'Million4-as1', 'ip': '10.60.241.198', 'host_id': '10429', 'address': '', 'uplink': 'Million10-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'0140-15': 'oksana_surjenko7@mail.ru, petr-hotel@yandex.ru, info@ekaterinahotel.com', '0212-19': '9463232@mail.ru'}, 'hostid': '10429', 'inventory': '1'}, '10.60.81.35': {'name': 'Degtyar11-as3', 'ip': '10.60.81.35', 'host_id': '11453', 'address': '', 'uplink': 'Degtyar11-as1', 'cont_num': 1, 'unrecognized': 'Agrikole_L2', 'alive': 1, 'contracts': {'0101-19': 'konsau1@yandex.ru'}, 'hostid': '11453', 'inventory': '1'}, '10.60.241.215': {'name': 'Degtyar11-as4', 'ip': '10.60.241.215', 'host_id': '10490', 'address': '', 'uplink': 'Degtyar11-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0171-18': 'maia.kabanova@quehenberger.ru, infostp@quehenberger.ru, nastya.vorobieva@quehenberger.ru, boris@quehenberger.ru, infosib@quehenberger.ru'}, 'hostid': '10490', 'inventory': '1'}, '10.60.254.67': {'name': 'Shpaler2-as2', 'ip': '10.60.254.67', 'host_id': '12074', 'address': '', 'uplink': 'Shpaler2-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0260-21': 've@estp.ru'}, 'hostid': '12074', 'inventory': '1'}, '10.60.245.168': {'name': 'Kiroch9-as2', 'ip': '10.60.245.168', 'host_id': '10554', 'address': '', 'uplink': 'Kiroch9-as1', 'cont_num': 3, 'unrecognized': 'OFF(0296-17), OFF(0029-20), BAD', 'alive': 1, 'contracts': {'0017-17': ' info@ctrust.org, alex@ctrust.org', '0228-17': 'verynchikmama@yandex.ru, 28march89@mail.ru, lingerie_by_victory@gmail.com', '0013-21': 'kirsanpavel@yandex.ru'}, 'hostid': '10554', 'inventory': '1'}, '10.60.241.218': {'name': 'MKonyshen1k3-as2', 'ip': '10.60.241.218', 'host_id': '10878', 'address': '', 'uplink': 'MKonyshen1k3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0012-19': 'wss.russia.finance@wilhelm-sen.com, wss.russia.finance@wilhelmsen.com'}, 'hostid': '10878', 'inventory': '1'}, '10.60.241.212': {'name': 'Yakub24-as2', 'ip': '10.60.241.212', 'host_id': '11948', 'address': '', 'uplink': 'Yakub24-as1', 'cont_num': 1, 'unrecognized': '1_16-03/179_NNGS, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11948', 'inventory': '1'}, '10.60.241.217': {'name': 'Moyka74-as2', 'ip': '10.60.241.217', 'host_id': '10860', 'address': '', 'uplink': 'Moyka74-as1', 'cont_num': 1, 'unrecognized': '16/03-79_NNGS_L2(VLAN1017), 16/03-79_NNGS_L2(VLAN1018)', 'alive': 1, 'contracts': {'': ''}, 'hostid': '10860', 'inventory': '1'}, '10.60.254.89': {'name': 'Grivcova4-as2', 'ip': '10.60.254.89', 'host_id': '10527', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0114-15': 'yandimirov@slaviabank.ru, petuhov@slaviabank.ru, stanovova@slaviabank.ru'}, 'hostid': '10527', 'inventory': '1'}, '10.60.254.87': {'name': 'Grivcova4-as3', 'ip': '10.60.254.87', 'host_id': '11584', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'0317-19': 'ksazonov@tradingview.com'}, 'hostid': '11584', 'inventory': '1'}, '10.60.254.84': {'name': 'Grivcova4-as4', 'ip': '10.60.254.84', 'host_id': '12015', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}, 'hostid': '12015', 'inventory': '1'}, '10.60.254.94': {'name': 'Grivcova4-as5', 'ip': '10.60.254.94', 'host_id': '12035', 'address': '', 'uplink': 'Grivcova4-as1', 'cont_num': 1, 'unrecognized': '1_16-03/179_NNGS, Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12035', 'inventory': '1'}}

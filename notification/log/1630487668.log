@@ -1,0 +1,149 @@
+[2021-09-01 12:14:29,571] INFO - Data to work with: {'addr_d': {'г. Санкт-Петербург, ш. Пулковское, 56 к. 4': {'id': '0', 'name': 'Pulkov56k4-as1', 'all_emails': 'itbill@osgrm.ru, v.yushina@osgrm.ru, d.stasyuk@osgrm.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '02.09.2021', 'time_start': '10:00', 'time_end': '11:00', 'time_span': '60'}, 'hostids': ['11998']}
+[2021-09-01 12:14:29,573] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-09-01 12:14:29,574] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>02.09.2021</b> г. в период с <b>10:00</b> до <b>11:00</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>60</b> минут в указанном интервале
+предоставляемых по адресу: г. Санкт-Петербург, ш. Пулковское, 56 к. 4
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-09-01 12:14:29,704] INFO - email sent to itbill@osgrm.ru
+[2021-09-01 12:14:29,790] INFO - email sent to v.yushina@osgrm.ru
+[2021-09-01 12:14:29,870] INFO - email sent to d.stasyuk@osgrm.ru
+[2021-09-01 12:14:29,937] INFO - email sent to support@spb.avantel.ru
+[2021-09-10 16:03:32,179] INFO - DEV_ARRR 10.60.241.2 ['10.60.241.4']
+[2021-09-10 16:03:33,603] INFO - DEV_ARRR 10.60.241.5 ['10.60.241.4', '10.60.241.2']
+[2021-09-10 16:03:33,802] INFO - DEV_ARRR 10.60.241.7 ['10.60.241.4', '10.60.241.2', '10.60.241.5']
+[2021-09-10 16:03:33,996] INFO - DEV_ARRR 10.60.241.14 ['10.60.241.4', '10.60.241.2', '10.60.241.5', '10.60.241.7']
+[2021-09-10 16:03:37,813] INFO - DEV_ARRR 10.60.241.22 ['10.60.241.5', '10.60.241.7', '10.60.241.14']
+[2021-09-10 16:03:44,203] INFO - {'10.60.241.4': {'name': 'Repisch20-as2', 'ip': '10.60.241.4', 'host_id': '10757', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'VM1890-MSK-MetLife, Cisco-GLC-T_for_Metlife', 'alive': 1, 'contracts': {'0050-21': 'vladgaff@gmail.com'}}, '10.60.241.2': {'name': 'MNovik28-as1', 'ip': '10.60.241.2', 'host_id': '10623', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 2, 'unrecognized': 'BSS-voip_private', 'alive': 1, 'contracts': {'0299-18': 's.kruglov@aloea.ru, kpa@bsspharm.ru, sedova.yulia@bsspharm.ru', '0069-17': 'rae@bsspharm.ru, veselova.anastasiya@bsspharm.ru, kpa@bsspharm.ru, opr.fin2@bsspharm.ru'}}, '10.60.241.5': {'name': 'Kolomyag33-as1', 'ip': '10.60.241.5', 'host_id': '12061', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}}, '10.60.241.7': {'name': 'MNovik36-as1', 'ip': '10.60.241.7', 'host_id': '12069', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0168-21': 'koos@listmet.ru'}}, '10.60.241.14': {'name': 'Makul3v-as1', 'ip': '10.60.241.14', 'host_id': '12067', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0142-21': 'office@tdemir.ru'}}, '10.60.241.22': {'name': 'Kolomyag27-as2', 'ip': '10.60.241.22', 'host_id': '12158', 'address': '', 'uplink': 'Kolomyag33-as1', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0361-21': 'a.samykina@etscorp.ru'}}}
+[2021-09-10 16:03:44,309] INFO - Turned on inventory for Repisch20-as2
+[2021-09-10 16:03:44,375] INFO - Turned on inventory for MNovik28-as1
+[2021-09-10 16:03:44,439] INFO - Turned on inventory for Kolomyag33-as1
+[2021-09-10 16:03:44,508] INFO - Turned on inventory for MNovik36-as1
+[2021-09-10 16:03:44,577] INFO - Turned on inventory for Makul3v-as1
+[2021-09-10 16:03:44,640] INFO - Turned on inventory for Kolomyag27-as2
+[2021-09-10 16:03:44,671] INFO - contract_dict: {'10.60.241.4': {'name': 'Repisch20-as2', 'ip': '10.60.241.4', 'host_id': '10757', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': 'VM1890-MSK-MetLife, Cisco-GLC-T_for_Metlife', 'alive': 1, 'contracts': {'0050-21': 'vladgaff@gmail.com'}, 'hostid': '10757', 'inventory': '0'}, '10.60.241.2': {'name': 'MNovik28-as1', 'ip': '10.60.241.2', 'host_id': '10623', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 2, 'unrecognized': 'BSS-voip_private', 'alive': 1, 'contracts': {'0299-18': 's.kruglov@aloea.ru, kpa@bsspharm.ru, sedova.yulia@bsspharm.ru', '0069-17': 'rae@bsspharm.ru, veselova.anastasiya@bsspharm.ru, kpa@bsspharm.ru, opr.fin2@bsspharm.ru'}, 'hostid': '10623', 'inventory': '-1'}, '10.60.241.5': {'name': 'Kolomyag33-as1', 'ip': '10.60.241.5', 'host_id': '12061', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'': ''}, 'hostid': '12061', 'inventory': '-1'}, '10.60.241.7': {'name': 'MNovik36-as1', 'ip': '10.60.241.7', 'host_id': '12069', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0168-21': 'koos@listmet.ru'}, 'hostid': '12069', 'inventory': '-1'}, '10.60.241.14': {'name': 'Makul3v-as1', 'ip': '10.60.241.14', 'host_id': '12067', 'address': '', 'uplink': 'Repisch20-as2', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0142-21': 'office@tdemir.ru'}, 'hostid': '12067', 'inventory': '-1'}, '10.60.241.22': {'name': 'Kolomyag27-as2', 'ip': '10.60.241.22', 'host_id': '12158', 'address': '', 'uplink': 'Kolomyag33-as1', 'cont_num': 1, 'unrecognized': 'Port2, Port3, Port4, Port5', 'alive': 1, 'contracts': {'0361-21': 'a.samykina@etscorp.ru'}, 'hostid': '12158', 'inventory': '-1'}}
+[2021-09-20 14:25:57,927] INFO - DEV_ARRR 10.60.242.4 ['10.60.245.177']
+[2021-09-20 14:26:09,959] INFO - {'10.60.245.177': {'name': 'BMor18-ds4', 'ip': '10.60.245.177', 'host_id': '11917', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': '899956_AvanMSK-Beliton, BM18-WiFi, SKAT-eth0, SMG-Gazprom, L2-Gazprom-10Krasnoarm22, SMG2016, ISP_YouOnline_Trunk, Quantum (ptl.ru), Beeline, ISP_RedStar_Trunk, ISP_ERTelecom/Interzet/Westcall_Trunk, ChaykaTelecom-QnQ-to-MSK, IPTV-Mediaoperator, SumTel, Teleport, ISP_Megafon_Trunk, Comlink Telecom (cmk.ru), ===SFP-tx1310_3km===', 'alive': 1, 'contracts': {'': ''}}, '10.60.242.4': {'name': 'Liteyniy4-as1', 'ip': '10.60.242.4', 'host_id': '12162', 'address': '', 'uplink': 'BMor18-ds4', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}}}
+[2021-09-20 14:26:10,149] INFO - contract_dict: {'10.60.245.177': {'name': 'BMor18-ds4', 'ip': '10.60.245.177', 'host_id': '11917', 'address': '', 'uplink': '', 'cont_num': 1, 'unrecognized': '899956_AvanMSK-Beliton, BM18-WiFi, SKAT-eth0, SMG-Gazprom, L2-Gazprom-10Krasnoarm22, SMG2016, ISP_YouOnline_Trunk, Quantum (ptl.ru), Beeline, ISP_RedStar_Trunk, ISP_ERTelecom/Interzet/Westcall_Trunk, ChaykaTelecom-QnQ-to-MSK, IPTV-Mediaoperator, SumTel, Teleport, ISP_Megafon_Trunk, Comlink Telecom (cmk.ru), ===SFP-tx1310_3km===', 'alive': 1, 'contracts': {'': ''}, 'hostid': '11917', 'inventory': '1'}, '10.60.242.4': {'name': 'Liteyniy4-as1', 'ip': '10.60.242.4', 'host_id': '12162', 'address': 'г. Санкт-Петербург, ул. Салова 53', 'uplink': 'BMor18-ds4', 'cont_num': 1, 'unrecognized': [], 'alive': 0, 'contracts': {'': ''}, 'hostid': '12162', 'inventory': '1'}}
+[2021-09-27 21:14:29,756] INFO - DEV_ARRR 10.60.254.14 ['10.60.254.4']
+[2021-09-27 21:14:29,970] INFO - DEV_ARRR 10.60.254.10 ['10.60.254.4', '10.60.254.14']
+[2021-09-27 21:14:37,008] INFO - {'10.60.254.4': {'name': 'Domostroit3-as1', 'ip': '10.60.254.4', 'host_id': '11936', 'address': '', 'uplink': '', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0239-18': 'd.nikonov@vozovoz.ru, p.tolpa@vozovoz.ru, sevsrtrans@mail.ru', '0069-16': 'elyak@severgorod.com, zaytseva@severgorod.com', '0057-17': 'den.melikson@mail.ru, mail@mdparts.ru', '0073-18': 'aralina@ochp.ru, vishniveckiy@ochp.ru, aralina@npk-kanzler.ru', '0069-18': 'faba@list.ru, info@faba78.ru', '0043-19': 'info@wilgroup.ru, uslav@yandex.ru', '0142-17': 'ivanova@pac-sto.ru, it@valmax.by, romanova@pac-sto.ru'}}, '10.60.254.14': {'name': '6Verhniy12a-as1', 'ip': '10.60.254.14', 'host_id': '10291', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00321': 'rtvolga@gmail.com'}}, '10.60.254.10': {'name': 'Engelsa160-as1', 'ip': '10.60.254.10', 'host_id': '10498', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'smirnova_la@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, sgvbt@etm.ru, etrufanov@etm.ru', '0127-18': 'denisov_ea@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}}}
+[2021-09-27 21:14:37,110] INFO - Turned on inventory for Domostroit3-as1
+[2021-09-27 21:14:37,182] INFO - Turned on inventory for 6Verhniy12a-as1
+[2021-09-27 21:14:37,246] INFO - Turned on inventory for Engelsa160-as1
+[2021-09-27 21:14:37,278] INFO - contract_dict: {'10.60.254.4': {'name': 'Domostroit3-as1', 'ip': '10.60.254.4', 'host_id': '11936', 'address': '', 'uplink': '', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0239-18': 'd.nikonov@vozovoz.ru, p.tolpa@vozovoz.ru, sevsrtrans@mail.ru', '0069-16': 'elyak@severgorod.com, zaytseva@severgorod.com', '0057-17': 'den.melikson@mail.ru, mail@mdparts.ru', '0073-18': 'aralina@ochp.ru, vishniveckiy@ochp.ru, aralina@npk-kanzler.ru', '0069-18': 'faba@list.ru, info@faba78.ru', '0043-19': 'info@wilgroup.ru, uslav@yandex.ru', '0142-17': 'ivanova@pac-sto.ru, it@valmax.by, romanova@pac-sto.ru'}, 'hostid': '11936', 'inventory': '0'}, '10.60.254.14': {'name': '6Verhniy12a-as1', 'ip': '10.60.254.14', 'host_id': '10291', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00321': 'rtvolga@gmail.com'}, 'hostid': '10291', 'inventory': '0'}, '10.60.254.10': {'name': 'Engelsa160-as1', 'ip': '10.60.254.10', 'host_id': '10498', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'smirnova_la@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, sgvbt@etm.ru, etrufanov@etm.ru', '0127-18': 'denisov_ea@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}, 'hostid': '10498', 'inventory': '0'}}
+[2021-09-27 21:17:58,996] INFO - DEV_ARRR 10.60.254.14 ['10.60.254.4']
+[2021-09-27 21:17:59,188] INFO - DEV_ARRR 10.60.254.10 ['10.60.254.4', '10.60.254.14']
+[2021-09-27 21:18:06,025] INFO - {'10.60.254.4': {'name': 'Domostroit3-as1', 'ip': '10.60.254.4', 'host_id': '11936', 'address': '', 'uplink': '', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0239-18': 'd.nikonov@vozovoz.ru, p.tolpa@vozovoz.ru, sevsrtrans@mail.ru', '0069-16': 'elyak@severgorod.com, zaytseva@severgorod.com', '0057-17': 'den.melikson@mail.ru, mail@mdparts.ru', '0073-18': 'aralina@ochp.ru, vishniveckiy@ochp.ru, aralina@npk-kanzler.ru', '0069-18': 'faba@list.ru, info@faba78.ru', '0043-19': 'info@wilgroup.ru, uslav@yandex.ru', '0142-17': 'ivanova@pac-sto.ru, it@valmax.by, romanova@pac-sto.ru'}}, '10.60.254.14': {'name': '6Verhniy12a-as1', 'ip': '10.60.254.14', 'host_id': '10291', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00321': 'rtvolga@gmail.com'}}, '10.60.254.10': {'name': 'Engelsa160-as1', 'ip': '10.60.254.10', 'host_id': '10498', 'address': '', 'uplink': 'Domostroit3-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'smirnova_la@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, sgvbt@etm.ru, etrufanov@etm.ru', '0127-18': 'denisov_ea@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}}}
+[2021-09-27 21:18:06,191] INFO - contract_dict: {'10.60.254.4': {'name': 'Domostroit3-as1', 'ip': '10.60.254.4', 'host_id': '11936', 'address': 'Санкт-Петербург, ул. Домостроительная, 3', 'uplink': '', 'cont_num': 7, 'unrecognized': '', 'alive': 1, 'contracts': {'0239-18': 'd.nikonov@vozovoz.ru, p.tolpa@vozovoz.ru, sevsrtrans@mail.ru', '0069-16': 'elyak@severgorod.com, zaytseva@severgorod.com', '0057-17': 'den.melikson@mail.ru, mail@mdparts.ru', '0073-18': 'aralina@ochp.ru, vishniveckiy@ochp.ru, aralina@npk-kanzler.ru', '0069-18': 'faba@list.ru, info@faba78.ru', '0043-19': 'info@wilgroup.ru, uslav@yandex.ru', '0142-17': 'ivanova@pac-sto.ru, it@valmax.by, romanova@pac-sto.ru'}, 'hostid': '11936', 'inventory': '1'}, '10.60.254.14': {'name': '6Verhniy12a-as1', 'ip': '10.60.254.14', 'host_id': '10291', 'address': 'Санкт-Петербург, пер. 6-й Верхний, 12а', 'uplink': 'Domostroit3-as1', 'cont_num': 1, 'unrecognized': '', 'alive': 1, 'contracts': {'00321': 'rtvolga@gmail.com'}, 'hostid': '10291', 'inventory': '1'}, '10.60.254.10': {'name': 'Engelsa160-as1', 'ip': '10.60.254.10', 'host_id': '10498', 'address': 'Санкт-Петербург, пр-т Энгельса, 160', 'uplink': 'Domostroit3-as1', 'cont_num': 2, 'unrecognized': '', 'alive': 1, 'contracts': {'00664': 'smirnova_la@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, sgvbt@etm.ru, etrufanov@etm.ru', '0127-18': 'denisov_ea@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}, 'hostid': '10498', 'inventory': '1'}}
+[2021-09-27 21:19:33,819] INFO - GOT FORM {'mail_send': '10.60.254.4', '10.60.254.4_address_fld': 'Санкт-Петербург, ул. Домостроительная, 3', '10.60.254.14_address_fld': 'Санкт-Петербург, пер. 6-й Верхний, 12а', '10.60.254.10_address_fld': 'Санкт-Петербург, пр-т Энгельса, 160', 'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '2021-09-29', 'time_start_hr': '17', 'time_start_min': '45', 'time_end_hr': '18', 'time_end_min': '15', 'time_span': '10', 'client_notification_confirm_846gPiV4': 'Далее'}
+[2021-09-27 21:19:33,822] INFO - CHECKED: ['10.60.254.4', '10.60.254.14', '10.60.254.10']
+[2021-09-27 21:19:33,823] INFO - addresses: {'10.60.254.4': 'Санкт-Петербург, ул. Домостроительная, 3', '10.60.254.14': 'Санкт-Петербург, пер. 6-й Верхний, 12а', '10.60.254.10': 'Санкт-Петербург, пр-т Энгельса, 160'}
+[2021-09-27 21:19:33,837] INFO - sid_storage: [{'sid': '846gPiV4', 'storage': '{"10.60.254.4": {"name": "Domostroit3-as1", "ip": "10.60.254.4", "host_id": "11936", "address": "Санкт-Петербург, ул. Домостроительная, 3", "uplink": "", "cont_num": 7, "unrecognized": "", "alive": 1, "contracts": {"0239-18": "d.nikonov@vozovoz.ru, p.tolpa@vozovoz.ru, sevsrtrans@mail.ru", "0069-16": "elyak@severgorod.com, zaytseva@severgorod.com", "0057-17": "den.melikson@mail.ru, mail@mdparts.ru", "0073-18": "aralina@ochp.ru, vishniveckiy@ochp.ru, aralina@npk-kanzler.ru", "0069-18": "faba@list.ru, info@faba78.ru", "0043-19": "info@wilgroup.ru, uslav@yandex.ru", "0142-17": "ivanova@pac-sto.ru, it@valmax.by, romanova@pac-sto.ru"}, "hostid": "11936", "inventory": "1"}, "10.60.254.14": {"name": "6Verhniy12a-as1", "ip": "10.60.254.14", "host_id": "10291", "address": "Санкт-Петербург, пер. 6-й Верхний, 12а", "uplink": "Domostroit3-as1", "cont_num": 1, "unrecognized": "", "alive": 1, "contracts": {"00321": "rtvolga@gmail.com"}, "hostid": "10291", "inventory": "1"}, "10.60.254.10": {"name": "Engelsa160-as1", "ip": "10.60.254.10", "host_id": "10498", "address": "Санкт-Петербург, пр-т Энгельса, 160", "uplink": "Domostroit3-as1", "cont_num": 2, "unrecognized": "", "alive": 1, "contracts": {"00664": "smirnova_la@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, sgvbt@etm.ru, etrufanov@etm.ru", "0127-18": "denisov_ea@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru"}, "hostid": "10498", "inventory": "1"}}', 'date': datetime.date(2021, 9, 27)}]
+[2021-09-27 21:19:33,843] INFO - UPD REQ: update web_utils_session set storage = '{"addr_d": {"Санкт-Петербург, ул. Домостроительная, 3": {"id": "0", "name": "Domostroit3-as1", "all_emails": "den.melikson@mail.ru, elyak@severgorod.com, sevsrtrans@mail.ru, vishniveckiy@ochp.ru, aralina@ochp.ru, faba@list.ru, d.nikonov@vozovoz.ru, info@wilgroup.ru, aralina@npk-kanzler.ru, uslav@yandex.ru, ivanova@pac-sto.ru, it@valmax.by, zaytseva@severgorod.com, p.tolpa@vozovoz.ru, romanova@pac-sto.ru, info@faba78.ru, mail@mdparts.ru"}, "Санкт-Петербург, пер. 6-й Верхний, 12а": {"id": "1", "name": "6Verhniy12a-as1", "all_emails": "rtvolga@gmail.com"}, "Санкт-Петербург, пр-т Энгельса, 160": {"id": "1", "name": "Engelsa160-as1", "all_emails": "smirnova_la@etm.ru, denisov_ea@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru"}}, "text_vars": {"subject": "Уведомление о плановых работах на сети АО «Авантел»", "time_date": "29.09.2021", "time_start": "17:45", "time_end": "18:15", "time_span": "10"}, "hostids": ["11936", "10291", "10498"]}' where sid = '846gPiV4';
+[2021-09-27 21:19:33,867] INFO - ADDR DICT {'Санкт-Петербург, ул. Домостроительная, 3': {'id': '0', 'name': 'Domostroit3-as1', 'all_emails': 'den.melikson@mail.ru, elyak@severgorod.com, sevsrtrans@mail.ru, vishniveckiy@ochp.ru, aralina@ochp.ru, faba@list.ru, d.nikonov@vozovoz.ru, info@wilgroup.ru, aralina@npk-kanzler.ru, uslav@yandex.ru, ivanova@pac-sto.ru, it@valmax.by, zaytseva@severgorod.com, p.tolpa@vozovoz.ru, romanova@pac-sto.ru, info@faba78.ru, mail@mdparts.ru'}, 'Санкт-Петербург, пер. 6-й Верхний, 12а': {'id': '1', 'name': '6Verhniy12a-as1', 'all_emails': 'rtvolga@gmail.com'}, 'Санкт-Петербург, пр-т Энгельса, 160': {'id': '1', 'name': 'Engelsa160-as1', 'all_emails': 'smirnova_la@etm.ru, denisov_ea@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}}
+[2021-09-27 21:19:48,705] INFO - Data to work with: {'addr_d': {'Санкт-Петербург, ул. Домостроительная, 3': {'id': '0', 'name': 'Domostroit3-as1', 'all_emails': 'den.melikson@mail.ru, elyak@severgorod.com, sevsrtrans@mail.ru, vishniveckiy@ochp.ru, aralina@ochp.ru, faba@list.ru, d.nikonov@vozovoz.ru, info@wilgroup.ru, aralina@npk-kanzler.ru, uslav@yandex.ru, ivanova@pac-sto.ru, it@valmax.by, zaytseva@severgorod.com, p.tolpa@vozovoz.ru, romanova@pac-sto.ru, info@faba78.ru, mail@mdparts.ru'}, 'Санкт-Петербург, пер. 6-й Верхний, 12а': {'id': '1', 'name': '6Verhniy12a-as1', 'all_emails': 'rtvolga@gmail.com'}, 'Санкт-Петербург, пр-т Энгельса, 160': {'id': '1', 'name': 'Engelsa160-as1', 'all_emails': 'smirnova_la@etm.ru, denisov_ea@etm.ru, edenisov@etm.ru, kovaleva_jv@etm.ru, nmakusheva@etm.ru, nemtenkova_em@etm.ru, sgvbt@etm.ru, amihaylov@nsk.etm.ru, edenisov@spb.etm.ru, etrufanov@etm.ru, khodzhaev_ak@etm.ru'}}, 'text_vars': {'subject': 'Уведомление о плановых работах на сети АО «Авантел»', 'time_date': '29.09.2021', 'time_start': '17:45', 'time_end': '18:15', 'time_span': '10'}, 'hostids': ['11936', '10291', '10498']}
+[2021-09-27 21:19:48,706] INFO - Corrected subject: Уведомление о плановых работах на сети АО «Авантел»
+[2021-09-27 21:19:48,723] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>29.09.2021</b> г. в период с <b>17:45</b> до <b>18:15</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>10</b> минут в указанном интервале
+предоставляемых по адресу: Санкт-Петербург, ул. Домостроительная, 3
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-09-27 21:19:49,027] INFO - email sent to den.melikson@mail.ru
+[2021-09-27 21:19:49,049] INFO - email sent to elyak@severgorod.com
+[2021-09-27 21:19:49,066] INFO - email sent to sevsrtrans@mail.ru
+[2021-09-27 21:19:49,084] INFO - email sent to vishniveckiy@ochp.ru
+[2021-09-27 21:19:49,101] INFO - email sent to aralina@ochp.ru
+[2021-09-27 21:19:49,118] INFO - email sent to faba@list.ru
+[2021-09-27 21:19:49,176] INFO - email sent to d.nikonov@vozovoz.ru
+[2021-09-27 21:19:49,196] INFO - email sent to info@wilgroup.ru
+[2021-09-27 21:19:49,213] INFO - email sent to aralina@npk-kanzler.ru
+[2021-09-27 21:19:49,227] INFO - email sent to uslav@yandex.ru
+[2021-09-27 21:19:49,245] INFO - email sent to ivanova@pac-sto.ru
+[2021-09-27 21:19:49,268] INFO - email sent to it@valmax.by
+[2021-09-27 21:19:49,285] INFO - email sent to zaytseva@severgorod.com
+[2021-09-27 21:19:49,301] INFO - email sent to p.tolpa@vozovoz.ru
+[2021-09-27 21:19:49,318] INFO - email sent to romanova@pac-sto.ru
+[2021-09-27 21:19:49,353] INFO - email sent to info@faba78.ru
+[2021-09-27 21:19:49,373] INFO - email sent to mail@mdparts.ru
+[2021-09-27 21:19:49,397] INFO - email sent to support@spb.avantel.ru
+[2021-09-27 21:19:49,470] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>29.09.2021</b> г. в период с <b>17:45</b> до <b>18:15</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>10</b> минут в указанном интервале
+предоставляемых по адресу: Санкт-Петербург, пер. 6-й Верхний, 12а
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-09-27 21:19:49,597] INFO - email sent to rtvolga@gmail.com
+[2021-09-27 21:19:49,641] INFO - email sent to support@spb.avantel.ru
+[2021-09-27 21:19:49,657] INFO - Message compiled: 
+Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>29.09.2021</b> г. в период с <b>17:45</b> до <b>18:15</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>10</b> минут в указанном интервале
+предоставляемых по адресу: Санкт-Петербург, пр-т Энгельса, 160
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>
+[2021-09-27 21:19:49,679] INFO - email sent to smirnova_la@etm.ru
+[2021-09-27 21:19:49,713] INFO - email sent to denisov_ea@etm.ru
+[2021-09-27 21:19:49,788] INFO - email sent to edenisov@etm.ru
+[2021-09-27 21:19:49,814] INFO - email sent to kovaleva_jv@etm.ru
+[2021-09-27 21:19:49,835] INFO - email sent to nmakusheva@etm.ru
+[2021-09-27 21:19:49,859] INFO - email sent to nemtenkova_em@etm.ru
+[2021-09-27 21:19:49,882] INFO - email sent to sgvbt@etm.ru
+[2021-09-27 21:19:49,913] INFO - email sent to amihaylov@nsk.etm.ru
+[2021-09-27 21:19:49,943] INFO - email sent to edenisov@spb.etm.ru
+[2021-09-27 21:19:49,966] INFO - email sent to etrufanov@etm.ru
+[2021-09-27 21:19:50,116] INFO - email sent to khodzhaev_ak@etm.ru
+[2021-09-27 21:19:50,133] INFO - email sent to support@spb.avantel.ru

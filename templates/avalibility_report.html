@@ -15,7 +15,14 @@ function init()
 window.onload = init;
 {{ buttons_script|safe }}
 {{ table_sorter_script|safe }}
+    
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
 </script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
     <div id="notification_create_form">
         <form action="avalibility_report" method="POST">
         <label for="avalibility_report_date_from"></label>
@@ -30,7 +37,11 @@ window.onload = init;
                id="avalibility_report_date_to" 
                name="avalibility_report_date_to" 
                required>
-        <input id="search_btn" type="submit" name="avalibility_report" value="Фильтр"><br>
+        <input id="search_btn" 
+               type="submit" 
+               name="avalibility_report" 
+               value="Фильтр"
+               onclick="loading()"><br>
         <p style="font-size: 12px; color: Grey">
             Даты подставляют время 00:00<br>
             Т.е. от начала дня первой даты до начала дня второй.
@@ -101,4 +112,5 @@ window.onload = init;
         </table>
         {% endfor %}
     </div>
+</div>
 {% endblock %}
