@@ -21,6 +21,8 @@ from lib.zabbix_common import zabbix_common
 from lib.configurator import ifaces_and_vlans, configurator
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
+from lib.zabbix95 import zabbix95
+
 #from lib.snmp_common import snmp_common
 web_utils_app = Flask(__name__)
 

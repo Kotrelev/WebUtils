@@ -171,3 +171,19 @@ class zabbix_common:
         except Exception as err_message:
             logger.error('Ошибка в функции get_address_a {}'.format(str(err_message)))
             return None
+        
+    def get_item(host_id, logger):
+        """
+        """
+        try:
+            zabbix_conn = ZabbixAPI(config.zabbix_link,
+                                    user=config.zabbix_user,
+                                    password=config.zabbix_pass)
+            items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
+                                           'output': ['itemid','name']})
+            zabbix_conn.user.logout()
+            return items
+        
+        except Exception as err_message:
+            logger.error('Ошибка в функции zabbix_common.get_item {}'.format(str(err_message)))
+        
