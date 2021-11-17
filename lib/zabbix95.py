@@ -1,5 +1,6 @@
+import config
 from lib.common import mysql
-from lib.common import zabbix_common
+from lib.zabbix_common import zabbix_common
 
 class zabbix95:
     def get_ifaces(logger):
@@ -56,7 +57,7 @@ class zabbix95:
             if not host_id:
                 return None, 'Узел {} не найден в Zabbix'.format(node)
                 
-            items = get_item(host_id, logger)
+            items = zabbix_common.get_item(host_id, logger)
                                         
             iface_full = [re.search('Interface (.+\)):', x['name']).group(1) 
                         for x in items['result'] 
@@ -72,16 +73,13 @@ class zabbix95:
             
     def validate_base(zabbix95_ifaces, logger):
         try:
-            zabbix_conn = ZabbixAPI(config.zabbix_link,
-                                    user=config.zabbix_user,
-                                    password=config.zabbix_pass)
             
             validation_msg = ''
             nodes_set = {node for neigh in zabbix95_ifaces 
                          for node in zabbix95_ifaces[neigh]}
             nodes_dict = {x: [] for x in nodes_set}
             for node in nodes_set:
-                host_arr = hostid_by_name(zabbix_conn, node, logger)
+                host_arr = zabbix_common.hostid_by_name(node, logger)
                 host_id = ''
                 if not host_arr:
                     validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
@@ -93,8 +91,7 @@ class zabbix95:
                     validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
                     continue
                 
-                items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
-                                               'output': ['itemid','name']})
+                items = zabbix_common.get_item(host_id, logger)
                                                
                 for nei in zabbix95_ifaces:
                     for host in zabbix95_ifaces[nei]:
@@ -104,8 +101,6 @@ class zabbix95:
                             if any(iface in x['name'] for x in items['result']):
                                 continue
                             validation_msg += 'Интерфейс не найден {} | {} | {}<br>'.format(nei, host, iface)
-                                               
-            zabbix_conn.user.logout()
                 
             return validation_msg
                 
@@ -152,7 +147,7 @@ class zabbix95:
                 msg = '<h2>'+neighbour+'</h2><br>'
                 for hostname in zabbix95_ifaces[neighbour]:
                     host_id = ''
-                    host_arr = hostid_by_name(zabbix_conn, hostname, logger)
+                    host_arr = zabbix_common.hostid_by_name(hostname, logger)
                     if not host_arr:
                         return 'Узел {} не найден в Zabbix'.format(hostname)
                     for host in host_arr:
@@ -212,7 +207,7 @@ class zabbix95:
                             len(zabbix95_ifaces[neighbour][hostname]) > 1):
                             msg = msg + str(tx_item['name'])+'<br>'
                             msg = msg + str(rx_item['name'])+'<br>'
-                            msg = message_form(msg, values_tx, values_rx, values_all)
+                            msg = zabbix95.message_form(msg, values_tx, values_rx, values_all)
                             
                 if (len(zabbix95_ifaces[neighbour]) > 1 or
                     any(len(zabbix95_ifaces[neighbour][hn]) > 1 
@@ -222,7 +217,7 @@ class zabbix95:
                 values_tx = [values_aggregated_tx[tcode] for tcode in values_aggregated_tx]
                 values_rx = [values_aggregated_rx[tcode] for tcode in values_aggregated_rx]
                 values_all = [values_aggregated_all[tcode] for tcode in values_aggregated_all]
-                msg = message_form(msg, values_tx, values_rx, values_all)
+                msg = zabbix95.message_form(msg, values_tx, values_rx, values_all)
                 html_report.append(msg)
             zabbix_conn.user.logout()
             return html_report

@@ -1,3 +1,4 @@
+import config
 import pymysql.cursors
 class mysql:
     def local_sql_conn():

@@ -1840,13 +1840,13 @@ def zabbix95_create_report(zabbix95_ifaces, fromd, tilld, checked, logger):
         return('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))
         
 @web_utils_app.route("/zabbix95", methods=['POST', 'GET'])
-def zabbix95(msg=''):
+def zabbix95_init(msg=''):
 
-    zabbix95_ifaces = get_zabbix95_ifaces(logger)
+    zabbix95_ifaces = zabbix95.get_ifaces(logger)
     span_dict = {neigh: sum(len(zabbix95_ifaces[neigh][node]) 
                  for node in zabbix95_ifaces[neigh]) 
                  for neigh in zabbix95_ifaces}
-    validation_msg = validate_zabbix95_base(zabbix95_ifaces, logger)
+    validation_msg = zabbix95.validate_base(zabbix95_ifaces, logger)
     
     return render_template("zabbix95.html",
                            msg = msg,
