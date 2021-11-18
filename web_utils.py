@@ -1384,12 +1384,12 @@ def get_avalibility_report(fromd, tilld, logger):
                                 user=config.zabbix_user,
                                 password=config.zabbix_pass)
         
-        hosts = zabbix_conn.host.get(monitored_hosts=1, 
-                                     output=['name'], 
-                                     selectGroups=[], 
-                                     selectGraphs=[])
-        graphs = zabbix_conn.graph.get(output=['graphid'], 
-                                       search={'name': 'Доступность'})
+        hosts = zabbix_conn.host.get(monitored_hosts = 1, 
+                                     output = ['name'], 
+                                     selectGroups = [], 
+                                     selectGraphs = [])
+        graphs = zabbix_conn.graph.get(output = ['graphid'], 
+                                       search = {'name': 'Доступность'})
         graphs_arr =  [g['graphid'] for g in graphs]
         host_list = [h['hostid'] for h in hosts]
         events = zabbix_conn.event.get(time_from = fromd, 
@@ -1402,7 +1402,8 @@ def get_avalibility_report(fromd, tilld, logger):
                                                  'value'])
 
         #[{'hostid': '10258', 'name': 'RTU2 iLo4', 'groups': [{'groupid': '15'}]}, {...}]
-        groups = zabbix_conn.hostgroup.get(output='extend', search={'name':'Avantel'})
+        groups = zabbix_conn.hostgroup.get(output = 'extend', 
+                                           search = {'name':'Avantel'})
         #[{'groupid': '15', 'name': 'Avantel IPMI', 'internal': '0', 'flags': '0'}, {...}]
         zabbix_conn.user.logout()
         #ppi = [x for x in pp['result'] if 'ICMP' in x['name']]
@@ -1604,241 +1605,6 @@ def avalibility_report(msg=''):
 ###
 ### Zabbix95
 ###
-
-def get_zabbix95_ifaces(logger):
-    try:
-        connection = local_sql_conn()
-        req = ("select * from Zabbix95")
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            zabbix95 = cursor.fetchall()
-        connection.close()
-        
-        # преобразуем список словарей из базы в словарь
-        zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: i['id']
-            for i in zabbix95 if i['peer'] == p['peer'] and i['node'] == n['node']} 
-            for n in zabbix95 if n['peer'] == p['peer']} for p in zabbix95}
-            
-        return zabbix95_ifaces
-
-    except Exception as err_message:
-        logger.error('Ошибка в функции get_zabbix95_ifaces {}'.format(str(err_message)))
-
-def sql_del_iface_zabbix95(int_id):
-    try:
-        connection = local_sql_conn()
-        req = ("delete from Zabbix95 where id = '{}'".format(int_id))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-        connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_del_iface_zabbix95 {}'.format(str(err_message)))
-        
-def sql_add_iface_zabbix95(neighbour, node, interface, logger):
-    try:
-        connection = local_sql_conn()
-        req = ("insert into Zabbix95(peer, node, interface)"
-               " values ('{}', '{}', '{}');".format(neighbour, node, interface))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-        connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_add_iface_zabbix95 {}'.format(str(err_message)))
-        
-def validate_zabbix95_iface(neighbour, node, iface, logger):
-    try:
-        zabbix_conn = ZabbixAPI(config.zabbix_link,
-                                user=config.zabbix_user,
-                                password=config.zabbix_pass)
-        host_arr = hostid_by_name(zabbix_conn, node, logger)
-        host_id = ''
-        if not host_arr:
-            return None, 'Узел {} не найден в Zabbix'.format(node)
-        for host in host_arr:
-            if host['host'] == node or host['name'] == node:
-                host_id = host['hostid']
-        if not host_id:
-            return None, 'Узел {} не найден в Zabbix'.format(node)
-            
-        items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
-                                    'output': ['itemid','name']})
-        zabbix_conn.user.logout()
-                                    
-        iface_full = [re.search('Interface (.+\)):', x['name']).group(1) 
-                    for x in items['result'] 
-                    if any(y in x['name'] for y in [iface+'(', '('+iface+')']) 
-                    and 'received' in x['name']]
-        if len(iface_full) != 1:
-            return None, 'Порт не найден на узле {}'.format(node)
-            
-        return iface_full[0], 'Порт добавлен'
-            
-    except Exception as err_message:
-        logger.error('Ошибка в функции validate_zabbix95_iface {}'.format(str(err_message)))
-        
-def validate_zabbix95_base(zabbix95_ifaces, logger):
-    try:
-        zabbix_conn = ZabbixAPI(config.zabbix_link,
-                                user=config.zabbix_user,
-                                password=config.zabbix_pass)
-        
-        validation_msg = ''
-        nodes_set = {node for neigh in zabbix95_ifaces 
-                     for node in zabbix95_ifaces[neigh]}
-        nodes_dict = {x: [] for x in nodes_set}
-        for node in nodes_set:
-            host_arr = hostid_by_name(zabbix_conn, node, logger)
-            host_id = ''
-            if not host_arr:
-                validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
-                continue
-            for host in host_arr:
-                if host['host'] == node or host['name'] == node:
-                    host_id = host['hostid']
-            if not host_id:
-                validation_msg += 'Узел {} не найден в Zabbix<br>'.format(node)
-                continue
-            
-            items = zabbix_conn.do_request('item.get', {'hostids':[host_id],
-                                           'output': ['itemid','name']})
-                                           
-            for nei in zabbix95_ifaces:
-                for host in zabbix95_ifaces[nei]:
-                    if host != node:
-                        continue
-                    for iface in zabbix95_ifaces[nei][host]:
-                        if any(iface in x['name'] for x in items['result']):
-                            continue
-                        validation_msg += 'Интерфейс не найден {} | {} | {}<br>'.format(nei, host, iface)
-                                           
-        zabbix_conn.user.logout()
-            
-        return validation_msg
-            
-    except Exception as err_message:
-        logger.error('Ошибка в функции validate_zabbix95_base {}'.format(str(err_message)))
-        
-def message_form(msg, values_tx, values_rx, values_all):
-
-    if not values_tx or not values_rx:
-        msg = msg + 'No data<br>'
-        return msg
-    msg = msg + str('Data elements (quantity): '+str(len(values_all))+'<br>')
-    msg = msg + str('Max traffic tx: '+
-                    str(round(sorted(values_tx)[-1]/1000000000, 3))+' Gbit<br>')
-    msg = msg + str('Max traffic rx: '+
-                    str(round(sorted(values_rx)[-1]/1000000000, 3))+' Gbit<br>')
-    msg = msg + str('Max traffic all: '+
-                    str(round(sorted(values_all)[-1]/1000000000, 3))+' Gbit<br>')
-    # сортируем список значений (в битах)
-    # обрезаем последние 0,5% списка (самые большие)
-    # берем последнее значение и три раза делим на 1000 (лярд) чтобы получить Гбит
-    tx95 = str('95Percentile tx: {} Gbit'.format(
-        str(round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 3))))
-    msg = msg + tx95 + '<br>'
-    rx95 = str('95Percentile rx: {} Gbit'.format(
-        str(round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 3))))
-    msg = msg + rx95 + '<br>'
-    msg = msg + str('95Percentile all: '+str(
-                    round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 3)
-                    )+' Gbit<br>')
-    return msg
-       
-def zabbix95_create_report(zabbix95_ifaces, fromd, tilld, checked, logger):
-    try:
-        html_report = []
-        zabbix_conn = ZabbixAPI(config.zabbix_link,
-                                user=config.zabbix_user,
-                                password=config.zabbix_pass)
-        for neighbour in checked:
-            # Генерячим словарик с таймкодами каждой минуты за прошедший месяц
-            values_aggregated_tx = {m: 0 for m in range(fromd, tilld, 60)}
-            values_aggregated_rx = {m: 0 for m in range(fromd, tilld, 60)}
-            values_aggregated_all = {m: 0 for m in range(fromd, tilld, 60)}
-            msg = '<h2>'+neighbour+'</h2><br>'
-            for hostname in zabbix95_ifaces[neighbour]:
-                host_id = ''
-                host_arr = hostid_by_name(zabbix_conn, hostname, logger)
-                if not host_arr:
-                    return 'Узел {} не найден в Zabbix'.format(hostname)
-                for host in host_arr:
-                    if host['host'] == hostname or host['name'] == hostname:
-                        host_id = host['hostid']
-                if not host_id:
-                    return 'Узел {} не найден в Zabbix'.format(hostname)
-
-                msg = msg + '<b>' + hostname+'</b><br>'
-                for port in zabbix95_ifaces[neighbour][hostname]:
-                    items = zabbix_conn.do_request('item.get', {'hostids':[host_id], 
-                                                   'output': ['itemid','name'], 'search':{'name': port}})
-                    if not items['result']:
-                        return('Потерял порт '+neighbour+' | '+hostname+' | '+port)
-            
-                    for item in items['result']:
-                        if 'sent' in item['name']:
-                            tx_item = item
-                        elif 'received' in item['name']:
-                            rx_item = item
-                    values_tx = []
-                    values_rx = []
-                    values_all = []
-                    history_tx = zabbix_conn.history.get(itemids=tx_item['itemid'],time_from=fromd, time_till=tilld)
-                    history_rx = zabbix_conn.history.get(itemids=rx_item['itemid'],time_from=fromd, time_till=tilld)
-                    if not history_tx or not history_rx:
-                        msg += 'Для {}: {} нет данных!<br>'.format(hostname, port)
-
-                    # переделываем данные в словари. Ключ - таймкод. Сразу округляем до минут.
-                    history_tx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_tx}
-                    history_rx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_rx}
-                    
-                    # перетаскиваем данные в массивы и агрегируем их же в словари
-                    for t in history_tx:
-                        values_tx.append(int(history_tx[t]['value']))
-                        values_aggregated_tx[t] += int(history_tx[t]['value'])
-                        values_aggregated_all[t] += int(history_tx[t]['value'])
-                    for r in history_rx:
-                        values_rx.append(int(history_rx[r]['value']))
-                        values_aggregated_rx[r] += int(history_rx[r]['value'])
-                        values_aggregated_all[r] += int(history_rx[r]['value'])
-                        
-                    # добиваем недостающие данные нулями
-                    data_len = len(values_aggregated_all)
-                    for x in range(min(len(values_tx),len(values_rx))):
-                        values_all.append(values_tx[x]+values_rx[x])
-                    if len(values_tx) < data_len:
-                        values_tx += [0 for x in range(data_len-len(values_tx))]
-                    if len(values_rx) < data_len:
-                        values_rx += [0 for x in range(data_len-len(values_rx))]
-                    if len(values_all) < data_len:
-                        values_all += [0 for x in range(data_len-len(values_all))]
-                                    
-                    msg = msg + '<b>'+port+'</b><br>'
-                    # Если у нейбора больше одного порта, выплевываем промежуточный итог
-                    if (len(zabbix95_ifaces[neighbour]) > 1 or
-                        len(zabbix95_ifaces[neighbour][hostname]) > 1):
-                        msg = msg + str(tx_item['name'])+'<br>'
-                        msg = msg + str(rx_item['name'])+'<br>'
-                        msg = message_form(msg, values_tx, values_rx, values_all)
-                        
-            if (len(zabbix95_ifaces[neighbour]) > 1 or
-                any(len(zabbix95_ifaces[neighbour][hn]) > 1 
-                    for hn in zabbix95_ifaces[neighbour])):
-                msg = msg + '<br><b>Aggregated:</b><br>'
-            # Конвертим дикты в списки, таймкоды больше не нужны
-            values_tx = [values_aggregated_tx[tcode] for tcode in values_aggregated_tx]
-            values_rx = [values_aggregated_rx[tcode] for tcode in values_aggregated_rx]
-            values_all = [values_aggregated_all[tcode] for tcode in values_aggregated_all]
-            msg = message_form(msg, values_tx, values_rx, values_all)
-            html_report.append(msg)
-        zabbix_conn.user.logout()
-        return html_report
-        
-    except Exception as err_message:
-        logger.error('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))
-        return('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))
-        
 @web_utils_app.route("/zabbix95", methods=['POST', 'GET'])
 def zabbix95_init(msg=''):
 
@@ -1863,20 +1629,20 @@ def zabbix95_add():
     node = request.form['zabbix95_add_node']
     iface = request.form['zabbix95_add_iface']
     
-    interface, msg = validate_zabbix95_iface(neighbour, node, iface, logger)
+    interface, msg = zabbix95.validate_iface(neighbour, node, iface, logger)
     
     if interface:
-        sql_add_iface_zabbix95(neighbour, node, interface, logger)
+        zabbix95.sql_add_iface(neighbour, node, interface, logger)
     
-    return zabbix95(msg)
+    return zabbix95_init(msg)
 
 @web_utils_app.route("/zabbix95_delete_<iface_id>", methods=['POST', 'GET'])
 def zabbix95_delete(iface_id):
     if request.method == 'GET':
         return redirect(url_for('zabbix95'))
-    sql_del_iface_zabbix95(iface_id)
+    zabbix95.sql_del_iface(iface_id)
     msg = "Интерфейс удален"
-    return zabbix95(msg)
+    return zabbix95_init(msg)
     
 @web_utils_app.route("/zabbix95_report", methods=['POST', 'GET'])
 def zabbix95_report():
@@ -1892,13 +1658,13 @@ def zabbix95_report():
     checked = request.form.getlist('zabbix95_report_check')
     if not checked:
         msg = 'Галочку поставь кого опрашивать'
-        return zabbix95(msg)
+        return zabbix95_init(msg)
     
-    zabbix95_ifaces = get_zabbix95_ifaces(logger)
+    zabbix95_ifaces = zabbix95.get_ifaces(logger)
     
-    report = zabbix95_create_report(zabbix95_ifaces, fromd, tilld, checked, logger)
+    report = zabbix95.create_report(zabbix95_ifaces, fromd, tilld, checked, logger)
     if type(report) == str:
-        return zabbix95(report)
+        return zabbix95_init(report)
         
     report = '\n'.join(report)
 

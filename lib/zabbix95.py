@@ -1,4 +1,5 @@
-import config
+import config, re
+from pyzabbix import ZabbixAPI
 from lib.common import mysql
 from lib.zabbix_common import zabbix_common
 
