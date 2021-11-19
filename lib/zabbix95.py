@@ -14,7 +14,7 @@ class zabbix95:
             connection.close()
             
             # преобразуем список словарей из базы в словарь
-            zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: i['id']
+            zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: {'id': i['id']}
                 for i in zabbix95 if i['peer'] == p['peer'] and i['node'] == n['node']} 
                 for n in zabbix95 if n['peer'] == p['peer']} for p in zabbix95}
                 
@@ -134,6 +134,26 @@ class zabbix95:
                         )+' Gbit<br>')
         return msg
            
+        
+#    def create_csv(zabbix95_ifaces, from_dt, till_dt, checked, logger):
+#        try:
+#            from_str = format(from_dt, '%d-%m-%Y')
+#            till_str = format(till_dt, '%d-%m-%Y')
+#            from_ts = int(from_dt.timestamp())
+#            till_ts = int(till_dt.timestamp())
+#            for nei in checked:
+#                fname = f'{nei}_{from_str}_{till_str}'
+#                with open(config.temp_folder+'/'+fname+'.csv','w') as csv:
+#                    for ts in range (fromd, tilld, 60):
+#                        csv.write(ts+';'+)
+#                        for hostname
+#
+#                        
+#                        csv.write(rtime+';'+str(values[index])+'\n')
+#
+#        except Exception as err_message:
+#            logger.error('Ошибка в функции zabbix95.create_csv {}'.format(str(err_message)))
+        
     def create_report(zabbix95_ifaces, fromd, tilld, checked, logger):
         try:
             html_report = []
@@ -178,29 +198,41 @@ class zabbix95:
                             msg += 'Для {}: {} нет данных!<br>'.format(hostname, port)
     
                         # переделываем данные в словари. Ключ - таймкод. Сразу округляем до минут.
-                        history_tx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_tx}
-                        history_rx = {int(x['clock']) - (int(x['clock']) % 60): x for x in history_rx}
+                        history_tx = {int(x['clock']) - (int(x['clock']) % 60): x['value'] for x in history_tx}
+                        history_rx = {int(x['clock']) - (int(x['clock']) % 60): x['value'] for x in history_rx}
+                        
+                        # записываем в данные по интерфейсу в основной словарь. Для csv-шки.
+                        for tc in values_aggregated_all:
+                            if tc not in history_tx:
+                                history_tx[tc] = 0
+                            if tc not in history_rx:
+                                history_rx[tc] = 0
+                        zabbix95_ifaces[neighbour][hostname][port]['history_tx'] = history_tx
+                        zabbix95_ifaces[neighbour][hostname][port]['history_rx'] = history_rx
                         
                         # перетаскиваем данные в массивы и агрегируем их же в словари
+                        # 
                         for t in history_tx:
-                            values_tx.append(int(history_tx[t]['value']))
-                            values_aggregated_tx[t] += int(history_tx[t]['value'])
-                            values_aggregated_all[t] += int(history_tx[t]['value'])
+                            values_tx.append(int(history_tx[t]))
+                            values_aggregated_tx[t] += int(history_tx[t])
+                            values_aggregated_all[t] += int(history_tx[t])
                         for r in history_rx:
-                            values_rx.append(int(history_rx[r]['value']))
-                            values_aggregated_rx[r] += int(history_rx[r]['value'])
-                            values_aggregated_all[r] += int(history_rx[r]['value'])
+                            values_rx.append(int(history_rx[r]))
+                            values_aggregated_rx[r] += int(history_rx[r])
+                            values_aggregated_all[r] += int(history_rx[r])
+                            values_all.append(int(history_tx[r])+int(history_rx[r]))
+                            
+                        #for x in range(min(len(values_tx),len(values_rx))):
+                        #    values_all.append(values_tx[x]+values_rx[x])
                             
                         # добиваем недостающие данные нулями
-                        data_len = len(values_aggregated_all)
-                        for x in range(min(len(values_tx),len(values_rx))):
-                            values_all.append(values_tx[x]+values_rx[x])
-                        if len(values_tx) < data_len:
-                            values_tx += [0 for x in range(data_len-len(values_tx))]
-                        if len(values_rx) < data_len:
-                            values_rx += [0 for x in range(data_len-len(values_rx))]
-                        if len(values_all) < data_len:
-                            values_all += [0 for x in range(data_len-len(values_all))]
+                        #data_len = len(values_aggregated_all)
+                        #if len(values_tx) < data_len:
+                        #    values_tx += [0 for x in range(data_len-len(values_tx))]
+                        #if len(values_rx) < data_len:
+                        #    values_rx += [0 for x in range(data_len-len(values_rx))]
+                        #if len(values_all) < data_len:
+                        #    values_all += [0 for x in range(data_len-len(values_all))]
                                         
                         msg = msg + '<b>'+port+'</b><br>'
                         # Если у нейбора больше одного порта, выплевываем промежуточный итог
