@@ -1,5 +1,6 @@
 import config, re
 from pyzabbix import ZabbixAPI
+from datetime import datetime
 from lib.common import mysql
 from lib.zabbix_common import zabbix_common
 
@@ -111,52 +112,68 @@ class zabbix95:
     def message_form(msg, values_tx, values_rx, values_all):
     
         if not values_tx or not values_rx:
-            msg = msg + 'No data<br>'
+            msg += 'No data<br>'
             return msg
-        msg = msg + str('Data elements (quantity): '+str(len(values_all))+'<br>')
-        msg = msg + str('Max traffic tx: '+
-                        str(round(sorted(values_tx)[-1]/1000000000, 3))+' Gbit<br>')
-        msg = msg + str('Max traffic rx: '+
-                        str(round(sorted(values_rx)[-1]/1000000000, 3))+' Gbit<br>')
-        msg = msg + str('Max traffic all: '+
-                        str(round(sorted(values_all)[-1]/1000000000, 3))+' Gbit<br>')
+        msg += str('Data elements (quantity): {}<br>'.format(len(values_all)))
+        msg += 'Max traffic tx: {} Gbit<br>'.format(
+                   round(sorted(values_tx)[-1]/1000000000, 3))
+        msg += 'Max traffic rx: {} Gbit<br>'.format(
+                   round(sorted(values_rx)[-1]/1000000000, 3))
+        msg += 'Max traffic all: {} Gbit<br>'.format(
+                   round(sorted(values_all)[-1]/1000000000, 3))
         # сортируем список значений (в битах)
         # обрезаем последние 0,5% списка (самые большие)
         # берем последнее значение и три раза делим на 1000 (лярд) чтобы получить Гбит
-        tx95 = str('95Percentile tx: {} Gbit'.format(
-            str(round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 3))))
-        msg = msg + tx95 + '<br>'
-        rx95 = str('95Percentile rx: {} Gbit'.format(
-            str(round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 3))))
-        msg = msg + rx95 + '<br>'
-        msg = msg + str('95Percentile all: '+str(
-                        round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 3)
-                        )+' Gbit<br>')
+        msg += '95Percentile tx: {} Gbit<br>'.format(
+            round(sorted(values_tx)[int(len(values_tx)*0.95)-1]/1000000000, 3))
+        msg += '95Percentile rx: {} Gbit<br>'.format(
+            round(sorted(values_rx)[int(len(values_rx)*0.95)-1]/1000000000, 3))
+        msg += '95Percentile all: {} Gbit<br>'.format(
+            round(sorted(values_all)[int(len(values_all)*0.95)-1]/1000000000, 3))
         return msg
            
         
-#    def create_csv(zabbix95_ifaces, from_dt, till_dt, checked, logger):
-#        try:
-#            from_str = format(from_dt, '%d-%m-%Y')
-#            till_str = format(till_dt, '%d-%m-%Y')
-#            from_ts = int(from_dt.timestamp())
-#            till_ts = int(till_dt.timestamp())
-#            for nei in checked:
-#                fname = f'{nei}_{from_str}_{till_str}'
-#                with open(config.temp_folder+'/'+fname+'.csv','w') as csv:
-#                    for ts in range (fromd, tilld, 60):
-#                        csv.write(ts+';'+)
-#                        for hostname
-#
-#                        
-#                        csv.write(rtime+';'+str(values[index])+'\n')
-#
-#        except Exception as err_message:
-#            logger.error('Ошибка в функции zabbix95.create_csv {}'.format(str(err_message)))
+    def create_csv(ifaces, aggregated, from_dt, till_dt, checked, logger):
+        try:
+            from_str = format(from_dt, '%d-%m-%Y')
+            till_str = format(till_dt, '%d-%m-%Y')
+            from_ts = int(from_dt.timestamp())
+            till_ts = int(till_dt.timestamp())
+            links = {}
+            
+            for nei in checked:
+                # генерим заголовки столбцов
+                csv_text = 'Timestamp;DateTime;'
+                for node in ifaces[nei]:
+                    for iface in ifaces[nei][node]:
+                        csv_text += f'{node}_{iface}_tx;{node}_{iface}_rx;'
+                csv_text += 'Aggregated_tx;Aggregated_rx\n'
+                # а теперь сами столбцы с данными
+                for ts in range (from_ts, till_ts, 60): 
+                    timestr = format(datetime.fromtimestamp(ts), '%Y-%m-%d %H:%M')
+                    csv_text += '{};{};'.format(str(ts), timestr)
+                    for node in ifaces[nei]:
+                        for iface in ifaces[nei][node]:
+                            csv_text += '{};{};'.format(ifaces[nei][node][iface]['history_tx'][ts],
+                                                        ifaces[nei][node][iface]['history_rx'][ts])
+                    csv_text += '{};{}\n'.format(aggregated[nei]['tx'][ts],
+                                                 aggregated[nei]['rx'][ts])
+                    
+                # и пишем в файл
+                fname = f'{nei}_{from_str}_{till_str}.csv'
+                with open(config.temp_folder+'/'+fname,'w') as csv:
+                    csv.write(csv_text)
+                
+                # и линк на файл делаем
+                links[nei] = config.link+config.temp_folder_name+'/'+fname
+            return links
+        except Exception as err_message:
+            logger.error('Ошибка в функции zabbix95.create_csv {}'.format(str(err_message)))
         
     def create_report(zabbix95_ifaces, fromd, tilld, checked, logger):
         try:
             html_report = []
+            aggregated_data = {}
             zabbix_conn = ZabbixAPI(config.zabbix_link,
                                     user=config.zabbix_user,
                                     password=config.zabbix_pass)
@@ -252,8 +269,11 @@ class zabbix95:
                 values_all = [values_aggregated_all[tcode] for tcode in values_aggregated_all]
                 msg = zabbix95.message_form(msg, values_tx, values_rx, values_all)
                 html_report.append(msg)
+                #
+                aggregated_data[neighbour] = {'tx': values_aggregated_tx,
+                                              'rx': values_aggregated_rx}
             zabbix_conn.user.logout()
-            return html_report
+            return html_report, zabbix95_ifaces, aggregated_data
             
         except Exception as err_message:
             logger.error('Ошибка в функции zabbix95_create_report {}'.format(str(err_message)))

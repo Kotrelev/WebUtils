@@ -439,14 +439,22 @@ class configurator:
                     host_list.append(hn)
                 
                 for hn in links:
+                    if hn not in been_there: continue
                     iface = host_dict[current_hostname]['ifaces'][links[hn]]
+                    
                     chain.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
                                                                         'port': iface['name']}})
             # cleaning magistrals 
+            #for chain_host in chain:
+            #    for mag in chain[chain_host].copy():
+            #        if mag not in been_there:
+            #            chain[chain_host].pop(mag)
+                        
+            #{'LTolst9-as1': {'Mira3-ds2': {'ifid': '25', 'port': 'Ethernet1/0/25'}}         
             for chain_host in chain:
-                for mag in chain[chain_host].copy():
-                    if mag not in been_there:
-                        chain[chain_host].pop(mag)
+                for mag in chain[chain_host]:
+                    
+                        
                 
             return chain, host_dict, been_there, 'OK'
         except Exception as err_message:

@@ -1660,18 +1660,30 @@ def zabbix95_report():
         msg = 'Галочку поставь кого опрашивать'
         return zabbix95_init(msg)
     
-    zabbix95_ifaces = zabbix95.get_ifaces(logger)
+    ifaces_data = zabbix95.get_ifaces(logger)
     
-    report = zabbix95.create_report(zabbix95_ifaces, fromd, tilld, checked, logger)
+    report, ifaces_data, aggr_data = zabbix95.create_report(ifaces_data, 
+                                                            fromd, 
+                                                            tilld, 
+                                                            checked, 
+                                                            logger)
     if type(report) == str:
         return zabbix95_init(report)
-        
+
     report = '\n'.join(report)
+    
+    links = zabbix95.create_csv(ifaces_data, 
+                                aggr_data, 
+                                date_from, 
+                                date_to, 
+                                checked, 
+                                logger)
 
     return render_template("zabbix95_report.html", 
                            report=report, 
                            fromd_str=fromd_str, 
-                           tilld_str=tilld_str)
+                           tilld_str=tilld_str,
+                           links = links)
     
 ###
 ### /Zabbix95
