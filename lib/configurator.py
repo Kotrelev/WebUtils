@@ -364,6 +364,8 @@ class ifaces_and_vlans:
                 for i in host_dict[hname]['ifaces']:
                     if i in iface_vlans_dict:
                         host_dict[hname]['ifaces'][i].update(iface_vlans_dict[i])
+            else:
+                logger.error('Failed to get iface_vlans_dict for {}'.format(hname))
             #host_dict[hname]['ifaces'] = {i: {**host_dict[hname]['ifaces'][i], **iface_vlans_dict[i]} 
             #                              for i in iface_vlans_dict
             #                              if i in host_dict[hname]['ifaces']}
@@ -453,7 +455,7 @@ class configurator:
             #{'LTolst9-as1': {'Mira3-ds2': {'ifid': '25', 'port': 'Ethernet1/0/25'}}         
             for chain_host in chain:
                 for mag in chain[chain_host]:
-                    
+                    pass
                         
                 
             return chain, host_dict, been_there, 'OK'
