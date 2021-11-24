@@ -922,7 +922,7 @@ def inventory():
     # И еще разок, чего уж там
     vendord = {x[1]:[0 for x in headers_v] for x in models}
     for model in models:
-        for i in range(3,len(model)-3):
+        for i in range(len(model)-3):
             vendord[model[1]][i] += model[i+3]
     url = '<a href=https://devnet.spb.avantel.ru/inventory_vendor_{}>{}</a>'
     vendors = [[url.format(urllib.parse.quote(x, safe=''), x)] + vendord[x] for x in vendord]
