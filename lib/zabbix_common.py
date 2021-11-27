@@ -99,7 +99,7 @@ class zabbix_common:
         get_interfaces returns list of interfaces as it gets it from zabbix
         
         :param logger: just logger to log things
-        :return: list of dicts
+        :return: list of dicts. Keys: ip, hostid
         """
         try:
             zabbix_conn = ZabbixAPI(config.zabbix_link,
