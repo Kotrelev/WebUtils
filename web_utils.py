@@ -1640,7 +1640,7 @@ def zabbix95_add():
 def zabbix95_delete(iface_id):
     if request.method == 'GET':
         return redirect(url_for('zabbix95'))
-    zabbix95.sql_del_iface(iface_id)
+    zabbix95.sql_del_iface(iface_id, logger)
     msg = "Интерфейс удален"
     return zabbix95_init(msg)
     

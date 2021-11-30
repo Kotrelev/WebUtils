@@ -15,19 +15,20 @@ class zabbix95:
             connection.close()
             
             # преобразуем список словарей из базы в словарь
-            zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: {'id': i['id']}
+            zabbix95_ifaces = {p['peer']: {n['node']: {i['interface']: {'id': str(i['id'])}
                 for i in zabbix95 if i['peer'] == p['peer'] and i['node'] == n['node']} 
                 for n in zabbix95 if n['peer'] == p['peer']} for p in zabbix95}
-                
+            
             return zabbix95_ifaces
     
         except Exception as err_message:
             logger.error('Ошибка в функции get_zabbix95_ifaces {}'.format(str(err_message)))
     
-    def sql_del_iface(int_id):
+    def sql_del_iface(int_id, logger):
         try:
             connection = mysql.local_sql_conn()
             req = ("delete from Zabbix95 where id = '{}'".format(int_id))
+            logger.info('executing {}'.format(req))
             with connection.cursor() as cursor:
                 cursor.execute(req)
             connection.commit()

@@ -167,12 +167,12 @@ function loading() {
                         {% endif %}
                         <td>{{ interface }}</td>
                         <td>
-                            <form action="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface] }}" 
+                            <form action="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface].id }}" 
                                   method="POST" 
                                   onsubmit="return confirm('Удаляем {{neighbour}} | {{node}} | {{interface}}?');">
                             <input id="zabbix95_delete_button" 
                                 type="submit" 
-                                name="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface] }}" 
+                                name="zabbix95_delete_{{ zabbix95_ifaces[neighbour][node][interface].id }}" 
                                 value="❌">
                             </form>
                         </td>

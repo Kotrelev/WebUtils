@@ -89,7 +89,7 @@ class zabbix_common:
             return sorted([h['host'] 
                            for h in hosts 
                            if any(x in h['host'] 
-                                  for x in ['-as', '-ds', '-cs'])
+                                  for x in ['-as', '-ds', '-cs', '-cr'])
                           ])
         except Exception as err_message:
             logger.error('Ошибка в функции zabbix_common.get_hostname_list {}'.format(str(err_message)))
