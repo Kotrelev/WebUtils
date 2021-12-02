@@ -398,10 +398,13 @@ class configurator:
                     # джуниковские фейк интерфейсы
                     continue
                 mag = re.search(config.mag_regex, iface['description'])
+                if mag and mag.groupdict()['lag']: 
+                    continue
                 if mag and mag.groupdict()['uplink'] and mag.groupdict()['host'] not in uplinks:
                     uplinks[mag.groupdict()['host']] = ifid
                 if mag and mag.groupdict()['host'] not in links:
                     links[mag.groupdict()['host']] = ifid
+            #{'host-as1': {'host-as2': '1', 'host-as3': '2'}}
             return uplinks, links
 
         except Exception as err_message:
@@ -413,6 +416,7 @@ class configurator:
             been_there = []
             host_dict = {}
             chain = {}
+            all_links = {}
             while host_list:
                 logger.info('HOSTLIST '+str(host_list))
                 current_hostname = host_list[0]
@@ -441,11 +445,26 @@ class configurator:
                     host_list.append(hn)
                 
                 for hn in links:
-                    if hn not in been_there: continue
-                    iface = host_dict[current_hostname]['ifaces'][links[hn]]
-                    
-                    chain.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
-                                                                        'port': iface['name']}})
+                    ifname = host_dict[current_hostname]['ifaces'][links[hn]]['name']
+                    all_links.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
+                                                                            'port': ifname}})
+                
+            for hn in all_links:
+                for link in all_links[hn]:
+                    if link in been_there:
+                        ifid = all_links[hn][link]['ifid'] 
+                        iftype = 'trunk'
+                        if ('Tag' in host_dict[hn]['ifaces'][ifid] 
+                            and not host_dict[hn]['ifaces'][ifid]['Tag'] 
+                            and host_dict[hn]['ifaces'][ifid]['Untag']):
+                            iftype = 'access'
+                        ifdict = all_links[hn][link]
+                        ifdict.update({'type': iftype})
+                        chain.setdefault(hn, {}).update({link: ifdict})
+        
+            #        if hn not in been_there: continue
+            #        chain.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
+            #                                                            'port': ifname}})
             # cleaning magistrals 
             #for chain_host in chain:
             #    for mag in chain[chain_host].copy():
