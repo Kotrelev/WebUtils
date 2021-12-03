@@ -384,6 +384,7 @@ class configurator:
     def get_links(hostname, iface_dict, logger):
         try:
             uplinks = {}
+            pplinks = {}
             links = {}
             for ifid, iface in iface_dict.items():
                 if iface['type'] not in ['6', '161']:
@@ -402,15 +403,18 @@ class configurator:
                     continue
                 if mag and mag.groupdict()['uplink'] and mag.groupdict()['host'] not in uplinks:
                     uplinks[mag.groupdict()['host']] = ifid
+                if mag and mag.groupdict()['pp'] and mag.groupdict()['host'] not in pplinks:
+                    pplinks[mag.groupdict()['host']] = ifid
+                    
                 if mag and mag.groupdict()['host'] not in links:
                     links[mag.groupdict()['host']] = ifid
             #{'host-as1': {'host-as2': '1', 'host-as3': '2'}}
-            return uplinks, links
+            return uplinks, pplinks, links
 
         except Exception as err_message:
-            logger.error('{}: Ошибка в функции configurator.get_uplinks {}'.format(hostname, str(err_message)))
+            logger.error('{}: Ошибка в функции configurator.get_links {}'.format(hostname, str(err_message)))
             
-    def get_chain(hostname, logger):
+    def get_chain(hostname, logger, to_mpls = True):
         try:
             host_list = [hostname]
             been_there = []
@@ -436,9 +440,21 @@ class configurator:
                 logger.info('HOST '+str(current_hostname)+' IP '+str(hostip))
                 host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
                 
-                uplinks, links = configurator.get_links(hostname, 
-                                                          host_dict[current_hostname]['ifaces'], 
-                                                          logger)
+                uplinks, pplinks, links = configurator.get_links(hostname, 
+                                                                 host_dict[current_hostname]['ifaces'], 
+                                                                 logger)
+                # Если не нашли аплинков, пробуем найти джуник за п2п линками.
+                # Позже заменю проверку на джуник на проверку MPLS-ready или типа того
+                if (not uplinks
+                    and to_mpls
+                    and pplinks 
+                    and host_dict[current_hostname]['vendor_cls'].vendor() == 'Juniper'):
+                    for hn in pplinks:
+                        if hn in host_list or hn in been_there:
+                            continue
+                        host_list.append(hn)
+                
+                
                 for hn in uplinks:
                     if hn in host_list or hn in been_there:
                         continue
@@ -448,7 +464,8 @@ class configurator:
                     ifname = host_dict[current_hostname]['ifaces'][links[hn]]['name']
                     all_links.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
                                                                             'port': ifname}})
-                
+            # Формируем словарь-цепочку устройств. {Хост1: {Сосед1: {port: fa1, ifid: 1, type: trunk}},
+            #                                       Сосед1: {Хост1: {port: fa1, ifid: 1, type: trunk}}}
             for hn in all_links:
                 for link in all_links[hn]:
                     if link in been_there:
@@ -471,12 +488,51 @@ class configurator:
             #        if mag not in been_there:
             #            chain[chain_host].pop(mag)
                         
-            #{'LTolst9-as1': {'Mira3-ds2': {'ifid': '25', 'port': 'Ethernet1/0/25'}}         
-            for chain_host in chain:
-                for mag in chain[chain_host]:
-                    pass
+            #{'LTolst9-as1': {'Mira3-ds2': {'ifid': '25', 'port': 'Ethernet1/0/25', 'type': 'trunk'}}         
+            #for chain_host in chain:
+            #    for mag in chain[chain_host]:
+            #        pass
                         
                 
             return chain, host_dict, been_there, 'OK'
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_chain {}'.format(current_hostname, str(err_message)))
+            
+    def path_maker(chains, host_dict, logger):
+        try:
+
+            connections = {}
+            for endpoint in chains:
+                current_hostname = endpoint
+                for endpoint2 in chains:
+                    if endpoint2 == endpoint: 
+                        continue
+                    if (endpoint in connections 
+                        and endpoint2 in connections): 
+                        continue
+                    for host in chains[endpoint]:
+                        if host in endpoint2:
+                            connections.setdefault(endpoint, {}).update({endpoint2: host})
+                            connections.setdefault(endpoint2, {}).update({endpoint: host})
+                            break
+                            
+                            
+                            #{chain1: {chain2: hostx},
+                            #         {chain3: hosty}
+                            # chain2: {chain1: hostx}}
+                            # chain3: {chain1: hosty}
+                            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
