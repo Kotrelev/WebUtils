@@ -17,8 +17,12 @@ window.onload = init;
 {{ table_sorter_script|safe }}
     
 function loading() {
-    document.getElementById("loader_div").style.display = "block";
-    document.getElementById("content_div").style.display = "none";
+    const fr = document.getElementById("avalibility_report_date_from");
+    const to = document.getElementById("avalibility_report_date_to");
+    if (fr.checkValidity() && to.checkValidity()) {
+        document.getElementById("loader_div").style.display = "block";
+        document.getElementById("content_div").style.display = "none";
+    }
 }
 </script>
 <div id="loader_div" class="loader"></div> 

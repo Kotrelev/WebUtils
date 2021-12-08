@@ -16,8 +16,12 @@ function zabbix95_switch_form() {
 }
     
 function loading() {
-    document.getElementById("loader_div").style.display = "block";
-    document.getElementById("content_div").style.display = "none";
+    const fr = document.getElementById("zabbix95_report_date_from");
+    const to = document.getElementById("zabbix95_report_date_to");
+    if (fr.checkValidity() && to.checkValidity()) {
+        document.getElementById("loader_div").style.display = "block";
+        document.getElementById("content_div").style.display = "none";
+    }
 }
 </script>
 <div id="loader_div" class="loader"></div> 
@@ -29,7 +33,7 @@ function loading() {
     </div>
     <br>
     {% endif %}
-    <h3>{{msg}}</h3>
+    <div class="alarm"><h3>{{msg}}</h3></div>
     <br>
     <div id="zabbix95_report_div">
         <button type="reset"
