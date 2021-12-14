@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+#Python 3.7.3
+link = 'https://devnet.spb.avantel.ru/'
+log_file = '/var/log/web_utils/web_utils.log'
+zabbix_link = 'https://monitor.spb.avantel.ru/zabbix'
+zabbix_user = ''
+zabbix_pass = ''
+zabbix_map_link = 'https://monitor.spb.avantel.ru/zabbix/zabbix.php?action=map.view&sysmapid='
+local_mysqlhost = 'localhost'
+local_mysqluser = ''
+local_mysqlpass = ''
+local_mysqldb = 'Avantel'
+community = 'AvanSPB'
+temp_folder = '/usr/local/bin/Python37/WebUtils/static/temp'
+temp_folder_name = 'temp'
+
+# configurator
+snmp_comm_ro = ['AvanSPB','public']
+ssh_tacacs_username = ''
+ssh_tacacs_password = ''
+storage_last = '/srv/AvantelConfigs/ConfigBackups/Last/'
+local_username = ''
+local_password = ''
+isp_rx = '(_(?P<service>(vlan|qnq|inet|fiber))(?P<isp>[a-zA-Z\-]+))?'
+port_rx = '(_(?P<ptype>[fegps])(?P<pnum>\d{1,2}))?(?P<mc>_mc|_MC)?'
+hname_rx = '(?P<host>(?P<name>([A-Z]+\.)?(\d+)?[a-zA-Z\-]+)(?P<tail>[a-z0-9\-]+([A-Z]+)?(k\d+)?(s\d+)?-(as|ds|cs|dr|cr)\d+))'
+pref_rx = '(?P<lag>LAG_)?(?P<uplink>UP_|[S1-6]_UP?_)?(?P<pp>PP_)?'
+mag_regex = f'^{pref_rx}{hname_rx}{port_rx}{isp_rx}'
+
+# notification
+get_contract_api = 'https://dev.spb.avantel.ru/api/v1/cont/'
+from_addr = "support@spb.avantel.ru"
+smtp_server = "mail.spb.avantel.ru"
+notification_log_folder = '/usr/local/bin/Python37/WebUtils/notification/log/'
+notification_msg = '''Уважаемый клиент АО «Авантел»!
+<br>
+<br>Информируем Вас, что <b>{}</b> г. в период с <b>{}</b> до <b>{}</b> (мск)
+будут проведены работы на сети.
+<br>
+<br>Работы будут сопровождаться перерывом услуг связи продолжительностью до <b>{}</b> минут в указанном интервале
+предоставляемых по адресу: {}
+<br>
+<br>По всем возникающим вопросам Вы можете обратиться в круглосуточную службу технической поддержки компании АО «Авантел» по тел: 8 (812) 4016003  или написать письмо на адрес support@spb.avantel.ru
+<br>
+<br><font color="#757575">-- 
+<br>С уважением,
+<br>инженер технической поддержки
+<br>___________________________________
+<br>АО «АВАНТЕЛ»
+<br>Санкт-Петербург, Белоостровская ул., 6
+<br>тел.: +7 812 401-60-00
+<br>www.avantel.ru</font>'''
+notifier_tg_id = '-1001460690948'#'-1001299276887' #
+notifier_tg_msg = '''<b>Напоминание о работах!</b>\n
+Начало: {}
+Окончание: {}
+Перерыв связи: {} минут\n
+Адреса:\n{}\n({})'''
+
+#notifier
+tg_id_name_dict = {'-1001465305426': 'АвантелТЕХ',
+                   '-1001460690948': 'Техническая поддержка Авантел',
+                   '-1001054349366': 'Авантел-СПб'}
