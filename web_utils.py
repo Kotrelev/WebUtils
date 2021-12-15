@@ -761,9 +761,9 @@ def maps_out():
                     return render_template("map_redirect.html", map_id=map_ids[0])
                 # if host id found on many maps
                 else:
-                    for map in map_ids:
-                        mname = mapname_by_mapid(zabbix_conn, map)
-                        maps_arr.append([mname, config.zabbix_map_link+map])
+                    for mapid in map_ids:
+                        mname = mapname_by_mapid(zabbix_conn, mapid)
+                        maps_arr.append([mname, config.zabbix_link+'/zabbix.php?action=map.view&sysmapid='+mapid])
                 return render_template("maps_out.html", maps_arr=maps_arr)
                 
             # if hostname returns many ids
@@ -791,9 +791,9 @@ def maps_out():
             if len(map_ids) == 1:
                 return render_template("map_redirect.html", map_id=map_ids[0])
             else:
-                for map in map_ids:
-                    mname = mapname_by_mapid(zabbix_conn, map)
-                    map_link = config.zabbix_map_link+map
+                for mapid in map_ids:
+                    mname = mapname_by_mapid(zabbix_conn, mapid)
+                    map_link = config.zabbix_link+'/zabbix.php?action=map.view&sysmapid='+mapid
                     maps_arr.append([mname, map_link])
                 
         zabbix_conn.user.logout()
@@ -820,7 +820,7 @@ def mapfordevice(devid):
         return render_template("map_redirect.html", map_id=map_ids[0])
     for mapid in map_ids:
         map_name = mapname_by_mapid(zabbix_conn, mapid)
-        maps_arr.append([map_name, config.zabbix_map_link+mapid])
+        maps_arr.append([map_name, config.zabbix_link+'/zabbix.php?action=map.view&sysmapid='+mapid])
     maps_arr = sorted(maps_arr, key=lambda a: a[1])
     zabbix_conn.user.logout()
     return render_template('maps_out.html', maps_arr=maps_arr)

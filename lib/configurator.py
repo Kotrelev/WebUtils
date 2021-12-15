@@ -500,30 +500,29 @@ class configurator:
             
     def path_maker(chains, host_dict, logger):
         try:
-
-            connections = {}
-            for endpoint in chains:
-                current_hostname = endpoint
-                for endpoint2 in chains:
-                    if endpoint2 == endpoint: 
-                        continue
-                    if (endpoint in connections 
-                        and endpoint2 in connections): 
-                        continue
-                    for host in chains[endpoint]:
-                        if host in endpoint2:
-                            connections.setdefault(endpoint, {}).update({endpoint2: host})
-                            connections.setdefault(endpoint2, {}).update({endpoint: host})
-                            break
-                            
-                            
-                            #{chain1: {chain2: hostx},
-                            #         {chain3: hosty}
-                            # chain2: {chain1: hostx}}
-                            # chain3: {chain1: hosty}
-                            
+            chain_x = list(chains.keys())[0]
+            # если у цепочек есть точка пересечения, будет полезно ее знать.
+            closest_node = ''
+            common_nodes = [node for node in chains[chain_x] 
+                            if all(node in chain for chain in chains.values())]
+            if common_nodes:
+                curhname = 'Zastav22-as1'
+                been_there = []
+                while True:
+                    if curhname in common_nodes:
+                        closest_node = curhname
+                        break
+                    else: 
+                        been_there.append(curhname)
+                        for link chains[chain_x][curhname]:
+                            if link in been_there: continue
+                            curhname = link
             
-            
+            #
+            megachain = {}
+            for chain in chains:
+                for node in chains[chain]:
+                    megachain.setdefault(node, {}).update(chains[chain][node])
             
             
             
