@@ -25,6 +25,7 @@ class ifaces_and_vlans:
             host_dict[hname]['community'] = community
             host_dict[hname]['type'] = sysobjectid_dict[sid]['type']
             host_dict[hname]['vendor_cls'] = sysobjectid_dict[sid]['vendor']
+            host_dict[hname]['mpls'] = sysobjectid_dict[sid]['mpls']
             if sysobjectid_dict[sid]['model'] != 'ambiguous':
                 host_dict[hname]['model'] = sysobjectid_dict[sid]['model']
             else:
@@ -443,12 +444,11 @@ class configurator:
                 uplinks, pplinks, links = configurator.get_links(hostname, 
                                                                  host_dict[current_hostname]['ifaces'], 
                                                                  logger)
-                # Если не нашли аплинков, пробуем найти джуник за п2п линками.
-                # Позже заменю проверку на джуник на проверку MPLS-ready или типа того
+                # Если не нашли аплинков, пробуем найти mplsный девайс за п2п линками.
                 if (not uplinks
                     and to_mpls
                     and pplinks 
-                    and host_dict[current_hostname]['vendor_cls'].vendor() == 'Juniper'):
+                    and host_dict[current_hostname]['mpls']):
                     for hn in pplinks:
                         if hn in host_list or hn in been_there:
                             continue
@@ -506,7 +506,7 @@ class configurator:
             common_nodes = [node for node in chains[chain_x] 
                             if all(node in chain for chain in chains.values())]
             if common_nodes:
-                curhname = 'Zastav22-as1'
+                curhname = chain_x
                 been_there = []
                 while True:
                     if curhname in common_nodes:
