@@ -1767,9 +1767,16 @@ def configurator_vlan_create(msg=''):
     latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
     mtu = request.form['mtu_fld']
     
-    chain, host_dict, been_there, mesg = configurator.get_chain(hostname1, logger)
+    chains = {}
+    host_dict = {}
+    for hostname in [hostname1, hostname2]:
+        host_dict, all_links = configurator.get_hosts(hostname, host_dict, logger)
+        #logger.warning(all_links)
+        chains[hostname] = configurator.get_chain(all_links, host_dict, logger)
+        
+    path = configurator.path_maker(chains, host_dict, logger)
     
-    a = [chain, host_dict, been_there, mesg]
+    a = [chains, path, host_dict]
     #time.sleep(5)
     return configurator_init('no can do: {}'.format(a))
                            

@@ -1,6 +1,12 @@
 import config, sys, re
+from datetime import datetime
 from lib.snmp_common import snmp_common
 from lib.zabbix_common import zabbix_common
+from diagrams import Diagram, Edge
+from diagrams.custom import Custom
+from diagrams.ibm.network import Bridge
+from diagrams.ibm.network import DirectLink
+from diagrams.generic.blank import Blank
 
 sys.path.append('/usr/local/bin/Python37/Common/')
 from Vendors import vendors
@@ -382,7 +388,7 @@ class ifaces_and_vlans:
             logger.error('{}: Ошибка в функции get_all {}'.format(ip, str(err_message)))
             
 class configurator:
-    def get_links(hostname, iface_dict, logger):
+    def get_links(iface_dict, logger):
         try:
             uplinks = {}
             pplinks = {}
@@ -415,12 +421,10 @@ class configurator:
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_links {}'.format(hostname, str(err_message)))
             
-    def get_chain(hostname, logger, to_mpls = True):
+    def get_hosts(hostname, host_dict, logger, to_mpls = True):
         try:
             host_list = [hostname]
             been_there = []
-            host_dict = {}
-            chain = {}
             all_links = {}
             while host_list:
                 logger.info('HOSTLIST '+str(host_list))
@@ -430,19 +434,18 @@ class configurator:
                 if current_hostname in been_there:
                     continue
                 been_there.append(current_hostname)
+                if current_hostname not in host_dict:
+                    hostid = zabbix_common.hostid_by_name(current_hostname, logger)
+                    if not hostid: 
+                        return None, None, None, 'No hostid'
+                    hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
+                    if not hostip: 
+                        return None, None, None, 'No hostip'
+                    host_dict[current_hostname] = {'ip': hostip}
+                    logger.info('HOST '+str(current_hostname)+' IP '+str(hostip))
+                    host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
                 
-                hostid = zabbix_common.hostid_by_name(current_hostname, logger)
-                if not hostid: 
-                    return None, None, None, 'No hostid'
-                hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
-                if not hostip: 
-                    return None, None, None, 'No hostip'
-                host_dict[current_hostname] = {'ip': hostip}
-                logger.info('HOST '+str(current_hostname)+' IP '+str(hostip))
-                host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
-                
-                uplinks, pplinks, links = configurator.get_links(hostname, 
-                                                                 host_dict[current_hostname]['ifaces'], 
+                uplinks, pplinks, links = configurator.get_links(host_dict[current_hostname]['ifaces'], 
                                                                  logger)
                 # Если не нашли аплинков, пробуем найти mplsный девайс за п2п линками.
                 if (not uplinks
@@ -454,7 +457,6 @@ class configurator:
                             continue
                         host_list.append(hn)
                 
-                
                 for hn in uplinks:
                     if hn in host_list or hn in been_there:
                         continue
@@ -463,12 +465,21 @@ class configurator:
                 for hn in links:
                     ifname = host_dict[current_hostname]['ifaces'][links[hn]]['name']
                     all_links.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
-                                                                            'port': ifname}})
+                                                                    'port': ifname}})
+                
+            return host_dict, all_links
+            
+        except Exception as err_message:
+            logger.error('{}: Ошибка в функции configurator.get_hosts {}'.format(current_hostname, str(err_message)))
+                    
+    def get_chain(all_links, host_dict, logger):
             # Формируем словарь-цепочку устройств. {Хост1: {Сосед1: {port: fa1, ifid: 1, type: trunk}},
             #                                       Сосед1: {Хост1: {port: fa1, ifid: 1, type: trunk}}}
+        try:
+            chain = {}
             for hn in all_links:
                 for link in all_links[hn]:
-                    if link in been_there:
+                    if link in host_dict:
                         ifid = all_links[hn][link]['ifid'] 
                         iftype = 'trunk'
                         if ('Tag' in host_dict[hn]['ifaces'][ifid] 
@@ -478,25 +489,10 @@ class configurator:
                         ifdict = all_links[hn][link]
                         ifdict.update({'type': iftype})
                         chain.setdefault(hn, {}).update({link: ifdict})
-        
-            #        if hn not in been_there: continue
-            #        chain.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
-            #                                                            'port': ifname}})
-            # cleaning magistrals 
-            #for chain_host in chain:
-            #    for mag in chain[chain_host].copy():
-            #        if mag not in been_there:
-            #            chain[chain_host].pop(mag)
                         
-            #{'LTolst9-as1': {'Mira3-ds2': {'ifid': '25', 'port': 'Ethernet1/0/25', 'type': 'trunk'}}         
-            #for chain_host in chain:
-            #    for mag in chain[chain_host]:
-            #        pass
-                        
-                
-            return chain, host_dict, been_there, 'OK'
+            return chain
         except Exception as err_message:
-            logger.error('{}: Ошибка в функции configurator.get_chain {}'.format(current_hostname, str(err_message)))
+            logger.error('Ошибка в функции configurator.get_chain {}'.format(str(err_message)))
             
     def path_maker(chains, host_dict, logger):
         try:
@@ -505,33 +501,68 @@ class configurator:
             closest_node = ''
             common_nodes = [node for node in chains[chain_x] 
                             if all(node in chain for chain in chains.values())]
-            if common_nodes:
-                curhname = chain_x
-                been_there = []
-                while True:
-                    if curhname in common_nodes:
-                        closest_node = curhname
-                        break
-                    else: 
-                        been_there.append(curhname)
-                        for link chains[chain_x][curhname]:
-                            if link in been_there: continue
-                            curhname = link
-            
-            #
+
             megachain = {}
             for chain in chains:
                 for node in chains[chain]:
                     megachain.setdefault(node, {}).update(chains[chain][node])
             
+            mpls_nodes = [n for n in megachain if host_dict[n]['mpls']]
+            if len(mpls_nodes) < 2 and common_nodes:
+                # У нас только один MPLS узел и во всех цепочках есть общие узлы. Строим чистый L2.
+                been_there = []
+                to_check = [mpls_nodes[0]]
+                while to_check:
+                    curhname = to_check[0]
+                    while curhname in to_check:
+                        to_check.remove(curhname)
+                    been_there.append(curhname)
+                    if len(megachain[curhname]) < 3 and curhname not in chains:
+                        for link in megachain[curhname]:
+                            if link in been_there: continue
+                            to_check.append(link)
+                        deleted = curhname
+                        megachain.pop(curhname)
+                    elif deleted:
+                        megachain[curhname].pop(deleted)
+                        break
+                        
+            elif len(mpls_nodes) > 1 and not common_nodes:
+                # Несколько MPLS узлов, общих узлов нет, лепим L3.
+                
+                [megachain[n].update({mplsn: {'ifid': None, 'port': 'mpls', 'type': 'mpls'}}) 
+                 for mplsn in mpls_nodes 
+                 for n in mpls_nodes
+                 if n != mplsn]
             
+            return megachain
             
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
             
+    def diagram_maker(path, logger):
+        try:
             
-            
-            
+            fname = str(datetime.now().timestamp())
+            with Diagram(direction='LR', 
+                         show=False, 
+                         filename=config.temp_folder+'/'+fname) as diag: 
+                narr = {x: Bridge(x, shape="circle") for x in mchain} 
+                nifc = {host+link: Blank(mchain[host][link]['port'], labelloc="c", shape="plaintext", height="0.3") 
+                        for host in mchain for link in mchain[host]}
+                done = []
+                for node in mchain: 
+                    for link in mchain[node]:
+                        if [node, link] in done or [link, node] in done: continue
+                        narr[node] - Edge(color="black", style="bold") \
+                        - nifc[node+link] - Edge(color="green") \
+                        - nifc[link+node] - Edge(color="black", style="bold") \
+                        - narr[link]
+                        done.append([node, link])
+                diag.format = 'png' 
             
             
             
         except Exception as err_message:
-            logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
+            logger.error('Ошибка в функции configurator.diagram_maker {}'.format(str(err_message)))
+            
