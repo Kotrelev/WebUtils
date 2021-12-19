@@ -467,7 +467,7 @@ class configurator:
                     all_links.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
                                                                     'port': ifname}})
                 
-            return host_dict, all_links
+            return all_links
             
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_hosts {}'.format(current_hostname, str(err_message)))
@@ -494,18 +494,18 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.get_chain {}'.format(str(err_message)))
             
-    def path_maker(chains, host_dict, logger):
+    def path_maker(chains, host_dict, endpoints, logger):
         try:
-            chain_x = list(chains.keys())[0]
+            #chain_x = list(chains.keys())[0]
             # если у цепочек есть точка пересечения, будет полезно ее знать.
             closest_node = ''
-            common_nodes = [node for node in chains[chain_x] 
-                            if all(node in chain for chain in chains.values())]
+            common_nodes = [node for node in chains[0] 
+                            if all(node in chain for chain in chains)]
 
             megachain = {}
             for chain in chains:
-                for node in chains[chain]:
-                    megachain.setdefault(node, {}).update(chains[chain][node])
+                for node in chain:
+                    megachain.setdefault(node, {}).update(chain[node])
             
             mpls_nodes = [n for n in megachain if host_dict[n]['mpls']]
             if len(mpls_nodes) < 2 and common_nodes:
@@ -517,7 +517,7 @@ class configurator:
                     while curhname in to_check:
                         to_check.remove(curhname)
                     been_there.append(curhname)
-                    if len(megachain[curhname]) < 3 and curhname not in chains:
+                    if len(megachain[curhname]) < 3 and curhname not in endpoints:
                         for link in megachain[curhname]:
                             if link in been_there: continue
                             to_check.append(link)

@@ -124,10 +124,12 @@ function loading() {
     </div>
     <br>
     <br>
+    {% if msg %}
     <div id="error_message" class="alarm">
     <details><summary><b>Давайте заглянем под капот!</b></summary>
     <h3>{{ msg|safe }}</h3>
     </details></div>
+    {% endif %}
     
     <!-- INET FORM -->
     <div id="inet_form" style="display:none">

@@ -9,6 +9,7 @@ import pymysql.cursors
 from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
 from pyzabbix import ZabbixAPI
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from flask import Flask
 from flask import request
 from flask import redirect, url_for
@@ -1767,14 +1768,32 @@ def configurator_vlan_create(msg=''):
     latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
     mtu = request.form['mtu_fld']
     
-    chains = {}
+    chains = []
     host_dict = {}
-    for hostname in [hostname1, hostname2]:
-        host_dict, all_links = configurator.get_hosts(hostname, host_dict, logger)
-        #logger.warning(all_links)
-        chains[hostname] = configurator.get_chain(all_links, host_dict, logger)
+    endpoints = [hostname1, hostname2]
+    
+    with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
+        links_arr = []
+        futures = [executor.submit(configurator.get_hosts, 
+                     hostname,
+                     host_dict,
+                     logger) for hostname in endpoints]
+        for f in as_completed(futures):
+            links_arr.append(f.result())
         
-    path = configurator.path_maker(chains, host_dict, logger)
+        futures = [executor.submit(configurator.get_chain,
+                    all_links,
+                    host_dict,
+                    logger) for all_links in links_arr]
+        for f in as_completed(futures):
+            chains.append(f.result())
+    
+    #for hostname in [hostname1, hostname2]:
+    #    all_links = configurator.get_hosts(hostname, host_dict, logger)
+    #    #logger.warning(all_links)
+    #    chains[hostname] = configurator.get_chain(all_links, host_dict, logger)
+        
+    path = configurator.path_maker(chains, host_dict, endpoints, logger)
     
     a = [chains, path, host_dict]
     #time.sleep(5)
