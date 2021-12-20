@@ -1,12 +1,21 @@
-import config, sys, re
+import config, sys, re, os
 from datetime import datetime
 from lib.snmp_common import snmp_common
 from lib.zabbix_common import zabbix_common
 from diagrams import Diagram, Edge
 from diagrams.custom import Custom
 from diagrams.ibm.network import Bridge
+from diagrams.ibm.network import Router
+from diagrams.ibm.network import InternetServices
 from diagrams.ibm.network import DirectLink
 from diagrams.generic.blank import Blank
+#sys.path.append('/usr/local/bin/Python37/WebUtils/env/lib/python3.7/site-packages/graphviz/')
+#sys.path.append('/usr/local/bin/Python37/Playground/env/lib/python3.7/site-packages/graphviz/')
+#sys.path.append('/usr/local/bin/Python37/WebUtils/env/lib/python3.7/site-packages/')
+#sys.path.append('/usr/lib/x86_64-linux-gnu/graphviz/')
+#sys.path.append('/usr/share/doc/graphviz/')
+#sys.path.append('/usr/share/graphviz/')
+
 
 sys.path.append('/usr/local/bin/Python37/Common/')
 from Vendors import vendors
@@ -388,12 +397,32 @@ class ifaces_and_vlans:
             logger.error('{}: Ошибка в функции get_all {}'.format(ip, str(err_message)))
             
 class configurator:
-    def get_links(iface_dict, logger):
+
+    def rb260desc_fix(link_host, mag, logger):
+        try:
+            # сливаем с заббикса все известные хостнеймы
+            hostname_list = zabbix_common.get_hostname_list(logger)
+            if link_host not in hostname_list:
+                # берем дескр который предположительно порезан, вычленяем то что идет перед номером дома
+                name_len = len(mag.groupdict()['name'])
+                cut_hname_dict = {}
+                # берем все известные хостнеймы и режем их на ту же длинну что и наш дескр.
+                for host in hostname_list:
+                    rh = re.search(config.mag_regex, host)
+                    if not rh: continue
+                    cut_hname = rh.groupdict()['name'][0:name_len]
+                    if cut_hname+rh.groupdict()['tail'] == link_host:
+                        return rh.groupdict()['host']
+            else: return link_host
+        except Exception as err_message:
+            logger.error('{}: Ошибка в функции configurator.rb260desc_fix {}'.format(hostname, str(err_message)))
+            
+    def get_links(hostname, host_dict, logger):
         try:
             uplinks = {}
             pplinks = {}
             links = {}
-            for ifid, iface in iface_dict.items():
+            for ifid, iface in host_dict[hostname]['ifaces'].items():
                 if iface['type'] not in ['6', '161']:
                     continue
                 elif any(x in iface['name'] for x in ['.', ':']):
@@ -406,15 +435,23 @@ class configurator:
                     # джуниковские фейк интерфейсы
                     continue
                 mag = re.search(config.mag_regex, iface['description'])
-                if mag and mag.groupdict()['lag']: 
+                if mag:
+                    link_host = mag.groupdict()['host']
+                else: continue
+                #Всратые 260е имеют лимит на количество символов "дескрипшне" который
+                # на самом деле имя интерфейса. Работаем с тем что есть.
+                if host_dict[hostname]['sysobjectid'] == 'iso.3.6.1.4.1.14988.2':
+                    link_host = configurator.rb260desc_fix(link_host, mag, logger)
+                
+                if mag.groupdict()['lag'] or mag.groupdict()['mgmt']: 
                     continue
-                if mag and mag.groupdict()['uplink'] and mag.groupdict()['host'] not in uplinks:
-                    uplinks[mag.groupdict()['host']] = ifid
-                if mag and mag.groupdict()['pp'] and mag.groupdict()['host'] not in pplinks:
-                    pplinks[mag.groupdict()['host']] = ifid
+                if mag.groupdict()['uplink'] and link_host not in uplinks:
+                    uplinks[link_host] = ifid
+                if mag.groupdict()['pp'] and link_host not in pplinks:
+                    pplinks[link_host] = ifid
                     
-                if mag and mag.groupdict()['host'] not in links:
-                    links[mag.groupdict()['host']] = ifid
+                if link_host not in links:
+                    links[link_host] = ifid
             #{'host-as1': {'host-as2': '1', 'host-as3': '2'}}
             return uplinks, pplinks, links
 
@@ -423,7 +460,9 @@ class configurator:
             
     def get_hosts(hostname, host_dict, logger, to_mpls = True):
         try:
-            host_list = [hostname]
+            logger.info('TEMP HOSTNAME {}'.format(hostname))
+            host_list = []
+            host_list.append(hostname)
             been_there = []
             all_links = {}
             while host_list:
@@ -445,13 +484,14 @@ class configurator:
                     logger.info('HOST '+str(current_hostname)+' IP '+str(hostip))
                     host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
                 
-                uplinks, pplinks, links = configurator.get_links(host_dict[current_hostname]['ifaces'], 
+                uplinks, pplinks, links = configurator.get_links(current_hostname,
+                                                                 host_dict, 
                                                                  logger)
                 # Если не нашли аплинков, пробуем найти mplsный девайс за п2п линками.
                 if (not uplinks
                     and to_mpls
                     and pplinks 
-                    and host_dict[current_hostname]['mpls']):
+                    and not host_dict[current_hostname]['mpls']):
                     for hn in pplinks:
                         if hn in host_list or hn in been_there:
                             continue
@@ -467,19 +507,19 @@ class configurator:
                     all_links.setdefault(current_hostname, {}).update({hn: {'ifid': links[hn], 
                                                                     'port': ifname}})
                 
-            return all_links
+            return all_links, been_there
             
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_hosts {}'.format(current_hostname, str(err_message)))
                     
-    def get_chain(all_links, host_dict, logger):
+    def get_chain(all_links, been_there, host_dict, logger):
             # Формируем словарь-цепочку устройств. {Хост1: {Сосед1: {port: fa1, ifid: 1, type: trunk}},
             #                                       Сосед1: {Хост1: {port: fa1, ifid: 1, type: trunk}}}
         try:
             chain = {}
             for hn in all_links:
                 for link in all_links[hn]:
-                    if link in host_dict:
+                    if link in been_there:
                         ifid = all_links[hn][link]['ifid'] 
                         iftype = 'trunk'
                         if ('Tag' in host_dict[hn]['ifaces'][ifid] 
@@ -527,42 +567,110 @@ class configurator:
                         megachain[curhname].pop(deleted)
                         break
                         
-            elif len(mpls_nodes) > 1 and not common_nodes:
-                # Несколько MPLS узлов, общих узлов нет, лепим L3.
+            elif len(mpls_nodes) == 2 and not common_nodes:
+                # 2 MPLS узла, общих узлов нет, лепим l2circuit.
                 
                 [megachain[n].update({mplsn: {'ifid': None, 'port': 'mpls', 'type': 'mpls'}}) 
                  for mplsn in mpls_nodes 
                  for n in mpls_nodes
                  if n != mplsn]
+                 
+            elif len(mpls_nodes) > 2 and not common_nodes:
+                # Много MPLS узлов, общих узлов нет, лепим vpls.
+                
+                [megachain[n].update({'VPLS': {'ifid': None, 'port': 'vpls', 'type': 'vpls'}}) 
+                 for n in mpls_nodes]
             
             return megachain
             
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
             
-    def diagram_maker(path, logger):
+    def diagram_maker(vlanpath, host_dict, endpoints, logger):
         try:
-            
+            if '/usr/bin/' not in os.environ.get("PATH").split(os.pathsep):
+                os.environ["PATH"] += os.pathsep + '/usr/bin/'
             fname = str(datetime.now().timestamp())
-            with Diagram(direction='LR', 
+            diagram_name = ' - '.join(endpoints)
+            with Diagram(diagram_name,
+                         direction='LR', 
                          show=False, 
                          filename=config.temp_folder+'/'+fname) as diag: 
-                narr = {x: Bridge(x, shape="circle") for x in mchain} 
-                nifc = {host+link: Blank(mchain[host][link]['port'], labelloc="c", shape="plaintext", height="0.3") 
-                        for host in mchain for link in mchain[host]}
+                #narr = {x: Bridge(x, shape="circle") 
+                #        for x in vlanpath
+                #        if not host_dict[x]['mpls']}
+                narr = {}
+                for x in vlanpath:
+                    if not host_dict[x]['mpls']:
+                        narr.update({x: Bridge(x, shape="circle")})
+                    else:
+                        narr.update({x: Router(x, shape="circle")})
+                if any(vlanpath[host][link]['type'] == 'vpls' 
+                        for host in vlanpath 
+                        for link in vlanpath[host]):
+                    narr.update({'vpls': InternetServices('VPLS', shape="circle")})
+                
+                nifc = {host+link: Blank(vlanpath[host][link]['port'], 
+                                   labelloc="c", 
+                                   shape="plaintext", 
+                                   height="0.3") 
+                        for host in vlanpath 
+                        for link in vlanpath[host] 
+                        if vlanpath[host][link]['type'] not in ['vpls', 'mpls']}
+                #nifc = {}
+                #for host in vlanpath:
+                #    for link in vlanpath[host]:
+                #        if vlanpath[host][link]['type'] != vpls:
+                #            nifc.update({host+link: Blank(vlanpath[host][link]['port'], 
+                #                         labelloc="c", 
+                #                         shape="plaintext", 
+                #                         height="0.3")})
+                #        if vlanpath[host][link]['type'] == vpls:
+                #            nifc.update({host+link: InternetServices(vlanpath[host][link]['port'], 
+                #                         labelloc="c", 
+                #                         shape="plaintext", 
+                #                         height="0.3")})
+                        
                 done = []
-                for node in mchain: 
-                    for link in mchain[node]:
-                        if [node, link] in done or [link, node] in done: continue
-                        narr[node] - Edge(color="black", style="bold") \
-                        - nifc[node+link] - Edge(color="green") \
-                        - nifc[link+node] - Edge(color="black", style="bold") \
-                        - narr[link]
+                for node in vlanpath: 
+                    for link in vlanpath[node]:
+                        if [node, link] in done or [link, node] in done: 
+                            continue
+                        if vlanpath[node][link]['type'] == 'mpls':
+                            narr[node] - Edge(label="MPLS", 
+                                              color="violet", 
+                                              style="bold") \
+                            - narr[link]
+                        elif vlanpath[node][link]['type'] == 'vpls':
+                            narr[node] \
+                            - Edge(color="violet", style="bold") \
+                            - narr['vpls']
+                        elif (vlanpath[node][link]['type'] == 'access' or
+                              vlanpath[link][node]['type'] == 'access'):
+                            narr[node] - Edge(color="black", style="bold") \
+                            - nifc[node+link] - Edge(label="QinQ", color="red", style="bold") \
+                            - nifc[link+node] - Edge(color="black", style="bold") \
+                            - narr[link]
+                        elif vlanpath[node][link]['type'] == 'trunk':
+                            narr[node] - Edge(color="black", style="bold") \
+                            - nifc[node+link] - Edge(color="green", style="bold") \
+                            - nifc[link+node] - Edge(color="black", style="bold") \
+                            - narr[link]
+
                         done.append([node, link])
                 diag.format = 'png' 
-            
-            
+                
+            return config.temp_folder_name+'/'+fname+'.png'
             
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.diagram_maker {}'.format(str(err_message)))
             
+    #def gvtest(logger):
+    #    sys.path.append('')
+    #    logger.warning(sys.path)
+    #    from diagrams.aws.compute import EC2
+    #    from diagrams.aws.database import RDS
+    #    from diagrams.aws.network import ELB
+    #    
+    #    with Diagram("Web Service", show=False):
+    #        ELB("lb") >> EC2("web") >> RDS("userdb")

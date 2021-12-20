@@ -1,0 +1,31 @@
+{% extends "menu.html" %}
+{% block title %}Конфигуратор{% endblock %}
+{% block content %}
+<script type="text/javascript">
+
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
+    
+</script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
+    <br>
+    <form action="configurator">
+      <button id="Generic140pxBlueButton" type="submit">Назад</button>
+    </form>
+    <br>
+    <br>
+    <img src="{{ diagram_link }}" width="95%">
+    <br>
+    {% if rawdata %}
+    <details><summary><b>Давайте заглянем под капот!</b></summary>
+    {% for data in rawdata %}
+    <h3>{{ data|safe }}</h3>
+    <hr>
+    {% endfor %}
+    </details>
+    {% endif %}
+</div>
+{% endblock %}

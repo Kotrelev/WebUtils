@@ -24,6 +24,7 @@ from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
 
+
 #from lib.snmp_common import snmp_common
 web_utils_app = Flask(__name__)
 
@@ -1759,6 +1760,27 @@ def configurator_inet_create(msg=''):
     #time.sleep(5)
     return configurator('no can do: {}'.format(a))
 
+#def gvtest(logger):
+#    #proc = subprocess.Popen('gv.py', stdout=subprocess.PIPE,shell=True)
+#    #(out,err) = proc.communicate()
+#    
+#    import sys, os
+#    app_path = os.path.join('/usr/bin/')
+#    os.environ["PATH"] += os.pathsep + app_path
+#    #sys.path.append('')
+#    #sys.path.append('/usr/bin/')
+#    #sys.path.append('/usr/sbin/')
+#    p = os.environ.get("PATH")
+#    logger.warning(sys.path)
+#    logger.warning(p)
+#    from diagrams import Diagram, Edge
+#    from diagrams.aws.compute import EC2
+#    from diagrams.aws.database import RDS
+#    from diagrams.aws.network import ELB
+#    
+#    with Diagram("Web Service", show=False):
+#        ELB("lb") >> EC2("web") >> RDS("userdb")
+
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
     hostname1 = request.form['hostname1_fld']
@@ -1772,32 +1794,36 @@ def configurator_vlan_create(msg=''):
     host_dict = {}
     endpoints = [hostname1, hostname2]
     
-    with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
-        links_arr = []
-        futures = [executor.submit(configurator.get_hosts, 
-                     hostname,
-                     host_dict,
-                     logger) for hostname in endpoints]
-        for f in as_completed(futures):
-            links_arr.append(f.result())
-        
-        futures = [executor.submit(configurator.get_chain,
-                    all_links,
-                    host_dict,
-                    logger) for all_links in links_arr]
-        for f in as_completed(futures):
-            chains.append(f.result())
+    #with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
+    #    links_arr = []
+    #    futures = [executor.submit(configurator.get_hosts, 
+    #                 hostname,
+    #                 host_dict,
+    #                 logger) for hostname in endpoints]
+    #    for f in as_completed(futures):
+    #        links_arr.append(f.result())
+    #    
+    #    futures = [executor.submit(configurator.get_chain,
+    #                all_links,
+    #                host_dict,
+    #                logger) for all_links in links_arr]
+    #    for f in as_completed(futures):
+    #        chains.append(f.result())
     
-    #for hostname in [hostname1, hostname2]:
-    #    all_links = configurator.get_hosts(hostname, host_dict, logger)
-    #    #logger.warning(all_links)
-    #    chains[hostname] = configurator.get_chain(all_links, host_dict, logger)
+    for hostname in endpoints:
+        all_links, been_there = configurator.get_hosts(hostname, host_dict, logger)
+        #logger.warning(all_links)
+        chains.append(configurator.get_chain(all_links, been_there, host_dict, logger))
         
-    path = configurator.path_maker(chains, host_dict, endpoints, logger)
+    vpath = configurator.path_maker(chains, host_dict, endpoints, logger)
+    #gvtest(logger)
+    diagram_link = configurator.diagram_maker(vpath, host_dict, endpoints, logger)
     
-    a = [chains, path, host_dict]
-    #time.sleep(5)
-    return configurator_init('no can do: {}'.format(a))
+    rawdata = [chains, vpath, host_dict]
+    time.sleep(5)
+    return render_template("configurator_confirm.html",
+                            diagram_link = diagram_link,    
+                            rawdata = rawdata)
                            
 ###
 ### /Configurator
