@@ -1,8 +1,32 @@
 {% extends "menu.html" %}
 {% block title %}Конфигуратор{% endblock %}
 {% block content %}
+<script src="js/jquery.min.js"></script>
 <script type="text/javascript">
 
+$(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".container1");
+    var add_button = $(".add_form_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="text" name="hostname1_fld[]" autocomplete="off" placeholder="Hostname" list="hn_list" required/><a href="#" class="delete">Delete</a></div>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+    
 function inet_create() {
   document.getElementById("inet_form").style.display = "block";
   document.getElementById("vlan_form").style.display = "none";
@@ -36,78 +60,6 @@ function loading() {
     document.getElementById("loader_div").style.display = "block";
     document.getElementById("content_div").style.display = "none";
 }
-    
-//$(document).ready(function() {
-//    
-//    $('input').on('blur', function() {
-//        if ($("#inet_create_form").valid()) {
-//            $('#inet_create_btn').prop('disabled', false);  
-//        } else {
-//            $('#inet_create_btn').prop('disabled', 'disabled');
-//        }
-//    });
-//    
-//    $("#inet_create_form").validate({
-//        rules: {
-//            hostname_fld: {
-//                required: true,
-//                minlength: 4
-//            },
-//            contract_fld: {
-//                required: true,
-//                minlength: 4
-//            }
-//        }
-//    });
-//
-//});
-    
-//function formValidation(oEvent) { 
-//oEvent = oEvent || window.event; 
-//var txtField = oEvent.target || oEvent.srcElement; 
-//
-//var t1ck=true;
-//var msg=" ";
-//if(document.getElementById("t1").value.length < 3 ){ t1ck=false; msg = msg + "Your name should be minimun 3 char length<br>";}
-//if(!document.getElementById("r1").checked && !document.getElementById("r2").checked){ t1ck=false;msg = msg + " Select your Gender<br>";}
-//if(document.getElementById("s1").value.length < 3 ){ t1ck=false;msg = msg + " Select one of the games <br>";}
-//if(!document.getElementById("c1").checked ){ t1ck=false;msg = msg + " You must agree to terms & conditions<br> ";}
-//
-////alert(msg + t1ck);
-//
-//if(t1ck){document.getElementById("btnSignUp").disabled = false;
-//msg=msg+ " <b> Submit Button is enabled </b>";
-// }
-//else{document.getElementById("btnSignUp").disabled = true; 
-//msg=msg+ " <b> Submit Button is disabled </b>";
-//}// end of if checking status of t1ck variable 
-//document.getElementById('my_msg').innerHTML=msg;
-//} 
-//
-//window.onload = function () { 
-//
-//var inet_create_btn = document.getElementById("inet_create_btn"); 
-//
-//var hn = document.getElementById("hostname_fld"); 
-//var ct = document.getElementById("contract_fld"); 
-//var rt = document.getElementById("rate_fld"); 
-//var nm = document.getElementById("name_fld");
-//var ln = document.getElementById("latname_fld");
-//var ad = document.getElementById("addr_fld");
-//var ai = document.getElementById("amountip_fld");
-//
-//var t1ck=false;
-//document.getElementById("inet_create_btn").disabled = true;
-//hn.onkeyup = formValidation; 
-//ct.onclick = formValidation; 
-//rt.onclick = formValidation; 
-//nm.onclick = formValidation; 
-//ln.onclick = formValidation;
-//ad.onclick = formValidation; 
-//ai.onclick = formValidation;
-//btnReset.onclick = resetForm;
-//}
-    
 </script>
 <div id="loader_div" class="loader"></div> 
 <div id="content_div">
@@ -148,12 +100,13 @@ function loading() {
             name="hostname_fld"
             autocomplete="off"            
             placeholder="Hostname" 
-            list="hn_list" required><br>
+            list="hn_list" required>
         <datalist id = "hn_list">
             {% for host in hostname_list %}
 			<option value = "{{ host }}" label = "{{ host }}">
 			{% endfor %}
-		</datalist>	
+		</datalist>
+        <br>
         </td>
         </tr>
         <tr>
@@ -259,23 +212,29 @@ function loading() {
         <tr>
         <td>
         <label class="configurator_label"
-               for="hostname1_fld">Hostname1:</label>
+               for="hostname1_fld">Hostnames:</label>
         </td>
         <td>
+        <div class="container1">
         <input type="text" 
             class="configurator_form" 
             id="hostname1_fld" 
-            name="hostname1_fld"
+            name="hostname1_fld[]"
             autocomplete="off"            
             placeholder="Hostname1" 
-            list="hn_list" required><br>
+            list="hn_list" required>
         <datalist id = "hn_list">
             {% for host in hostname_list %}
 			<option value = "{{ host }}" label = "{{ host }}">
 			{% endfor %}
-		</datalist>	
+		</datalist>
+        <button class="add_form_field">Add &nbsp; 
+        <span style="font-size:16px; font-weight:bold;">+ </span>
+        </button>
+        <br>
+        </div>
         </td>
-        </tr>
+<!--         </tr>
         <tr>
         <td>
         <label class="configurator_label"
@@ -295,7 +254,7 @@ function loading() {
 			{% endfor %}
 		</datalist>	
         </td>
-        </tr>
+        </tr> -->
         <tr>
         <td>
         <label class="configurator_label"

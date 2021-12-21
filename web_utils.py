@@ -1783,16 +1783,16 @@ def configurator_inet_create(msg=''):
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
-    hostname1 = request.form['hostname1_fld']
-    hostname2 = request.form['hostname2_fld']
+    endpoints = request.form.getlist('hostname1_fld[]')
     tag = request.form['vlan_tag_fld']
     rate = request.form['vlan_rate_fld']
     latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
     mtu = request.form['mtu_fld']
+    #return configurator_init('no can do: {}'.format(hostname1))
     
     chains = []
     host_dict = {}
-    endpoints = [hostname1, hostname2]
+    #endpoints = [hostname1, hostname2]
     
     #with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
     #    links_arr = []
@@ -1824,7 +1824,7 @@ def configurator_vlan_create(msg=''):
     return render_template("configurator_confirm.html",
                             diagram_link = diagram_link,    
                             rawdata = rawdata)
-                           
+                               
 ###
 ### /Configurator
 ###
