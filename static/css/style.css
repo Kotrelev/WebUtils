@@ -454,19 +454,6 @@ hr{
 }
 
 /* Zabbix95 */
-#zabbix95_add_button{
-  width: 35px;
-  height: 32px;
-  background-color: rgb(105, 128, 141);
-  border-color: rgb(105, 128, 141);
-  border-style: solid;
-  border-radius: 2px;
-  font-size: 20px;
-  color: rgb(242, 242, 242);
-  cursor: pointer;
-  font-family: Arial, Tahoma, Verdana, sans-serif;
-  text-align: center;
-}
 #zabbix95_add_name,#zabbix95_add_node{
   width: 190px
 }
@@ -510,6 +497,7 @@ hr{
   margin-bottom: 5px;
 }
 
+/* Generic */
 #Generic140pxBlueButton{
   width: 140px;
   height: 32px;
@@ -527,7 +515,21 @@ hr{
   padding: 2px;
 }
 
-/* Loading animation */
+#GenericBlueSmallButton{
+  width: 35px;
+  height: 32px;
+  background-color: rgb(105, 128, 141);
+  border-color: rgb(105, 128, 141);
+  border-style: solid;
+  border-radius: 2px;
+  font-size: 20px;
+  color: rgb(242, 242, 242);
+  cursor: pointer;
+  font-family: Arial, Tahoma, Verdana, sans-serif;
+  text-align: center;
+}
+
+/* Loading animation */ 
 .loader {
   display: none;
   position: fixed;

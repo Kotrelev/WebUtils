@@ -14,7 +14,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="text" name="hostname1_fld[]" autocomplete="off" placeholder="Hostname" list="hn_list" required/><a href="#" class="delete">Delete</a></div>'); //add input box
+            $(wrapper).append('<div><input type="text" name="hostname1_fld[]" autocomplete="off" placeholder="Hostname" list="hn_list" required/><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
         } else {
             alert('You Reached the limits')
         }
@@ -172,6 +172,26 @@ function loading() {
         <tr>
         <td>
         <label class="configurator_label"
+               for="inet_tasknum_fld">Номер заявки:</label>
+        </td>
+        <td>
+        <input type="text" 
+               class="configurator_form" 
+               id="inet_tasknum_fld" 
+               name="inet_tasknum_fld" 
+               autocomplete="off" 
+               pattern = "^[0-9]{5,7}$"
+               oninvalid="this.setCustomValidity('От 5 до 7 циферок')"
+               onchange="try{setCustomValidity('')}catch(e){}"
+               oninput="setCustomValidity(' ')"
+               required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <tr>
+        <td>
+        <label class="configurator_label"
                for="addr_fld">Адрес:</label>
         </td><td>
         <input type="text" 
@@ -198,7 +218,7 @@ function loading() {
         </td>
         </tr>
         </table>
-        <input id="inet_create_btn" 
+        <input id="Generic140pxBlueButton" 
                type="submit" 
                name="inet_create" 
                value="Поехали">
@@ -228,9 +248,7 @@ function loading() {
 			<option value = "{{ host }}" label = "{{ host }}">
 			{% endfor %}
 		</datalist>
-        <button class="add_form_field">Add &nbsp; 
-        <span style="font-size:16px; font-weight:bold;">+ </span>
-        </button>
+        <button id="GenericBlueSmallButton" class="add_form_field">➕</button>
         <br>
         </div>
         </td>
@@ -299,6 +317,24 @@ function loading() {
                onchange="try{setCustomValidity('')}catch(e){}"
                oninput="setCustomValidity(' ')"
                pattern = "^[A-Za-z0-9]{1,16}$" 
+               required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_tasknum_fld">Номер заявки:</label>
+        </td>
+        <td>
+        <input type="text" 
+               class="configurator_form" 
+               id="vlan_tasknum_fld" 
+               name="vlan_tasknum_fld" 
+               autocomplete="off" 
+               pattern = "^[0-9]{5,7}$"
+               oninvalid="this.setCustomValidity('От 5 до 7 циферок')"
+               onchange="try{setCustomValidity('')}catch(e){}"
+               oninput="setCustomValidity(' ')"
                required><br>
         </td>
         </tr>

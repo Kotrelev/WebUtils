@@ -375,6 +375,11 @@ def getSNMPstuff(ip, community, oid, logger):
     except Exception as err_message:
         logger.error('{}: Ошибка в функции getSNMPstuff {}'.format(ip, str(err_message)))
     
+def make_session_id():
+    alphabet = string.ascii_letters + string.digits
+    sid = ''.join(secrets.choice(alphabet) for i in range(8))
+    return sid
+    
 def sql_set_session(sid, storage, date):
     try:
         connection = local_sql_conn()
@@ -1062,8 +1067,7 @@ def client_notification_out():
     contract_dict_json = json.dumps(contract_dict, ensure_ascii=False)
 
     # генерячим session id и записываем его вместе с имейлами в mysql
-    alphabet = string.ascii_letters + string.digits
-    sid = ''.join(secrets.choice(alphabet) for i in range(8))
+    sid = make_session_id()
     today_date = format(datetime.now(), '%Y-%m-%d')
     sql_set_session(sid, contract_dict_json, today_date)
     
@@ -1731,6 +1735,7 @@ def configurator_inet_create(msg=''):
     latin_name = request.form['latname_fld']
     address = request.form['addr_fld']
     amount_ip = request.form['amountip_fld']
+    tasknum = request.form['inet_tasknum_fld']
     
     #hosts = zabbix_common.get_hostname_list(logger)
 
@@ -1788,42 +1793,41 @@ def configurator_vlan_create(msg=''):
     rate = request.form['vlan_rate_fld']
     latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
     mtu = request.form['mtu_fld']
+    tasknum = request.form['vlan_tasknum_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
-    chains = []
+    
     host_dict = {}
-    #endpoints = [hostname1, hostname2]
     
-    #with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
-    #    links_arr = []
-    #    futures = [executor.submit(configurator.get_hosts, 
-    #                 hostname,
-    #                 host_dict,
-    #                 logger) for hostname in endpoints]
-    #    for f in as_completed(futures):
-    #        links_arr.append(f.result())
-    #    
-    #    futures = [executor.submit(configurator.get_chain,
-    #                all_links,
-    #                host_dict,
-    #                logger) for all_links in links_arr]
-    #    for f in as_completed(futures):
-    #        chains.append(f.result())
-    
-    for hostname in endpoints:
-        all_links, been_there = configurator.get_hosts(hostname, host_dict, logger)
-        #logger.warning(all_links)
-        chains.append(configurator.get_chain(all_links, been_there, host_dict, logger))
+    with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
+        [executor.submit(configurator.get_host, 
+           hostname,
+           host_dict,
+           logger) for hostname in endpoints]
         
-    vpath = configurator.path_maker(chains, host_dict, endpoints, logger)
-    #gvtest(logger)
-    diagram_link = configurator.diagram_maker(vpath, host_dict, endpoints, logger)
     
-    rawdata = [chains, vpath, host_dict]
-    time.sleep(5)
-    return render_template("configurator_confirm.html",
-                            diagram_link = diagram_link,    
-                            rawdata = rawdata)
+    return render_template("configurator_ifcs.html")
+    
+    
+    
+    #chains = []
+    #for hostname in endpoints:
+    #    host_dict = get_host(hostname, host_dict, logger)
+    #    all_links, been_there = configurator.get_hosts(hostname, host_dict, logger)
+    #    #logger.warning(all_links)
+    #    chains.append(configurator.get_chain(all_links, been_there, host_dict, logger))
+        
+    #vpath = configurator.path_maker(chains, host_dict, endpoints, logger)
+    ##gvtest(logger)
+    #diagram_link = configurator.diagram_maker(vpath, host_dict, endpoints, logger)
+    #
+    #rawdata = [chains, vpath, host_dict]
+    ##time.sleep(5)
+    #sid = make_session_id()
+    #
+    #return render_template("configurator_confirm.html",
+    #                        diagram_link = diagram_link,    
+    #                        rawdata = rawdata)
                                
 ###
 ### /Configurator

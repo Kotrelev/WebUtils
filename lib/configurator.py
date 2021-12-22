@@ -39,12 +39,11 @@ class ifaces_and_vlans:
             host_dict[hname]['sysobjectid'] = sid
             host_dict[hname]['community'] = community
             host_dict[hname]['type'] = sysobjectid_dict[sid]['type']
-            host_dict[hname]['vendor_cls'] = sysobjectid_dict[sid]['vendor']
             host_dict[hname]['mpls'] = sysobjectid_dict[sid]['mpls']
             if sysobjectid_dict[sid]['model'] != 'ambiguous':
                 host_dict[hname]['model'] = sysobjectid_dict[sid]['model']
             else:
-                host_dict[hname]['model'] = host_dict[hname]['vendor_cls'].get_model(ip, community, logger)
+                host_dict[hname]['model'] = sysobjectid_dict[sid]['vendor'].get_model(ip, community, logger)
             return True
         
         except Exception as err_message:
@@ -330,51 +329,54 @@ class ifaces_and_vlans:
                     break
             
             #VLANs
+            vendor_cls = sysobjectid_dict[host_dict[hname]['sysobjectid']]['vendor']
             iface_vlans_dict = ''
             vlan_names = {}
             qinq_names = {}
             print('TEMP_model: {}'.format(host_dict[hname]['model']))
             
+            
             # на RB260 вланы собираем отдельно, скачиванием и парсом конфига
             if host_dict[hname]['sysobjectid'] == 'iso.3.6.1.4.1.14988.2':
-                iface_vlans_dict = host_dict[hname]['vendor_cls'].get_parsed_config(ip, 
-                                                                                    hname, 
-                                                                                    config, 
-                                                                                    logger)
+                
+                iface_vlans_dict = vendor_cls.get_parsed_config(ip, 
+                                                                hname, 
+                                                                config, 
+                                                                logger)
                 # это чудовище просто генерит имена вланам и делает дикт вида {'2': 'V0002'}. Но зачем?
                 vlan_names = {vid: f'V{vid.zfill(4)}' 
                               for vlans in iface_vlans_dict.values() 
                               for vid in set(v for ar in vlans.values() 
                                              for v in ar)}
             # на джунах нужно собрать конфиги интерфейсов. Скачиваем конфиг в json, парсим его
-            elif host_dict[hname]['vendor_cls'].vendor() == 'Juniper':
+            elif vendor_cls.vendor() == 'Juniper':
                 print('TEMP Its JUNIPER!')
                 # берем json в виде словаря
-                jun_conf = host_dict[hname]['vendor_cls'].get_parsed_config(ip, hname, config, logger)
+                jun_conf = vendor_cls.get_parsed_config(ip, hname, config, logger)
                 if not jun_conf: return None
                 print('TEMP Got config!')
                 # забираем интерфейсы в словарь с ключами == имени интерфейса (e.g. ae0.100)
-                ifaces_dict = host_dict[hname]['vendor_cls'].get_ifaces(ip, hname, logger, config, jun_conf)
+                ifaces_dict = vendor_cls.get_ifaces(ip, hname, logger, config, jun_conf)
                 #logger.warning('TEMP '+str(ifaces_dict))
                 for interface_id in host_dict[hname]['ifaces']:
                     interface_name = host_dict[hname]['ifaces'][interface_id]['name']
                     if interface_name in ifaces_dict:
                         host_dict[hname]['ifaces'][interface_id]['L3'] = ifaces_dict[interface_name]
-                vlan_names, qinq_names = host_dict[hname]['vendor_cls'].get_vlans_names(hname, 
-                                                                                        logger, 
-                                                                                        config, 
-                                                                                        ifaces_dict)
+                vlan_names, qinq_names = vendor_cls.get_vlans_names(hname, 
+                                                                    logger, 
+                                                                    config, 
+                                                                    ifaces_dict)
             else:
                 # проверяем наличие функции get_vlans_names в классе вендора. 
                 # Если функции нет, значит имен вланов нам не видать.
-                if 'get_vlans_names' in dir(host_dict[hname]['vendor_cls']):
-                    vlan_names = host_dict[hname]['vendor_cls'].get_vlans_names(ip, 
-                                                                        host_dict[hname]['community'], 
-                                                                        logger)
+                if 'get_vlans_names' in dir(vendor_cls):
+                    vlan_names = vendor_cls.get_vlans_names(ip, 
+                                                            host_dict[hname]['community'], 
+                                                            logger)
                 #print(f'TEMP_vlan_names: {vlan_names}')
-                iface_vlans_dict = host_dict[hname]['vendor_cls'].get_vlans_ports(ip, 
-                                                                              host_dict[hname]['community'], 
-                                                                              logger)
+                iface_vlans_dict = vendor_cls.get_vlans_ports(ip, 
+                                                              host_dict[hname]['community'], 
+                                                              logger)
                 #print(f'TEMP_iface_vlans_dict: {iface_vlans_dict}')
             if iface_vlans_dict:
                 for i in host_dict[hname]['ifaces']:
@@ -458,6 +460,23 @@ class configurator:
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_links {}'.format(hostname, str(err_message)))
             
+    def get_host(hostname, host_dict, logger):
+        try:
+            hostid = zabbix_common.hostid_by_name(hostname, logger)
+            if not hostid: 
+                logger.error('HOST '+str(hostname)+' no hostid')
+                return None, None
+            hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
+            if not hostip: 
+                logger.error('HOST '+str(hostname)+' no hostip')
+                return None, None
+            host_dict[hostname] = {'ip': hostip}
+            logger.info('HOST '+str(hostname)+' IP '+str(hostip))
+            host_dict = ifaces_and_vlans.get_all(hostip, hostname, host_dict, logger)
+            return host_dict
+        except Exception as err_message:
+            logger.error('{}: Ошибка в функции configurator.get_host {}'.format(current_hostname, str(err_message)))
+            
     def get_hosts(hostname, host_dict, logger, to_mpls = True):
         try:
             logger.info('TEMP HOSTNAME {}'.format(hostname))
@@ -474,15 +493,7 @@ class configurator:
                     continue
                 been_there.append(current_hostname)
                 if current_hostname not in host_dict:
-                    hostid = zabbix_common.hostid_by_name(current_hostname, logger)
-                    if not hostid: 
-                        return None, None, None, 'No hostid'
-                    hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
-                    if not hostip: 
-                        return None, None, None, 'No hostip'
-                    host_dict[current_hostname] = {'ip': hostip}
-                    logger.info('HOST '+str(current_hostname)+' IP '+str(hostip))
-                    host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
+                    host_dict = configurator.get_host(hostname, host_dict, logger)
                 
                 uplinks, pplinks, links = configurator.get_links(current_hostname,
                                                                  host_dict, 
