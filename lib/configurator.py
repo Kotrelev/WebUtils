@@ -676,12 +676,15 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.diagram_maker {}'.format(str(err_message)))
             
-    #def gvtest(logger):
-    #    sys.path.append('')
-    #    logger.warning(sys.path)
-    #    from diagrams.aws.compute import EC2
-    #    from diagrams.aws.database import RDS
-    #    from diagrams.aws.network import ELB
-    #    
-    #    with Diagram("Web Service", show=False):
-    #        ELB("lb") >> EC2("web") >> RDS("userdb")
+    def get_ifaces_names(host_dict, endpoints, logger):
+        try:
+            ifaces_dict = {}
+            for host in endpoints:
+                ifaces_dict[host] = {}
+                for ifid in host_dict[host]['ifaces']:
+                    ifname = host_dict[host]['ifaces'][ifid]['name']
+                    ifdesc = host_dict[host]['ifaces'][ifid]['description']
+                    ifaces_dict[host][ifname] = ifdesc
+            return ifaces_dict
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.get_ifaces_names {}'.format(str(err_message)))

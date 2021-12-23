@@ -1805,8 +1805,9 @@ def configurator_vlan_create(msg=''):
            host_dict,
            logger) for hostname in endpoints]
         
-    
-    return render_template("configurator_ifcs.html")
+    ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
+    #return configurator_init('no can do: {}'.format(host_dict))
+    return render_template("configurator_ifcs.html", ifaces_dict=ifaces_dict)
     
     
     
@@ -1829,6 +1830,17 @@ def configurator_vlan_create(msg=''):
     #                        diagram_link = diagram_link,    
     #                        rawdata = rawdata)
                                
+        
+@web_utils_app.route("/configurator_ifaces", methods=['POST'])
+def configurator_ifaces(msg=''):
+    ifaces_dict = {'dev1': {'if1': 'desc1', 'if2': 'desc2'}, 'dev2': {'if3': 'desc3', 'if4': 'desc4'}}
+    data = []
+    data.append([request.form.getlist('configurator_iface_{}[]'.format(d)) for d in ifaces_dict])
+
+    data2 = []
+    data2.append([request.form.getlist('configurator_iftype_{}[]'.format(d)) for d in ifaces_dict])
+    
+    return configurator_init('no can do: {},,,{}'.format(data,data2))
 ###
 ### /Configurator
 ###

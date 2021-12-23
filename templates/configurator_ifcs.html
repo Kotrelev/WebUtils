@@ -1,14 +1,43 @@
 {% extends "menu.html" %}
 {% block title %}Конфигуратор{% endblock %}
 {% block content %}
+<script src="js/jquery.min.js"></script>
 <script type="text/javascript">
 
 function loading() {
     document.getElementById("loader_div").style.display = "block";
     document.getElementById("content_div").style.display = "none";
 }
-    
+
 </script>
+{% for dev in ifaces_dict %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var max_fields = 48;
+    var wrapper = $(".container{{ dev }}");
+    var add_button = $(".add_form_field{{ dev }}");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><select id="configurator_iface_fld_{{ dev }}"name="configurator_iface_{{ dev }}[]">{% for iface in ifaces_dict[dev] %}<option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>{% endfor %}</select><select id="configurator_iftype_fld" name="configurator_iftype_{{ dev }}[]"><option value="None">--None--</option><option value="Access">Access</option><option value="Trunk">Trunk</option></select><a href="#" class="delete" style="padding-left:17px">❌</a></div>');
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+</script>
+{% endfor %}
+
+
 <div id="loader_div" class="loader"></div> 
 <div id="content_div">
     <br>
@@ -17,7 +46,42 @@ function loading() {
     </form>
     <br>
     <br>
-    <img src="{{ diagram_link }}" width="95%">
+    <form id="configurator_ifaces_form" 
+      action="configurator_ifaces" 
+      method="POST">
+    <table>
+    {% for dev in ifaces_dict %} 
+    <tr>
+        <td>
+        <label class="configurator_label"
+               for="configurator_iface_fld_{{ dev }}">{{ dev }}</label>
+        </td>
+        <td>
+        <div class="container{{dev}}">
+        <select id="configurator_iface_fld_{{ dev }}" 
+                name="configurator_iface_{{ dev }}[]">
+          {% for iface in ifaces_dict[dev] %}
+          <option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>
+          {% endfor %}
+        </select>
+        <select id="configurator_iftype_fld" 
+                name="configurator_iftype_{{ dev }}[]">
+          <option value="None">--None--</option>
+          <option value="Access">Access</option>
+          <option value="Trunk">Trunk</option>
+        </select>
+        <button id="GenericBlueSmallButton" class="add_form_field{{ dev }}">➕</button>
+        <br>
+        </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+    <input id="Generic140pxBlueButton" 
+    type="submit" 
+    name="ifaces_choise" 
+    value="Поехали">
+    </form>
     <br>
     {% if rawdata %}
     <details><summary><b>Давайте заглянем под капот!</b></summary>
