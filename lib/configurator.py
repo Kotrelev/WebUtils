@@ -680,11 +680,22 @@ class configurator:
         try:
             ifaces_dict = {}
             for host in endpoints:
-                ifaces_dict[host] = {}
-                for ifid in host_dict[host]['ifaces']:
-                    ifname = host_dict[host]['ifaces'][ifid]['name']
-                    ifdesc = host_dict[host]['ifaces'][ifid]['description']
-                    ifaces_dict[host][ifname] = ifdesc
+                ifaces_dict[host] = {'None': ''}
+                for ifid, iface in host_dict[host]['ifaces'].items():
+                    if iface['type'] not in ['6', '161']:
+                        continue
+                    elif any(x in iface['name'] for x in ['.', ':']):
+                        # джуники считают все саб интерфейсы агрегата как тип 161 
+                        continue
+                    elif iface['state'] == '6':
+                        # 6 = notPresent, такое бывает на кошках, фантомные Po
+                        continue
+                    elif iface['name'] in ['em0', 'em1', 'em2', 'em3', 'em4', 'me0', 'fxp0']:
+                        # джуниковские фейк интерфейсы
+                        continue
+                    elif iface['description'] and 'OFF' not in ifdesc['description']:
+                        continue
+                    ifaces_dict[host][iface['name']] = iface['description']
             return ifaces_dict
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.get_ifaces_names {}'.format(str(err_message)))
