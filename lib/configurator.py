@@ -315,7 +315,7 @@ class ifaces_and_vlans:
         try:
             sysobjectid_dict = vendors.sysobjectid_dict
             if not ifaces_and_vlans.fill_host_dict(ip, hname, host_dict, sysobjectid_dict, logger):
-                return None
+                return host_dict
             get_stuff_arr = [ifaces_and_vlans.get_ifaces_type, 
                              ifaces_and_vlans.get_ifaces_name, 
                              ifaces_and_vlans.get_ifaces_description, 
@@ -353,7 +353,7 @@ class ifaces_and_vlans:
                 print('TEMP Its JUNIPER!')
                 # берем json в виде словаря
                 jun_conf = vendor_cls.get_parsed_config(ip, hname, config, logger)
-                if not jun_conf: return None
+                if not jun_conf: return host_dict
                 print('TEMP Got config!')
                 # забираем интерфейсы в словарь с ключами == имени интерфейса (e.g. ae0.100)
                 ifaces_dict = vendor_cls.get_ifaces(ip, hname, logger, config, jun_conf)
@@ -459,6 +459,33 @@ class configurator:
 
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_links {}'.format(hostname, str(err_message)))
+            
+    def get_ifaces_names(host_dict, endpoints, logger):
+        try:
+            ifaces_dict = {}
+            for host in endpoints:
+                ifaces_dict[host] = {'None': ''}
+                for ifid, iface in host_dict[host]['ifaces'].items():
+                    if iface['type'] not in ['6', '161']:
+                        continue
+                    elif any(x in iface['name'] for x in ['.', ':']):
+                        # джуники считают все саб интерфейсы агрегата как тип 161 
+                        continue
+                    elif iface['state'] == '6':
+                        # 6 = notPresent, такое бывает на кошках, фантомные Po
+                        continue
+                    elif iface['name'] in ['em0', 'em1', 'em2', 'em3', 'em4', 'me0', 'fxp0']:
+                        # джуниковские фейк интерфейсы
+                        continue
+                    elif iface['description'] and 'OFF' not in iface['description']:
+                        # интерфейс занят
+                        continue
+                    
+                    ifaces_dict[host][iface['name']] = iface['description']
+            return ifaces_dict
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.get_ifaces_names {}'.format(str(err_message)))
+            
             
     def get_host(hostname, host_dict, logger):
         try:
@@ -676,26 +703,3 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.diagram_maker {}'.format(str(err_message)))
             
-    def get_ifaces_names(host_dict, endpoints, logger):
-        try:
-            ifaces_dict = {}
-            for host in endpoints:
-                ifaces_dict[host] = {'None': ''}
-                for ifid, iface in host_dict[host]['ifaces'].items():
-                    if iface['type'] not in ['6', '161']:
-                        continue
-                    elif any(x in iface['name'] for x in ['.', ':']):
-                        # джуники считают все саб интерфейсы агрегата как тип 161 
-                        continue
-                    elif iface['state'] == '6':
-                        # 6 = notPresent, такое бывает на кошках, фантомные Po
-                        continue
-                    elif iface['name'] in ['em0', 'em1', 'em2', 'em3', 'em4', 'me0', 'fxp0']:
-                        # джуниковские фейк интерфейсы
-                        continue
-                    elif iface['description'] and 'OFF' not in ifdesc['description']:
-                        continue
-                    ifaces_dict[host][iface['name']] = iface['description']
-            return ifaces_dict
-        except Exception as err_message:
-            logger.error('Ошибка в функции configurator.get_ifaces_names {}'.format(str(err_message)))

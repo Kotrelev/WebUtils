@@ -24,7 +24,7 @@ $(document).ready(function() {
             x++;
             $(wrapper).append('<div><select class="select-css" id="configurator_iface_fld_{{ dev }}"name="configurator_iface_{{ dev }}[]">{% for iface in ifaces_dict[dev] %}<option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>{% endfor %}</select><select class="select-css" id="configurator_iftype_fld" name="configurator_iftype_{{ dev }}[]"><option value="None">--None--</option><option value="Access">Access</option><option value="Trunk">Trunk</option></select><a href="#" class="delete" style="padding-left:14px">❌</a></div>');
         } else {
-            alert('Больше портов добавить нельзя')
+            alert('Макс портов')
         }
     });
 
@@ -47,7 +47,7 @@ $(document).ready(function() {
     <br>
     <br>
     <form id="configurator_ifaces_form" 
-      action="configurator_ifaces" 
+      action="configurator_ifaces_{{ sid }}" 
       method="POST">
     <table>
     {% for dev in ifaces_dict %} 

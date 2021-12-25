@@ -1804,10 +1804,24 @@ def configurator_vlan_create(msg=''):
            hostname,
            host_dict,
            logger) for hostname in endpoints]
-        
+    
+    for h in endpoints:
+        if any([x not in host_dict[h] for x in ['model', 'ifaces', 'vlans']]): 
+            return configurator_init('Не смог опросить {}'.format(h))
+        if host_dict[h]['mpls']: return configurator_init('Девайс {} не может быть конечным'.format(h))
     ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
+    
+    storage = {'host_dict': host_dict, 
+               'endpoints': endpoints}
+    sid = make_session_id()
+    date = format(datetime.now(), '%Y-%m-%d')
+    storage_json = json.dumps(storage, ensure_ascii=False)
+    sql_set_session(sid, storage_json, date)
+    
     #return configurator_init('no can do: {}'.format(host_dict))
-    return render_template("configurator_ifcs.html", ifaces_dict=ifaces_dict)
+    return render_template("configurator_ifcs.html", 
+                           ifaces_dict=ifaces_dict, 
+                           sid=sid)
     
     
     
@@ -1831,16 +1845,29 @@ def configurator_vlan_create(msg=''):
     #                        rawdata = rawdata)
                                
         
-@web_utils_app.route("/configurator_ifaces", methods=['POST'])
-def configurator_ifaces(msg=''):
-    ifaces_dict = {'dev1': {'if1': 'desc1', 'if2': 'desc2'}, 'dev2': {'if3': 'desc3', 'if4': 'desc4'}}
-    data = []
-    data.append([request.form.getlist('configurator_iface_{}[]'.format(d)) for d in ifaces_dict])
-
-    data2 = []
-    data2.append([request.form.getlist('configurator_iftype_{}[]'.format(d)) for d in ifaces_dict])
+@web_utils_app.route("/configurator_ifaces_<sid>", methods=['POST'])
+def configurator_ifaces(sid):
     
-    return configurator_init('no can do: {},,,{}'.format(data,data2))
+    sid_storage = sql_get_session(sid)
+    if not sid_storage: 
+        logger.error('Проблема с SQL (Не считал данные)')
+        return configurator_init(msg='Проблема с SQL (Не считал данные)')
+    data_dict = json.loads(sid_storage[0]['storage'])
+    if not 'host_dict' in data_dict:
+        logger.error('Проблема с SQL (Не смог распаковать данные)')
+        return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
+    sql_del_session(sid)
+
+    ifaces_dict = {}
+    for d in data_dict['endpoints']:
+        if_arr = request.form.getlist('configurator_iface_{}[]'.format(d))
+        mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(d))
+        ifaces_dict[d] = {}
+        for i, ifc in enumerate(if_arr):
+            ifaces_dict[d].update({ifc: mode_arr[i]})
+        
+    
+    return configurator_init('no can do: {}'.format(ifaces_dict))
 ###
 ### /Configurator
 ###
