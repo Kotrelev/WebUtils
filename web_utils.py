@@ -1788,6 +1788,11 @@ def configurator_inet_create(msg=''):
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
+    # юзер заполнил форму создания влана. Берем оконечные хостнеймы, собираем с них всю инфу.
+    # собранные данные заливаем в базу и генерим id сессии.
+    # клиенту отдадим форму с интерфейсами на всех хостах для выбора оконечных портов. 
+    
+    
     endpoints = request.form.getlist('hostname1_fld[]')
     tag = request.form['vlan_tag_fld']
     rate = request.form['vlan_rate_fld']
@@ -1821,10 +1826,41 @@ def configurator_vlan_create(msg=''):
     #return configurator_init('no can do: {}'.format(host_dict))
     return render_template("configurator_ifcs.html", 
                            ifaces_dict=ifaces_dict, 
-                           sid=sid)
+                           sid=sid)        
+        
+@web_utils_app.route("/configurator_vlan_confirm_<sid>", methods=['POST'])
+def configurator_vlan_confirm(sid):
+    # Получили данные по оконечным интерфейсам. Забираем из SQL уже собранные данные,
+    # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
+    # Отдаем все полученные данные в рисовалку схем и генератор конфигов. Конфиги заливаем в SQL.
+    # Полученную схему и конфиги показываем юзеру для подтверждения.
     
+    sid_storage = sql_get_session(sid)
+    if not sid_storage: 
+        logger.error('Проблема с SQL (Не считал данные)')
+        return configurator_init(msg='Проблема с SQL (Не считал данные)')
+    data_dict = json.loads(sid_storage[0]['storage'])
+    if not 'host_dict' in data_dict:
+        logger.error('Проблема с SQL (Не смог распаковать данные)')
+        return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
+    sql_del_session(sid)
+
+    ifaces_dict = {}
+    for d in data_dict['endpoints']:
+        if_arr = request.form.getlist('configurator_iface_{}[]'.format(d))
+        mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(d))
+        ifaces_dict[d] = {}
+        for i, ifc in enumerate(if_arr):
+            if ifc == 'None' or mode_arr[i] == 'None': continue
+            ifaces_dict[d].update({ifc: mode_arr[i]})
+        
+    return configurator_init('no can do: {}'.format(ifaces_dict))
+
+
     
-    
+#@web_utils_app.route("/configurator_vlan_maker_<sid>", methods=['POST'])
+#def configurator_vlan_maker(sid):
+#    pass
     #chains = []
     #for hostname in endpoints:
     #    host_dict = get_host(hostname, host_dict, logger)
@@ -1843,31 +1879,8 @@ def configurator_vlan_create(msg=''):
     #return render_template("configurator_confirm.html",
     #                        diagram_link = diagram_link,    
     #                        rawdata = rawdata)
-                               
-        
-@web_utils_app.route("/configurator_ifaces_<sid>", methods=['POST'])
-def configurator_ifaces(sid):
-    
-    sid_storage = sql_get_session(sid)
-    if not sid_storage: 
-        logger.error('Проблема с SQL (Не считал данные)')
-        return configurator_init(msg='Проблема с SQL (Не считал данные)')
-    data_dict = json.loads(sid_storage[0]['storage'])
-    if not 'host_dict' in data_dict:
-        logger.error('Проблема с SQL (Не смог распаковать данные)')
-        return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
-    sql_del_session(sid)
 
-    ifaces_dict = {}
-    for d in data_dict['endpoints']:
-        if_arr = request.form.getlist('configurator_iface_{}[]'.format(d))
-        mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(d))
-        ifaces_dict[d] = {}
-        for i, ifc in enumerate(if_arr):
-            ifaces_dict[d].update({ifc: mode_arr[i]})
-        
-    
-    return configurator_init('no can do: {}'.format(ifaces_dict))
+
 ###
 ### /Configurator
 ###
