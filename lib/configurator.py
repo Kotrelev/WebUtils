@@ -8,6 +8,7 @@ from diagrams.ibm.network import Bridge
 from diagrams.ibm.network import Router
 from diagrams.ibm.network import InternetServices
 from diagrams.ibm.network import DirectLink
+from diagrams.ibm.user import Browser
 from diagrams.generic.blank import Blank
 #sys.path.append('/usr/local/bin/Python37/WebUtils/env/lib/python3.7/site-packages/graphviz/')
 #sys.path.append('/usr/local/bin/Python37/Playground/env/lib/python3.7/site-packages/graphviz/')
@@ -520,7 +521,7 @@ class configurator:
                     continue
                 been_there.append(current_hostname)
                 if current_hostname not in host_dict:
-                    host_dict = configurator.get_host(hostname, host_dict, logger)
+                    host_dict = configurator.get_host(current_hostname, host_dict, logger)
                 
                 uplinks, pplinks, links = configurator.get_links(current_hostname,
                                                                  host_dict, 
@@ -624,7 +625,7 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
             
-    def diagram_maker(vlanpath, host_dict, endpoints, logger):
+    def diagram_maker(vlanpath, host_dict, ifaces_dict, endpoints, logger):
         try:
             if '/usr/bin/' not in os.environ.get("PATH").split(os.pathsep):
                 os.environ["PATH"] += os.pathsep + '/usr/bin/'
@@ -640,37 +641,42 @@ class configurator:
                 narr = {}
                 for x in vlanpath:
                     if not host_dict[x]['mpls']:
-                        narr.update({x: Bridge(x, shape="circle")})
+                        narr.update({x: Bridge(x, height="0.9", width="0.9", shape="circle", fontsize="8")})
                     else:
-                        narr.update({x: Router(x, shape="circle")})
+                        narr.update({x: Router(x, height="0.9", width="0.9", shape="circle", fontsize="8")})
                 if any(vlanpath[host][link]['type'] == 'vpls' 
                         for host in vlanpath 
                         for link in vlanpath[host]):
-                    narr.update({'vpls': InternetServices('VPLS', shape="circle")})
+                    narr.update({'vpls': InternetServices('VPLS', 
+                                                          height="0.9", 
+                                                          width="0.9", 
+                                                          shape="circle",
+                                                          fontsize="8")})
                 
                 nifc = {host+link: Blank(vlanpath[host][link]['port'], 
-                                   labelloc="c", 
-                                   shape="plaintext", 
-                                   height="0.3") 
+                                         labelloc="c", 
+                                         shape="plaintext", 
+                                         height="0.3",
+                                         width="0.9",
+                                         fontsize="8") 
                         for host in vlanpath 
                         for link in vlanpath[host] 
                         if vlanpath[host][link]['type'] not in ['vpls', 'mpls']}
-                #nifc = {}
-                #for host in vlanpath:
-                #    for link in vlanpath[host]:
-                #        if vlanpath[host][link]['type'] != vpls:
-                #            nifc.update({host+link: Blank(vlanpath[host][link]['port'], 
-                #                         labelloc="c", 
-                #                         shape="plaintext", 
-                #                         height="0.3")})
-                #        if vlanpath[host][link]['type'] == vpls:
-                #            nifc.update({host+link: InternetServices(vlanpath[host][link]['port'], 
-                #                         labelloc="c", 
-                #                         shape="plaintext", 
-                #                         height="0.3")})
-                        
+                edge_nifc = {node+link: Blank(link+'\n'+ifaces_dict[node][link], 
+                                              labelloc="c", 
+                                              shape="plaintext", 
+                                              height="0.3",
+                                              width="0.9",
+                                              fontsize="8")
+                             for node in ifaces_dict 
+                             for link in ifaces_dict[node]}
                 done = []
                 for node in vlanpath: 
+                    if node in ifaces_dict:
+                        for link in ifaces_dict[node]:
+                            narr[node] - Edge(color="black", style="bold") \
+                            - edge_nifc[node+link] - Edge(color="green", style="bold") \
+                            - Browser(height="0.9", width="0.9", shape="circle")
                     for link in vlanpath[node]:
                         if [node, link] in done or [link, node] in done: 
                             continue
@@ -694,7 +700,7 @@ class configurator:
                             - nifc[node+link] - Edge(color="green", style="bold") \
                             - nifc[link+node] - Edge(color="black", style="bold") \
                             - narr[link]
-
+                        
                         done.append([node, link])
                 diag.format = 'png' 
                 

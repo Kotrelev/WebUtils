@@ -1788,10 +1788,8 @@ def configurator_inet_create(msg=''):
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
-    # юзер заполнил форму создания влана. Берем оконечные хостнеймы, собираем с них всю инфу.
-    # собранные данные заливаем в базу и генерим id сессии.
+    # юзер заполнил форму создания влана. 
     # клиенту отдадим форму с интерфейсами на всех хостах для выбора оконечных портов. 
-    
     
     endpoints = request.form.getlist('hostname1_fld[]')
     tag = request.form['vlan_tag_fld']
@@ -1801,21 +1799,24 @@ def configurator_vlan_create(msg=''):
     tasknum = request.form['vlan_tasknum_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
-    
     host_dict = {}
-    
+    # Берем оконечные хостнеймы, собираем с них всю инфу.
     with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
         [executor.submit(configurator.get_host, 
            hostname,
            host_dict,
            logger) for hostname in endpoints]
     
+    # Проверяем что данные собрались
     for h in endpoints:
         if any([x not in host_dict[h] for x in ['model', 'ifaces', 'vlans']]): 
             return configurator_init('Не смог опросить {}'.format(h))
         if host_dict[h]['mpls']: return configurator_init('Девайс {} не может быть конечным'.format(h))
+        
+    # Собираем все не занятые интерфейсы (без дескрипшна или с OFF в дескрипшне)
     ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
     
+    # генерим id сессии и складываем host_dict в базу
     storage = {'host_dict': host_dict, 
                'endpoints': endpoints}
     sid = make_session_id()
@@ -1830,11 +1831,10 @@ def configurator_vlan_create(msg=''):
         
 @web_utils_app.route("/configurator_vlan_confirm_<sid>", methods=['POST'])
 def configurator_vlan_confirm(sid):
-    # Получили данные по оконечным интерфейсам. Забираем из SQL уже собранные данные,
-    # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
-    # Отдаем все полученные данные в рисовалку схем и генератор конфигов. Конфиги заливаем в SQL.
-    # Полученную схему и конфиги показываем юзеру для подтверждения.
+    # Получили данные по оконечным интерфейсам. Можно генерить схему и конфиги.
+
     
+    # Забираем из SQL уже собранные данные по конечным девайсам
     sid_storage = sql_get_session(sid)
     if not sid_storage: 
         logger.error('Проблема с SQL (Не считал данные)')
@@ -1843,8 +1843,12 @@ def configurator_vlan_confirm(sid):
     if not 'host_dict' in data_dict:
         logger.error('Проблема с SQL (Не смог распаковать данные)')
         return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
+    host_dict = data_dict['host_dict']
+    endpoints = data_dict['endpoints']
     sql_del_session(sid)
-
+    
+    # Формируем словарь конечных интерфейсов
+    # пример ifaces_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
     ifaces_dict = {}
     for d in data_dict['endpoints']:
         if_arr = request.form.getlist('configurator_iface_{}[]'.format(d))
@@ -1854,31 +1858,61 @@ def configurator_vlan_confirm(sid):
             if ifc == 'None' or mode_arr[i] == 'None': continue
             ifaces_dict[d].update({ifc: mode_arr[i]})
         
-    return configurator_init('no can do: {}'.format(ifaces_dict))
+    # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
+    chains = []
+    
+    for hostname in endpoints:
+        # all_links это словарь {host: {iface_id: iface_name}} для всех 
+        # линков всех девайсов в цепочке hostname >> MPLS device
+        # been_there это список всех девайсов в цепочке hostname >> MPLS device
+        # зачем он мне если есть all_links? Отличный вопрос. Отличный. Вопрос. Да.
+        all_links, been_there = configurator.get_hosts(hostname, 
+                                                       host_dict, 
+                                                       logger)
+        #logger.warning(all_links)
+        # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access и пакуем все цепочки в массив.
+        chains.append(configurator.get_chain(all_links, 
+                                             been_there, 
+                                             host_dict, 
+                                             logger))
+    # Из всех цепочек крафтим путь между всеми конечными узлами
+    vpath = configurator.path_maker(chains, 
+                                    host_dict, 
+                                    endpoints, 
+                                    logger)
+    # Рисуем картинку и получаем ссылку на нее
+    diagram_link = configurator.diagram_maker(vpath, 
+                                              host_dict, 
+                                              ifaces_dict, 
+                                              endpoints, 
+                                              logger)
+    
+    # Отдаем все полученные данные в генератор конфигов. 
+    # Конфиги заливаем в SQL.
+    
+    rawdata = [chains, vpath, host_dict]
+    ##time.sleep(5)
+    #sid = make_session_id()
+    #
+    # Полученную схему и конфиги показываем юзеру для подтверждения.
+    return render_template("configurator_confirm.html",
+                            diagram_link = diagram_link,    
+                            rawdata = rawdata)
+        
+    #return configurator_init('no can do: {}'.format(ifaces_dict))
 
 
     
 #@web_utils_app.route("/configurator_vlan_maker_<sid>", methods=['POST'])
 #def configurator_vlan_maker(sid):
 #    pass
-    #chains = []
-    #for hostname in endpoints:
-    #    host_dict = get_host(hostname, host_dict, logger)
-    #    all_links, been_there = configurator.get_hosts(hostname, host_dict, logger)
-    #    #logger.warning(all_links)
-    #    chains.append(configurator.get_chain(all_links, been_there, host_dict, logger))
+
         
-    #vpath = configurator.path_maker(chains, host_dict, endpoints, logger)
+
     ##gvtest(logger)
-    #diagram_link = configurator.diagram_maker(vpath, host_dict, endpoints, logger)
+    
     #
-    #rawdata = [chains, vpath, host_dict]
-    ##time.sleep(5)
-    #sid = make_session_id()
-    #
-    #return render_template("configurator_confirm.html",
-    #                        diagram_link = diagram_link,    
-    #                        rawdata = rawdata)
+
 
 
 ###
