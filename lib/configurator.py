@@ -625,12 +625,44 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
             
-    def diagram_maker(vlanpath, host_dict, ifaces_dict, endpoints, logger):
+    def vlan_validator(vlan_tag, host_dict, logger):
         try:
+            hl = []
+            for host in host_dict:
+                if vlan_tag in host_dict[host]['vlans']:
+                    hl.append(host)
+            return hl
+            
+            
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.vlan_validator {}'.format(str(err_message)))
+            
+    def config_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
+        try:
+            pass
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.config_maker {}'.format(str(err_message)))
+            
+    def diagram_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
+        try:
+            # Сокращаем имена интерфейсов
+            short_iface_dict = {
+            'Ethernet': 'e',
+            'gigabitethernet': 'gi',
+            'fastethernet': 'fa'}
+            for h in vlanpath:
+                for l in vlanpath[h]:
+                    for r in short_iface_dict:
+                        if r in vlanpath[h][l]['port']:
+                            vlanpath[h][l]['port'] = vlanpath[h][l]['port'].replace(r, short_iface_dict[r])
+            
+            # Тут мы меняем системную переменную PATH а не внтутренню PATH питона. 
+            # Системная может не знать где dot лежит (исполняшка graphviz который и рисует диаграму)
             if '/usr/bin/' not in os.environ.get("PATH").split(os.pathsep):
                 os.environ["PATH"] += os.pathsep + '/usr/bin/'
-            fname = str(datetime.now().timestamp())
-            diagram_name = ' - '.join(endpoints)
+            # таймкод подойдет как уникальное имя файла
+            fname = str(datetime.now().timestamp()).replace('.', '')
+            diagram_name = '{} ({})'.format(vlan_name, ' - '.join(endpoints))
             with Diagram(diagram_name,
                          direction='LR', 
                          show=False, 
@@ -656,27 +688,20 @@ class configurator:
                 nifc = {host+link: Blank(vlanpath[host][link]['port'], 
                                          labelloc="c", 
                                          shape="plaintext", 
-                                         height="0.3",
-                                         width="0.9",
+                                         height="0.2",
+                                         width="0.6",
                                          fontsize="8") 
                         for host in vlanpath 
                         for link in vlanpath[host] 
                         if vlanpath[host][link]['type'] not in ['vpls', 'mpls']}
-                edge_nifc = {node+link: Blank(link+'\n'+ifaces_dict[node][link], 
-                                              labelloc="c", 
-                                              shape="plaintext", 
-                                              height="0.3",
-                                              width="0.9",
-                                              fontsize="8")
-                             for node in ifaces_dict 
-                             for link in ifaces_dict[node]}
                 done = []
-                for node in vlanpath: 
-                    if node in ifaces_dict:
-                        for link in ifaces_dict[node]:
-                            narr[node] - Edge(color="black", style="bold") \
-                            - edge_nifc[node+link] - Edge(color="green", style="bold") \
-                            - Browser(height="0.9", width="0.9", shape="circle")
+                for node in vlanpath:
+                    # Тут к оконечным девайсам прикрепляем линки до клиентов
+                    if node in end_iface_dict:
+                        for link in end_iface_dict[node]:
+                            l = link+'\n'+end_iface_dict[node][link]
+                            narr[node] - Edge(label=l, color="green", fontsize="6") \
+                            - Browser(height="0.2", width="0.2", shape="circle")
                     for link in vlanpath[node]:
                         if [node, link] in done or [link, node] in done: 
                             continue

@@ -1765,38 +1765,17 @@ def configurator_inet_create(msg=''):
     #time.sleep(5)
     return configurator('no can do: {}'.format(a))
 
-#def gvtest(logger):
-#    #proc = subprocess.Popen('gv.py', stdout=subprocess.PIPE,shell=True)
-#    #(out,err) = proc.communicate()
-#    
-#    import sys, os
-#    app_path = os.path.join('/usr/bin/')
-#    os.environ["PATH"] += os.pathsep + app_path
-#    #sys.path.append('')
-#    #sys.path.append('/usr/bin/')
-#    #sys.path.append('/usr/sbin/')
-#    p = os.environ.get("PATH")
-#    logger.warning(sys.path)
-#    logger.warning(p)
-#    from diagrams import Diagram, Edge
-#    from diagrams.aws.compute import EC2
-#    from diagrams.aws.database import RDS
-#    from diagrams.aws.network import ELB
-#    
-#    with Diagram("Web Service", show=False):
-#        ELB("lb") >> EC2("web") >> RDS("userdb")
-
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
     # юзер заполнил форму создания влана. 
     # клиенту отдадим форму с интерфейсами на всех хостах для выбора оконечных портов. 
-    
+    vlan_form = {}
     endpoints = request.form.getlist('hostname1_fld[]')
-    tag = request.form['vlan_tag_fld']
-    rate = request.form['vlan_rate_fld']
-    latin_name = request.form['vlan_latname_fld'].replace(' ', '_')
-    mtu = request.form['mtu_fld']
-    tasknum = request.form['vlan_tasknum_fld']
+    vlan_form['tag'] = request.form['vlan_tag_fld']
+    vlan_form['rate'] = request.form['vlan_rate_fld']
+    vlan_form['latin_name'] = request.form['vlan_latname_fld'].replace(' ', '_')
+    vlan_form['mtu'] = request.form['mtu_fld']
+    vlan_form['tasknum'] = request.form['vlan_tasknum_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
     host_dict = {}
@@ -1818,7 +1797,8 @@ def configurator_vlan_create(msg=''):
     
     # генерим id сессии и складываем host_dict в базу
     storage = {'host_dict': host_dict, 
-               'endpoints': endpoints}
+               'endpoints': endpoints
+               'vlan_form': vlan_form}
     sid = make_session_id()
     date = format(datetime.now(), '%Y-%m-%d')
     storage_json = json.dumps(storage, ensure_ascii=False)
@@ -1845,7 +1825,8 @@ def configurator_vlan_confirm(sid):
         return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
     host_dict = data_dict['host_dict']
     endpoints = data_dict['endpoints']
-    sql_del_session(sid)
+    vlan_form = data_dict['vlan_form']
+    #sql_del_session(sid)
     
     # Формируем словарь конечных интерфейсов
     # пример ifaces_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
@@ -1880,14 +1861,32 @@ def configurator_vlan_confirm(sid):
                                     host_dict, 
                                     endpoints, 
                                     logger)
+    # Проверяем что влан свободен
+    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger):
+    if hl:
+        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
+                                                                      ', '.join(hl)))
+    # Тут надо подумать. Имя влана по номеру заявки не прокатит.
+    vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
+    
     # Рисуем картинку и получаем ссылку на нее
-    diagram_link = configurator.diagram_maker(vpath, 
+    diagram_link = configurator.diagram_maker(vlan_name,
+                                              vpath, 
                                               host_dict, 
                                               ifaces_dict, 
                                               endpoints, 
                                               logger)
     
     # Отдаем все полученные данные в генератор конфигов. 
+    config_dict = config_maker(vlan_form, 
+                               vlan_name, 
+                               vlanpath, 
+                               host_dict, 
+                               end_iface_dict, 
+                               endpoints, 
+                               logger)
+    
+    
     # Конфиги заливаем в SQL.
     
     rawdata = [chains, vpath, host_dict]
