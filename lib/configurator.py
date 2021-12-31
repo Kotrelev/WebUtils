@@ -639,7 +639,45 @@ class configurator:
             
     def config_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
         try:
-            pass
+            config_dict = {}
+            mpls_nodes = [n for n in vlanpath if host_dict[n]['mpls']]
+            for host in vlanpath:
+                vendor_cls = sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
+                
+                if host in mpls_nodes and len(mpls_nodes) == 2:
+                    # mpls
+                    mpls_neighbour = [x for x in mpls_nodes if x != host][0]
+                    l2_neighbour = [x for x in vlanpath[host] if x not in mpls_nodes]
+                    if len(l2_neighbour) > 1: 
+                        return '{} has more than 1 l2 nei'.format(host)
+                    l2_interface = vlanpath[host][l2_neighbour[0]]['port']
+                    conf = vendor_cls.mpls_config_maker(host, 
+                                                        vlan_form,
+                                                        vlan_name,
+                                                        l2_interface,
+                                                        mpls_neighbour,
+                                                        config,
+                                                        logger)
+                    config_dict[host] = conf
+                elif host in mpls_nodes and len(mpls_nodes) > 2:
+                    # vpls
+                    pass
+                else:
+                    # l2
+                    pass
+                if host in endpoints and end_iface_dict[host]:
+                    # iface conf
+                    pass
+                
+                if 'create_vlan' not in dir(vendor_cls):
+                    return '{} cannot create vlan'.format(host)
+                if 'add_port_vlan' not in dir(vendor_cls):
+                    return '{} cannot add vlan to port'.format(host)
+                
+                
+                links = vlanpath[host]
+                
+                
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.config_maker {}'.format(str(err_message)))
             

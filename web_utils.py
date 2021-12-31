@@ -1778,6 +1778,9 @@ def configurator_vlan_create(msg=''):
     vlan_form['tasknum'] = request.form['vlan_tasknum_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
+    if vlan_form['rate'] not in config.policer_dict:
+        return configurator_init('Нет полисера для скорости {}'.format(vlan_form['rate']))
+    
     host_dict = {}
     # Берем оконечные хостнеймы, собираем с них всю инфу.
     with ThreadPoolExecutor(max_workers=len(endpoints)) as executor:
@@ -1791,13 +1794,19 @@ def configurator_vlan_create(msg=''):
         if any([x not in host_dict[h] for x in ['model', 'ifaces', 'vlans']]): 
             return configurator_init('Не смог опросить {}'.format(h))
         if host_dict[h]['mpls']: return configurator_init('Девайс {} не может быть конечным'.format(h))
+    
+    # Проверяем что влан не занят
+    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger)
+    if hl:
+        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
+                                                                      ', '.join(hl)))
         
     # Собираем все не занятые интерфейсы (без дескрипшна или с OFF в дескрипшне)
     ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
     
     # генерим id сессии и складываем host_dict в базу
     storage = {'host_dict': host_dict, 
-               'endpoints': endpoints
+               'endpoints': endpoints,
                'vlan_form': vlan_form}
     sid = make_session_id()
     date = format(datetime.now(), '%Y-%m-%d')
@@ -1856,16 +1865,16 @@ def configurator_vlan_confirm(sid):
                                              been_there, 
                                              host_dict, 
                                              logger))
+    # Проверяем что влан свободен
+    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger)
+    if hl:
+        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
+                                                                      ', '.join(hl)))
     # Из всех цепочек крафтим путь между всеми конечными узлами
     vpath = configurator.path_maker(chains, 
                                     host_dict, 
                                     endpoints, 
                                     logger)
-    # Проверяем что влан свободен
-    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger):
-    if hl:
-        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
-                                                                      ', '.join(hl)))
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
     vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
@@ -1878,13 +1887,13 @@ def configurator_vlan_confirm(sid):
                                               logger)
     
     # Отдаем все полученные данные в генератор конфигов. 
-    config_dict = config_maker(vlan_form, 
-                               vlan_name, 
-                               vlanpath, 
-                               host_dict, 
-                               end_iface_dict, 
-                               endpoints, 
-                               logger)
+    #config_dict = config_maker(vlan_form, 
+    #                           vlan_name, 
+    #                           vlanpath, 
+    #                           host_dict, 
+    #                           end_iface_dict, 
+    #                           endpoints, 
+    #                           logger)
     
     
     # Конфиги заливаем в SQL.
