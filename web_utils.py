@@ -1879,7 +1879,8 @@ def configurator_vlan_confirm(sid):
     vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
     # Рисуем картинку и получаем ссылку на нее
-    diagram_link = configurator.diagram_maker(vlan_name,
+    diagram_link = configurator.diagram_maker(vlan_form,
+                                              vlan_name,
                                               vpath, 
                                               host_dict, 
                                               ifaces_dict, 
