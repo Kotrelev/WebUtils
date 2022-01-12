@@ -33,11 +33,14 @@ class ddm:
                     #logger.warning('TEMP found ERR! '+line)
                     port = line.split(' = STRING: ')[0]
                     desc = ddm.port_desc(ip, port, comm, logger)
-                    rx = line.replace(port+' = STRING: ', '').strip('\n').strip('"')
+                    rx = line.replace(port+' = STRING: ', '').strip('\n').strip('"').split('(')
+                    atype = rx[1][:-1]
+                    rx = rx[0]
                     alarm_dict[hname+' port {}'.format(port)] = {'desc': desc, 
-                                                                'rx': rx,
-                                                                'hname': hname,
-                                                                'port': port}
+                                                                 'rx': rx,
+                                                                 'atype': atype,
+                                                                 'hname': hname,
+                                                                 'port': port}
         except Exception as err_message:
             logger.error('{}: Ошибка в функции ddm.snr_ddm {}'.format(ip, str(err_message)))
             

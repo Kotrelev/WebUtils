@@ -67,6 +67,7 @@ function FilterFunction() {
                 <th>Порт</th>
                 <th>Дескрипшн</th>
                 <th>Сигнал RX</th>
+                <th>Alarm</th>
             </tr>
             </thead>
             <tbody>
@@ -76,13 +77,15 @@ function FilterFunction() {
                 <td>{{ alarm_dict[alarm].port }}</td>
                 <td>{{ alarm_dict[alarm].desc }}</td>
                 <td>{{ alarm_dict[alarm].rx }}</td>
+                <td>{{ alarm_dict[alarm].atype }}</td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
     <br>
-    W = Warning, A = Alarm, "-" = low, "+" = high
+    <b>W = Warning, A = Alarm, "-" = low, "+" = high</b>
+    <br>
     <br>
     {% endif %}
 </div>
