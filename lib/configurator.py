@@ -625,13 +625,38 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.path_maker {}'.format(str(err_message)))
             
-    def vlan_validator(vlan_tag, host_dict, logger):
+    def vlan_validator(vlan_tag, vpath, host_dict, logger):
         try:
             hl = []
-            for host in host_dict:
+            free_vlans = ''
+            for host in vpath:
                 if vlan_tag in host_dict[host]['vlans']:
                     hl.append(host)
-            return hl
+            if hl:
+                vlan_set = set([int(vlan) for host in vpath for vlan in host_dict[host]['vlans']])
+                logger.info('TEMP vlan_set: {}'.format(vlan_set))
+                for vid in range(2,4096):
+                    if vid not in vlan_set:
+                        if not free_vlans:
+                            free_vlans += str(vid)
+                            prev_vid = vid
+                        elif free_vlans[-1] == ' ':
+                            free_vlans += str(vid)
+                            prev_vid = vid
+                        elif vid == 4095:
+                            free_vlans += '-' + str(vid)
+                    else:
+                        if not free_vlans:
+                            continue
+                        if prev_vid and vid != 4095 and vid-1 != prev_vid:
+                            free_vlans += '-' + str(vid-1) + ', '
+                        elif prev_vid and vid-1 == prev_vid:
+                            free_vlans += ', '
+                        elif prev_vid:
+                            free_vlans += '-' + str(vid-1)
+                        prev_vid = None
+                    
+            return hl, free_vlans
             
             
         except Exception as err_message:
@@ -642,20 +667,24 @@ class configurator:
             config_dict = {}
             mpls_nodes = [n for n in vlanpath if host_dict[n]['mpls']]
             for host in vlanpath:
-                vendor_cls = sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
+                vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
                 
                 if host in mpls_nodes and len(mpls_nodes) == 2:
                     # mpls
-                    mpls_neighbour = [x for x in mpls_nodes if x != host][0]
+                    mpls_nei = [x for x in mpls_nodes if x != host][0]
                     l2_neighbour = [x for x in vlanpath[host] if x not in mpls_nodes]
                     if len(l2_neighbour) > 1: 
-                        return '{} has more than 1 l2 nei'.format(host)
+                        config_dict[host] = 'ERROR: {} has more than 1 l2 nei'.format(host)
+                        continue
+                    if not 'mpls_config_maker' in dir(vendor_cls):
+                        config_dict[host] = 'ERROR: {} cannot make MPLS'.format(host)
+                        continue
                     l2_interface = vlanpath[host][l2_neighbour[0]]['port']
                     conf = vendor_cls.mpls_config_maker(host, 
                                                         vlan_form,
                                                         vlan_name,
                                                         l2_interface,
-                                                        mpls_neighbour,
+                                                        host_dict[mpls_nei]['ip'],
                                                         config,
                                                         logger)
                     config_dict[host] = conf
@@ -666,17 +695,17 @@ class configurator:
                     # l2
                     pass
                 if host in endpoints and end_iface_dict[host]:
-                    # iface conf
+                    # endpoint iface conf
                     pass
                 
-                if 'create_vlan' not in dir(vendor_cls):
-                    return '{} cannot create vlan'.format(host)
-                if 'add_port_vlan' not in dir(vendor_cls):
-                    return '{} cannot add vlan to port'.format(host)
+                #if 'create_vlan' not in dir(vendor_cls):
+                #    return '{} cannot create vlan'.format(host)
+                #if 'add_port_vlan' not in dir(vendor_cls):
+                #    return '{} cannot add vlan to port'.format(host)
                 
                 
-                links = vlanpath[host]
-                
+                #links = vlanpath[host]
+            return config_dict    
                 
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.config_maker {}'.format(str(err_message)))

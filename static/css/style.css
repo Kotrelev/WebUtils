@@ -603,6 +603,13 @@ background-repeat: no-repeat, repeat;
 background-position: right .7em top 50%, 0 0;
 background-size: .65em auto, 100%; 
 } 
+/* Configurator */
+#rate_fld,#vlan_rate_fld{
+  width: 262px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
 
 #configurator_iftype_fld{
   margin-left: 10px;

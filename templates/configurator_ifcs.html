@@ -49,6 +49,7 @@ $(document).ready(function() {
     <form id="configurator_ifaces_form" 
       action="configurator_vlan_confirm_{{ sid }}" 
       method="POST">
+    <h2>Выберете конечные интерфейсы (если необходимо)</h2><br>
     <table>
     {% for dev in ifaces_dict %} 
     <tr>
@@ -78,6 +79,7 @@ $(document).ready(function() {
     </tr>
     {% endfor %}
     </table>
+    <br>
     <input id="Generic140pxBlueButton" 
     type="submit" 
     name="ifaces_choise" 

@@ -1724,7 +1724,8 @@ def configurator_init(msg=''):
     
     return render_template("configurator.html",
                            msg = msg,
-                           hostname_list = hostname_list)
+                           hostname_list = hostname_list,
+                           policer_dict = config.policer_dict)
                            
 @web_utils_app.route("/configurator_inet_create", methods=['POST'])
 def configurator_inet_create(msg=''):
@@ -1778,8 +1779,8 @@ def configurator_vlan_create(msg=''):
     vlan_form['tasknum'] = request.form['vlan_tasknum_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
-    if vlan_form['rate'] not in config.policer_dict:
-        return configurator_init('Нет полисера для скорости {}'.format(vlan_form['rate']))
+    #if vlan_form['rate'] not in config.policer_dict:
+    #    return configurator_init('Нет полисера для скорости {}'.format(vlan_form['rate']))
     
     host_dict = {}
     # Берем оконечные хостнеймы, собираем с них всю инфу.
@@ -1796,10 +1797,13 @@ def configurator_vlan_create(msg=''):
         if host_dict[h]['mpls']: return configurator_init('Девайс {} не может быть конечным'.format(h))
     
     # Проверяем что влан не занят
-    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger)
-    if hl:
-        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
-                                                                      ', '.join(hl)))
+    # Эта валидация лишняя все-таки
+    #hl, free_vids = configurator.vlan_validator(vlan_form['tag'], endpoints, host_dict, logger)
+    #if hl:
+    #    m = 'Влан {} занят на хостах: {}<br>Свободные вланы на выбранных хостах: {}'
+    #    return configurator_init(m.format(vlan_form['tag'],
+    #                                      ', '.join(hl),
+    #                                      free_vids))
         
     # Собираем все не занятые интерфейсы (без дескрипшна или с OFF в дескрипшне)
     ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
@@ -1838,15 +1842,15 @@ def configurator_vlan_confirm(sid):
     #sql_del_session(sid)
     
     # Формируем словарь конечных интерфейсов
-    # пример ifaces_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
-    ifaces_dict = {}
+    # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
+    end_iface_dict = {}
     for d in data_dict['endpoints']:
         if_arr = request.form.getlist('configurator_iface_{}[]'.format(d))
         mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(d))
-        ifaces_dict[d] = {}
+        end_iface_dict[d] = {}
         for i, ifc in enumerate(if_arr):
             if ifc == 'None' or mode_arr[i] == 'None': continue
-            ifaces_dict[d].update({ifc: mode_arr[i]})
+            end_iface_dict[d].update({ifc: mode_arr[i]})
         
     # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
     chains = []
@@ -1865,16 +1869,24 @@ def configurator_vlan_confirm(sid):
                                              been_there, 
                                              host_dict, 
                                              logger))
-    # Проверяем что влан свободен
-    hl = configurator.vlan_validator(vlan_form['tag'], host_dict, logger)
-    if hl:
-        return configurator_init('Влан {} занят на хостах: {}'.format(vlan_form['tag'],
-                                                                      ', '.join(hl)))
+
     # Из всех цепочек крафтим путь между всеми конечными узлами
     vpath = configurator.path_maker(chains, 
                                     host_dict, 
                                     endpoints, 
                                     logger)
+    
+    # Проверяем что влан свободен
+    hl, free_vids = configurator.vlan_validator(vlan_form['tag'], 
+                                                vpath, 
+                                                host_dict, 
+                                                logger)
+    if hl:
+        m = 'Влан {} занят на хостах: {}<br>Свободные вланы в цепочке: {}'
+        return configurator_init(m.format(vlan_form['tag'],
+                                 ', '.join(hl),
+                                 free_vids))
+    
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
     vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
@@ -1883,30 +1895,31 @@ def configurator_vlan_confirm(sid):
                                               vlan_name,
                                               vpath, 
                                               host_dict, 
-                                              ifaces_dict, 
+                                              end_iface_dict, 
                                               endpoints, 
                                               logger)
     
-    # Отдаем все полученные данные в генератор конфигов. 
-    #config_dict = config_maker(vlan_form, 
-    #                           vlan_name, 
-    #                           vlanpath, 
-    #                           host_dict, 
-    #                           end_iface_dict, 
-    #                           endpoints, 
-    #                           logger)
+    #Отдаем все полученные данные в генератор конфигов. 
+    config_dict = configurator.config_maker(vlan_form, 
+                                            vlan_name, 
+                                            vpath, 
+                                            host_dict, 
+                                            end_iface_dict, 
+                                            endpoints, 
+                                            logger)
     
     
     # Конфиги заливаем в SQL.
     
-    rawdata = [chains, vpath, host_dict]
+    rawdata = [chains, vpath, config_dict, host_dict]
     ##time.sleep(5)
     #sid = make_session_id()
     #
     # Полученную схему и конфиги показываем юзеру для подтверждения.
     return render_template("configurator_confirm.html",
-                            diagram_link = diagram_link,    
-                            rawdata = rawdata)
+                           diagram_link = diagram_link,
+                           config_dict = config_dict,
+                           rawdata = rawdata,)
         
     #return configurator_init('no can do: {}'.format(ifaces_dict))
 

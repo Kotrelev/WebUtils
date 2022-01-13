@@ -17,8 +17,44 @@ function loading() {
     </form>
     <br>
     <br>
-    <img src="{{ diagram_link }}" width="95%">
+    <div>
+      <img src="{{ diagram_link }}" width="95%">
+    </div>
     <br>
+    <div>
+    <h2>Configurations:</h2>
+    {% for host in config_dict %}
+    <details><summary><b>{{ host }}</b></summary>
+      {% if config_dict[host].global %}
+        <p>
+          {% for line in config_dict[host].global %}
+            {{ line }}<br>
+          {% endfor %}
+        </p><br>
+      {% endif %}
+      {% if config_dict[host].config %}
+        <p>
+        conf t
+          {% for line in config_dict[host].config %}
+            &nbsp;&nbsp;{{ line }}<br>
+          {% endfor %}
+        </p><br>
+        {% if config_dict[host].ifaces %}
+          <p style="margin-left: 2.5em;padding: 0 7em 2em 0;">
+            {% for iface in config_dict[host].ifaces %}
+              &nbsp;&nbsp;int {{ iface }}
+                {% for line in config_dict[host][ifaces].iface %}
+                  &nbsp;&nbsp;&nbsp;&nbsp;{{ line }}<br>
+                {% endfor %}
+            {% endfor %}
+          </p><br>
+        {% endif %}
+      {% endif %}
+    </details>
+    {% endfor %}
+    </div>
+    <br>
+    <div>
     {% if rawdata %}
     <details><summary><b>Давайте заглянем под капот!</b></summary>
     {% for data in rawdata %}
@@ -27,5 +63,6 @@ function loading() {
     {% endfor %}
     </details>
     {% endif %}
+    </div>
 </div>
 {% endblock %}

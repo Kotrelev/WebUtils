@@ -129,12 +129,21 @@ function loading() {
                for="rate_fld">Тариф (мегабиты):</label>
         </td>
         <td>
+        <select class="select-css"
+                id="rate_fld" 
+                name="rate_fld">
+          {% for speed in policer_dict %}
+          <option value="{{ speed }}">{{ speed }}</option>
+          {% endfor %}
+        </select>
+        <!--
         <input type="number" 
                class="configurator_form" 
                id="rate_fld" 
                name="rate_fld" 
                min="1" 
                max="10000" required><br>
+        -->
         </td>
         </tr>
         <tr>
@@ -293,12 +302,21 @@ function loading() {
                for="vlan_rate_fld">Тариф (мегабиты):</label>
         </td>
         <td>
+        <!--
         <input type="number" 
                class="configurator_form" 
                id="vlan_rate_fld" 
                name="vlan_rate_fld" 
                min="1" 
                max="10000" required><br>
+        -->
+        <select class="select-css"
+                id="vlan_rate_fld" 
+                name="vlan_rate_fld">
+          {% for speed in policer_dict %}
+          <option value="{{ speed }}">{{ speed }}</option>
+          {% endfor %}
+        </select>
         </td>
         </tr>
         <tr>
