@@ -24,23 +24,23 @@ function loading() {
     <div>
     <h2>Configurations:</h2>
     {% for host in config_dict %}
-    <details><summary><b>{{ host }}</b></summary>
+    <details class="configurator_config_details"><summary><b>{{ host }}</b></summary>
       {% if config_dict[host].global %}
-        <p>
+        <p class="configurator_config_p">
           {% for line in config_dict[host].global %}
             {{ line }}<br>
           {% endfor %}
         </p><br>
       {% endif %}
       {% if config_dict[host].config %}
-        <p>
+        <p class="configurator_config_p">
         conf t
           {% for line in config_dict[host].config %}
             &nbsp;&nbsp;{{ line }}<br>
           {% endfor %}
         </p><br>
         {% if config_dict[host].ifaces %}
-          <p style="margin-left: 2.5em;padding: 0 7em 2em 0;">
+          <p class="configurator_config_p">
             {% for iface in config_dict[host].ifaces %}
               &nbsp;&nbsp;int {{ iface }}
                 {% for line in config_dict[host][ifaces].iface %}

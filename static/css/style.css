@@ -616,6 +616,19 @@ background-size: .65em auto, 100%;
   width: 120px;
 }
 
+.configurator_config_details{
+  border-color:white;
+  border-style:solid;
+  border-width:1px;
+  border-radius:5px;
+  padding:5px;
+  margin-bottom:5px;
+}
+
+.configurator_config_p{
+  font-size: 14px;
+}
+
 /*
 .sortable tbody tr:nth-child(even) {
 }

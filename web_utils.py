@@ -1969,8 +1969,15 @@ def erth_inventory_out():
 ### /ERTH Inventory
 ###
 
-
-
+###
+### 404
+###
+@web_utils_app.route("/404")
+def err404():
+    return render_template("404.html")
+###
+### /404
+###
 
 
 

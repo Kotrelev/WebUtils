@@ -668,32 +668,48 @@ class configurator:
             mpls_nodes = [n for n in vlanpath if host_dict[n]['mpls']]
             for host in vlanpath:
                 vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
-                
+                config_dict[host] = {
+                    'global': [],
+                    'config': [],
+                    'ifaces': {},
+                }
                 if host in mpls_nodes and len(mpls_nodes) == 2:
                     # mpls
                     mpls_nei = [x for x in mpls_nodes if x != host][0]
                     l2_neighbour = [x for x in vlanpath[host] if x not in mpls_nodes]
                     if len(l2_neighbour) > 1: 
-                        config_dict[host] = 'ERROR: {} has more than 1 l2 nei'.format(host)
+                        config_dict[host]['global'] = ['ERROR: {} has more than 1 l2 nei'.format(host)]
                         continue
                     if not 'mpls_config_maker' in dir(vendor_cls):
-                        config_dict[host] = 'ERROR: {} cannot make MPLS'.format(host)
+                        config_dict[host]['global'] = ['ERROR: {} cannot make MPLS'.format(host)]
                         continue
                     l2_interface = vlanpath[host][l2_neighbour[0]]['port']
-                    conf = vendor_cls.mpls_config_maker(host, 
-                                                        vlan_form,
-                                                        vlan_name,
-                                                        l2_interface,
-                                                        host_dict[mpls_nei]['ip'],
-                                                        config,
-                                                        logger)
-                    config_dict[host] = conf
+                    vendor_cls.mpls_config_maker(host,
+                                                 config_dict,
+                                                 vlan_form,
+                                                 vlan_name,
+                                                 l2_interface,
+                                                 host_dict[mpls_nei]['ip'],
+                                                 config,
+                                                 logger)
                 elif host in mpls_nodes and len(mpls_nodes) > 2:
                     # vpls
                     pass
                 else:
                     # l2
-                    pass
+                    vendor_cls.vlan_config_maker(host, 
+                                                 config_dict,
+                                                 vlan_form['tag'], 
+                                                 vlan_name,
+                                                 config, 
+                                                 logger)
+                    vendor_cls.trunk_config_maker(host, 
+                                                 config_dict,
+                                                 vlan_form['tag'], 
+                                                 vlan_name,
+                                                 config, 
+                                                 logger)
+                    
                 if host in endpoints and end_iface_dict[host]:
                     # endpoint iface conf
                     pass

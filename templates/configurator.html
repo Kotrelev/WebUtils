@@ -56,10 +56,39 @@ function config_show() {
   document.getElementById("error_message").style.display = "none";
 }
     
-function loading() {
-    document.getElementById("loader_div").style.display = "block";
-    document.getElementById("content_div").style.display = "none";
+function loading_inet() {
+    const form_elems = document.forms["configurator_inet_create"].getElementsByTagName("input");
+    let result = true;
+    for (let inp of form_elems){
+      if (!inp.checkValidity()) {
+        result = false;
+        break;
+      }
+    }
+    if (result === true) {
+      console.log(inp.checkValidity())
+      document.getElementById("loader_div").style.display = "block";
+      document.getElementById("content_div").style.display = "none";
+    }
 }
+    
+function loading_vlan() {
+    const form_elems = document.forms["configurator_vlan_create"].getElementsByTagName("input");
+    let result = true;
+    for (let inp of form_elems){
+      if (!inp.checkValidity()) {
+        result = false;
+        break;
+      }
+    }
+    console.log(result)
+    if (result === true) {
+      document.getElementById("loader_div").style.display = "block";
+      document.getElementById("content_div").style.display = "none";
+    }
+}
+    
+    
 </script>
 <div id="loader_div" class="loader"></div> 
 <div id="content_div">
@@ -230,13 +259,16 @@ function loading() {
         <input id="Generic140pxBlueButton" 
                type="submit" 
                name="inet_create" 
-               value="Поехали">
+               value="Поехали"
+               onclick="loading_inet()">
         </form>
     </div>
     
     <!-- VLAN FORM -->
     <div id="vlan_form" style="display:none">
-        <form action="configurator_vlan_create" method="POST">
+        <form action="configurator_vlan_create"
+              name="configurator_vlan_create"
+              method="POST">
         <table>
         <tr>
         <td>
@@ -373,10 +405,11 @@ function loading() {
         </td>
         </tr>
         </table>
-        <input id="vlan_create_btn" 
+        <input id="Generic140pxBlueButton" 
                type="submit" 
                name="vlan_create" 
-               value="Поехали">
+               value="Поехали"
+               onclick="loading_vlan()">
         </form>
     </div>
     <div id="active_list" style="display:none">
