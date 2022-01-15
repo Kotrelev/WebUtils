@@ -697,22 +697,33 @@ class configurator:
                     pass
                 else:
                     # l2
+                    if not 'vlan_config_maker' in dir(vendor_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
+                        continue
+                    if not 'trunk_config_maker' in dir(vendor_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
+                        continue
                     vendor_cls.vlan_config_maker(host, 
                                                  config_dict,
                                                  vlan_form['tag'], 
                                                  vlan_name,
-                                                 config, 
                                                  logger)
                     vendor_cls.trunk_config_maker(host, 
-                                                 config_dict,
-                                                 vlan_form['tag'], 
-                                                 vlan_name,
-                                                 config, 
-                                                 logger)
+                                                  config_dict,
+                                                  vlan_form['tag'],
+                                                  vlanpath[host],
+                                                  logger)
                     
                 if host in endpoints and end_iface_dict[host]:
                     # endpoint iface conf
-                    pass
+                    vendor_cls.iface_config_maker(host, 
+                                                  config_dict,
+                                                  vlan_form['tag'], 
+                                                  end_iface_dict[host],
+                                                  config, 
+                                                  logger)
+                
+
                 
                 #if 'create_vlan' not in dir(vendor_cls):
                 #    return '{} cannot create vlan'.format(host)
@@ -721,6 +732,7 @@ class configurator:
                 
                 
                 #links = vlanpath[host]
+            logger.warning('TEMP config_dict: {}'.format(config_dict))
             return config_dict    
                 
         except Exception as err_message:
