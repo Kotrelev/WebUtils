@@ -237,7 +237,7 @@ function loading_vlan() {
                id="addr_fld" 
                name="addr_fld" 
                autocomplete="off" 
-               placeholder="Address" required><br>
+               placeholder="ул. Белоостровская, д.6" required><br>
         </td>
         </tr>
         <tr>
@@ -293,39 +293,18 @@ function loading_vlan() {
         <br>
         </div>
         </td>
-<!--         </tr>
         <tr>
         <td>
         <label class="configurator_label"
-               for="hostname2_fld">Hostname2:</label>
+               for="vlan_contract_fld">Договор:</label>
         </td>
         <td>
         <input type="text" 
-            class="configurator_form" 
-            id="hostname2_fld" 
-            name="hostname2_fld"
-            autocomplete="off"            
-            placeholder="Hostname2" 
-            list="hn_list" required><br>
-        <datalist id = "hn_list">
-            {% for host in hostname_list %}
-			<option value = "{{ host }}" label = "{{ host }}">
-			{% endfor %}
-		</datalist>	
-        </td>
-        </tr> -->
-        <tr>
-        <td>
-        <label class="configurator_label"
-               for="vlan_tag_fld">Влан (тэг):</label>
-        </td>
-        <td>
-        <input type="number" 
                class="configurator_form" 
-               id="vlan_tag_fld" 
-               name="vlan_tag_fld" 
-               min="2" 
-               max="4095" required><br>
+               id="vlan_contract_fld" 
+               name="vlan_contract_fld" 
+               autocomplete="off" 
+               placeholder="Contract" required><br>
         </td>
         </tr>
         <tr>
@@ -349,6 +328,20 @@ function loading_vlan() {
           <option value="{{ speed }}">{{ speed }}</option>
           {% endfor %}
         </select>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_tag_fld">Влан (тэг):</label>
+        </td>
+        <td>
+        <input type="number" 
+               class="configurator_form" 
+               id="vlan_tag_fld" 
+               name="vlan_tag_fld" 
+               min="2" 
+               max="4095" required><br>
         </td>
         </tr>
         <tr>

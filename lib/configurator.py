@@ -673,6 +673,10 @@ class configurator:
                     'config': [],
                     'ifaces': {},
                 }
+                if not 'config_maker' in dir(vendor_cls):
+                    config_dict[host]['global'] = ['ERROR: {} has no config_maker class'.format(host)]
+                    continue
+                config_maker_cls = vendor_cls.config_maker
                 if host in mpls_nodes and len(mpls_nodes) == 2:
                     # mpls
                     mpls_nei = [x for x in mpls_nodes if x != host][0]
@@ -680,48 +684,50 @@ class configurator:
                     if len(l2_neighbour) > 1: 
                         config_dict[host]['global'] = ['ERROR: {} has more than 1 l2 nei'.format(host)]
                         continue
-                    if not 'mpls_config_maker' in dir(vendor_cls):
+                    if not 'mpls' in dir(config_maker_cls):
                         config_dict[host]['global'] = ['ERROR: {} cannot make MPLS'.format(host)]
                         continue
                     l2_interface = vlanpath[host][l2_neighbour[0]]['port']
-                    vendor_cls.mpls_config_maker(host,
-                                                 config_dict,
-                                                 vlan_form,
-                                                 vlan_name,
-                                                 l2_interface,
-                                                 host_dict[mpls_nei]['ip'],
-                                                 config,
-                                                 logger)
+                    config_maker_cls.mpls(host,
+                                          config_dict,
+                                          vlan_form,
+                                          vlan_name,
+                                          l2_interface,
+                                          host_dict[mpls_nei]['ip'],
+                                          config,
+                                          logger)
                 elif host in mpls_nodes and len(mpls_nodes) > 2:
                     # vpls
                     pass
                 else:
                     # l2
-                    if not 'vlan_config_maker' in dir(vendor_cls):
+                    if not 'create_vlan' in dir(config_maker_cls):
                         config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
                         continue
-                    if not 'trunk_config_maker' in dir(vendor_cls):
+                    if not 'add_vlan_trunk' in dir(config_maker_cls):
                         config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
                         continue
-                    vendor_cls.vlan_config_maker(host, 
+                    config_maker_cls.create_vlan(host, 
                                                  config_dict,
                                                  vlan_form['tag'], 
                                                  vlan_name,
                                                  logger)
-                    vendor_cls.trunk_config_maker(host, 
-                                                  config_dict,
-                                                  vlan_form['tag'],
-                                                  vlanpath[host],
-                                                  logger)
+                    config_maker_cls.add_vlan_trunk(host, 
+                                                    config_dict,
+                                                    vlan_form['tag'],
+                                                    vlanpath[host],
+                                                    logger)
                     
                 if host in endpoints and end_iface_dict[host]:
                     # endpoint iface conf
-                    vendor_cls.iface_config_maker(host, 
-                                                  config_dict,
-                                                  vlan_form['tag'], 
-                                                  end_iface_dict[host],
-                                                  config, 
-                                                  logger)
+                    if not 'access_port' in dir(config_maker_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
+                        continue
+                    config_maker_cls.access_port(host, 
+                                                 config_dict,
+                                                 vlan_form, 
+                                                 end_iface_dict[host],
+                                                 logger)
                 
 
                 

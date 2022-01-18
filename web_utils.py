@@ -1777,6 +1777,7 @@ def configurator_vlan_create(msg=''):
     vlan_form['latin_name'] = request.form['vlan_latname_fld'].replace(' ', '_')
     vlan_form['mtu'] = request.form['mtu_fld']
     vlan_form['tasknum'] = request.form['vlan_tasknum_fld']
+    vlan_form['contract'] = request.form['vlan_contract_fld']
     #return configurator_init('no can do: {}'.format(hostname1))
     
     #if vlan_form['rate'] not in config.policer_dict:
@@ -1911,7 +1912,7 @@ def configurator_vlan_confirm(sid):
     
     # Конфиги заливаем в SQL.
     
-    rawdata = [chains, vpath, config_dict, host_dict]
+    rawdata = [chains, vpath, config_dict, endpoints, vlan_form, host_dict]
     ##time.sleep(5)
     #sid = make_session_id()
     #

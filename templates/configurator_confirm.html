@@ -43,7 +43,10 @@ function loading() {
       {% if config_dict[host].ifaces %}
         <p class="configurator_config_p">
           {% for iface in config_dict[host].ifaces %}
-            &nbsp;&nbsp;int {{ iface }}
+            &nbsp;&nbsp;int {{ iface }}<br>
+              {% for line in config_dict[host]["ifaces"][iface] %}
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ line }}<br>
+              {% endfor %}
           {% endfor %}
         </p><br>
       {% endif %}
