@@ -36,16 +36,16 @@ function loading() {
         <p class="configurator_config_p">
         conf t<br>
           {% for line in config_dict[host].config %}
-            &nbsp;&nbsp;{{ line }}<br>
+            &emsp;{{ line }}<br>
           {% endfor %}
         </p><br>
       {% endif %}
       {% if config_dict[host].ifaces %}
         <p class="configurator_config_p">
           {% for iface in config_dict[host].ifaces %}
-            &nbsp;&nbsp;int {{ iface }}<br>
+            &emsp;int {{ iface }}<br>
               {% for line in config_dict[host]["ifaces"][iface] %}
-                &nbsp;&nbsp;&nbsp;&nbsp;{{ line }}<br>
+                &emsp;&emsp;{{ line }}<br>
               {% endfor %}
           {% endfor %}
         </p><br>

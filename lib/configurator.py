@@ -627,6 +627,8 @@ class configurator:
             
     def vlan_validator(vlan_tag, vpath, host_dict, logger):
         try:
+            logger.info('TEMP vpath: {}'.format(vpath))
+            #logger.info('TEMP host_dict: {}'.format(host_dict))
             hl = []
             free_vlans = ''
             for host in vpath:
@@ -727,7 +729,8 @@ class configurator:
                                                  config_dict,
                                                  vlan_form, 
                                                  end_iface_dict[host],
-                                                 logger)
+                                                 logger,
+                                                 rate_l2 = not mpls_nodes,)
                 
 
                 
@@ -746,16 +749,25 @@ class configurator:
             
     def diagram_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
         try:
-            # Сокращаем имена интерфейсов
-            short_iface_dict = {
-            'Ethernet': 'e',
-            'gigabitethernet': 'gi',
-            'fastethernet': 'fa'}
-            for h in vlanpath:
-                for l in vlanpath[h]:
-                    for r in short_iface_dict:
-                        if r in vlanpath[h][l]['port']:
-                            vlanpath[h][l]['port'] = vlanpath[h][l]['port'].replace(r, short_iface_dict[r])
+
+            def short_iface(ifname):
+                # Сокращаем имена интерфейсов чтобы на схеме красиво было
+                short_iface_dict = {
+                'gigabitethernet': 'gi',
+                'GigabitEthernet': 'gi',
+                'fastethernet': 'fa',
+                'FastEthernet': 'fa',
+                'Ethernet': 'e',}
+                for templ in short_iface_dict:
+                    if templ in ifname:
+                        ifname = ifname.replace(templ, short_iface_dict[templ])
+                return ifname
+                
+            #for h in vlanpath:
+            #    for l in vlanpath[h]:
+            #        for r in short_iface_dict:
+            #            if r in vlanpath[h][l]['port']:
+            #                vlanpath[h][l]['port'] = vlanpath[h][l]['port'].replace(r, short_iface_dict[r])
             
             # Тут мы меняем системную переменную PATH а не внтутренню PATH питона. 
             # Системная может не знать где dot лежит (исполняшка graphviz который и рисует диаграму)
@@ -786,7 +798,7 @@ class configurator:
                                                           shape="circle",
                                                           fontsize="8")})
                 
-                nifc = {host+link: Blank(vlanpath[host][link]['port'], 
+                nifc = {host+link: Blank(short_iface(vlanpath[host][link]['port']), 
                                          labelloc="c", 
                                          shape="plaintext", 
                                          height="0.2",

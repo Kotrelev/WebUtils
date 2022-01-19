@@ -1912,7 +1912,7 @@ def configurator_vlan_confirm(sid):
     
     # Конфиги заливаем в SQL.
     
-    rawdata = [chains, vpath, config_dict, endpoints, vlan_form, host_dict]
+    rawdata = [chains, vpath, config_dict, endpoints, end_iface_dict, vlan_form, host_dict]
     ##time.sleep(5)
     #sid = make_session_id()
     #
