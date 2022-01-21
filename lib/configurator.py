@@ -753,14 +753,16 @@ class configurator:
             def short_iface(ifname):
                 # Сокращаем имена интерфейсов чтобы на схеме красиво было
                 short_iface_dict = {
-                'gigabitethernet': 'gi',
-                'GigabitEthernet': 'gi',
-                'fastethernet': 'fa',
-                'FastEthernet': 'fa',
-                'Ethernet': 'e',}
+                '^gigabitethernet': 'gi',
+                '^GigabitEthernet': 'gi',
+                '^fastethernet': 'fa',
+                '^FastEthernet': 'fa',
+                '^Ethernet': 'e',
+                '^Port-Channel': 'po',}
                 for templ in short_iface_dict:
                     if templ in ifname:
-                        ifname = ifname.replace(templ, short_iface_dict[templ])
+                        #ifname = ifname.replace(templ, short_iface_dict[templ])
+                        ifname = re.sub(templ, short_iface_dict[templ], ifname)
                 return ifname
                 
             #for h in vlanpath:
