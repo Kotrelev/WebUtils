@@ -126,6 +126,14 @@ class ifaces_and_vlans:
                       '5': {'name': 'Port5'},
                       '6': {'name': 'Port6'}}
     
+            # Длинки пишут дичь в именах интерфейсов
+            if 'iso.3.6.1.4.1.171' in host_dict[hname]['sysobjectid']:
+                for ifc in nd.copy():
+                    s = re.search('\d+$', nd[ifc]['name'])
+                    if not s:
+                        continue
+                    nd[ifc]['name'] = s.group()
+    
             for i in host_dict[hname]['ifaces']:
                 if i in nd:
                     host_dict[hname]['ifaces'][i].update(nd[i])
@@ -523,9 +531,11 @@ class configurator:
                 if current_hostname not in host_dict:
                     host_dict = configurator.get_host(current_hostname, host_dict, logger)
                 
+                # Ищем все магистрали на девайсе
                 uplinks, pplinks, links = configurator.get_links(current_hostname,
                                                                  host_dict, 
                                                                  logger)
+                logger.warning('TEMP {} links {}'.format(current_hostname, links))
                 # Если не нашли аплинков, пробуем найти mplsный девайс за п2п линками.
                 if (not uplinks
                     and to_mpls
@@ -753,16 +763,17 @@ class configurator:
             def short_iface(ifname):
                 # Сокращаем имена интерфейсов чтобы на схеме красиво было
                 short_iface_dict = {
-                '^gigabitethernet': 'gi',
-                '^GigabitEthernet': 'gi',
-                '^fastethernet': 'fa',
-                '^FastEthernet': 'fa',
-                '^Ethernet': 'e',
-                '^Port-Channel': 'po',}
+                'gigabitethernet': 'gi',
+                'GigabitEthernet': 'gi',
+                'fastethernet': 'fa',
+                'FastEthernet': 'fa',
+                'Ethernet': 'e',
+                'Port-Channel': 'po',}
                 for templ in short_iface_dict:
                     if templ in ifname:
                         #ifname = ifname.replace(templ, short_iface_dict[templ])
-                        ifname = re.sub(templ, short_iface_dict[templ], ifname)
+                        ifname = re.sub('^'+templ, short_iface_dict[templ], ifname)
+                        break
                 return ifname
                 
             #for h in vlanpath:
