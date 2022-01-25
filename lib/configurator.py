@@ -434,7 +434,8 @@ class configurator:
             pplinks = {}
             links = {}
             for ifid, iface in host_dict[hostname]['ifaces'].items():
-                if iface['type'] not in ['6', '161']:
+                if iface['type'] not in ['6', '161', '117']:
+                    # 6 = ethernet, 161 = Po, 117 = combo
                     continue
                 elif any(x in iface['name'] for x in ['.', ':']):
                     # джуники считают все саб интерфейсы агрегата как тип 161 
@@ -469,13 +470,13 @@ class configurator:
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_links {}'.format(hostname, str(err_message)))
             
-    def get_ifaces_names(host_dict, endpoints, logger):
+    def get_free_ifaces(host_dict, endpoints, logger):
         try:
             ifaces_dict = {}
             for host in endpoints:
                 ifaces_dict[host] = {'None': ''}
                 for ifid, iface in host_dict[host]['ifaces'].items():
-                    if iface['type'] not in ['6', '161']:
+                    if iface['type'] not in ['6', '161', '117']:
                         continue
                     elif any(x in iface['name'] for x in ['.', ':']):
                         # джуники считают все саб интерфейсы агрегата как тип 161 
@@ -606,7 +607,10 @@ class configurator:
                     while curhname in to_check:
                         to_check.remove(curhname)
                     been_there.append(curhname)
-                    if len(megachain[curhname]) < 3 and curhname not in endpoints:
+                    if (len(megachain[curhname]) < 3 and curhname not in endpoints 
+                        or len(endpoints) == 1 and curhname not in endpoints):
+                        # У узла меньше 3 магистралей и он не конечная точка.
+                        # Или у нас влан внутри одного свитча и это не он. Удаляем.
                         for link in megachain[curhname]:
                             if link in been_there: continue
                             to_check.append(link)

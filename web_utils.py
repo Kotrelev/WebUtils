@@ -1729,42 +1729,147 @@ def configurator_init(msg=''):
                            
 @web_utils_app.route("/configurator_inet_create", methods=['POST'])
 def configurator_inet_create(msg=''):
-    hostname = request.form['hostname_fld']
-    contract = request.form['contract_fld']
-    rate = request.form['rate_fld']
-    name = request.form['name_fld']
-    latin_name = request.form['latname_fld']
-    address = request.form['addr_fld']
-    amount_ip = request.form['amountip_fld']
-    tasknum = request.form['inet_tasknum_fld']
-    
-    #hosts = zabbix_common.get_hostname_list(logger)
+    inet_form = {}
+    inet_form['hostname'] = request.form['hostname_fld']
+    inet_form['contract'] = request.form['contract_fld']
+    inet_form['rate'] = request.form['rate_fld']
+    inet_form['name'] = request.form['name_fld']
+    inet_form['latin_name'] = request.form['latname_fld']
+    inet_form['tasknum'] = request.form['inet_tasknum_fld']
+    inet_form['address'] = request.form['addr_fld']
+    inet_form['amount_ip'] = request.form['amountip_fld']
 
-    #soid = snmp_common.getSysObjectID(hostip, logger)
-    host_list = [hostname]
-    been_there = []
-    host_dict = {}
-    chain = {}
-    chain_step = 100
-    while host_list:
-        current_hostname = host_list[0]
-        host_list.remove(current_hostname)
-        if current_hostname in been_there:
-            continue
-        been_there.append(current_hostname)
-        
-        hostid = zabbix_common.hostid_by_name(current_hostname, logger)
-        if not hostid: 
-            return configurator_init('no can do: {}'.format(current_hostname))
-        hostip = zabbix_common.get_interface(hostid[0]['hostid'], logger)
-        host_dict[current_hostname] = {'ip': hostip}
-        host_dict = ifaces_and_vlans.get_all(hostip, current_hostname, host_dict, logger)
-        
-        chain[chain_step] = [current_hostname]
     
-    a = [host_dict]
-    #time.sleep(5)
-    return configurator('no can do: {}'.format(a))
+    host_dict = {}
+    # Берем оконечнй хостнейм, собираем с него всю инфу.
+    configurator.get_host(inet_form['hostname'], 
+                          host_dict, 
+                          logger)
+
+    # Проверяем что данные собрались
+    if any([x not in host_dict[inet_form['hostname']] for x in ['model', 'ifaces', 'vlans']]): 
+        return configurator_init('Не смог опросить {}'.format(inet_form['hostname']))
+    if host_dict[inet_form['hostname']]['mpls']: 
+        return configurator_init('Девайс {} не может быть конечным'.format(inet_form['hostname']))
+    
+    # Собираем все не занятые интерфейсы (без дескрипшна или с OFF в дескрипшне)
+    ifaces_dict = configurator.get_free_ifaces(host_dict, 
+                                               [inet_form['hostname']], 
+                                               logger)
+    
+    # генерим id сессии и складываем host_dict в базу
+    storage = {'host_dict': host_dict, 
+               'inet_form': inet_form}
+    sid = make_session_id()
+    date = format(datetime.now(), '%Y-%m-%d')
+    storage_json = json.dumps(storage, ensure_ascii=False)
+    sql_set_session(sid, storage_json, date)
+    
+    # Экономим на темплейтах
+    next_action = 'configurator_inet_confirm'
+    
+    #return configurator_init('no can do: {}'.format(host_dict))
+    return render_template("configurator_ifcs.html", 
+                           ifaces_dict = ifaces_dict, 
+                           next_action = next_action,
+                           sid = sid,
+                           rawdata = [inet_form, host_dict])        
+    
+@web_utils_app.route("/configurator_inet_confirm_<sid>", methods=['POST'])
+def configurator_inet_confirm(sid):
+    
+    # Забираем из SQL уже собранные данные по конечному девайсу
+    sid_storage = sql_get_session(sid)
+    if not sid_storage: 
+        logger.error('Проблема с SQL (Не считал данные)')
+        return configurator_init(msg='Проблема с SQL (Не считал данные)')
+    data_dict = json.loads(sid_storage[0]['storage'])
+    if not 'host_dict' in data_dict:
+        logger.error('Проблема с SQL (Не смог распаковать данные)')
+        return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
+    host_dict = data_dict['host_dict']
+    inet_form = data_dict['inet_form']
+    # Убиваем сессию. ЭТО НАДО БУДЕТ УБРАТЬ КОГДА НАПИШЕШЬ ПРОДОЛЖЕНИЕ
+    sql_del_session(sid)
+    
+    # Формируем словарь конечных интерфейсов
+    # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
+    end_iface_dict = {inet_form['hostname']: {}}
+    if_arr = request.form.getlist('configurator_iface_{}[]'.format(inet_form['hostname']))
+    mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(inet_form['hostname']))
+    for i, ifc in enumerate(if_arr):
+        if ifc == 'None' or mode_arr[i] == 'None': continue
+        end_iface_dict[inet_form['hostname']].update({ifc: mode_arr[i]})
+    
+    # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
+    chains = []
+    
+    for hostname in endpoints:
+        # all_links это словарь {host: {iface_id: iface_name}} для всех 
+        # линков всех девайсов в цепочке hostname >> MPLS device
+        # been_there это список всех девайсов в цепочке hostname >> MPLS device
+        # зачем он мне если есть all_links? Отличный вопрос. Отличный. Вопрос. Да.
+        all_links, been_there = configurator.get_hosts(hostname, 
+                                                       host_dict, 
+                                                       logger)
+        #logger.warning(all_links)
+        # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access и пакуем все цепочки в массив.
+        chains.append(configurator.get_chain(all_links, 
+                                             been_there, 
+                                             host_dict, 
+                                             logger))
+
+    # Из всех цепочек крафтим путь между всеми конечными узлами
+    vpath = configurator.path_maker(chains, 
+                                    host_dict, 
+                                    endpoints, 
+                                    logger)
+    
+    # Проверяем что влан свободен
+    hl, free_vids = configurator.vlan_validator(vlan_form['tag'], 
+                                                vpath, 
+                                                host_dict, 
+                                                logger)
+    if hl:
+        m = 'Влан {} занят на хостах: {}<br>Свободные вланы в цепочке: {}'
+        return configurator_init(m.format(vlan_form['tag'],
+                                 ', '.join(hl),
+                                 free_vids))
+    
+    # Тут надо подумать. Имя влана по номеру заявки не прокатит.
+    vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
+    
+    # Рисуем картинку и получаем ссылку на нее
+    diagram_link = configurator.diagram_maker(vlan_form,
+                                              vlan_name,
+                                              vpath, 
+                                              host_dict, 
+                                              end_iface_dict, 
+                                              endpoints, 
+                                              logger)
+    
+    #Отдаем все полученные данные в генератор конфигов. 
+    config_dict = configurator.config_maker(vlan_form, 
+                                            vlan_name, 
+                                            vpath, 
+                                            host_dict, 
+                                            end_iface_dict, 
+                                            endpoints, 
+                                            logger)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #return render_template("configurator_confirm.html",
+    #                       diagram_link = diagram_link,
+    #                       config_dict = config_dict,
+    #                       rawdata = rawdata,)
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):
@@ -1807,7 +1912,7 @@ def configurator_vlan_create(msg=''):
     #                                      free_vids))
         
     # Собираем все не занятые интерфейсы (без дескрипшна или с OFF в дескрипшне)
-    ifaces_dict = configurator.get_ifaces_names(host_dict, endpoints, logger)
+    ifaces_dict = configurator.get_free_ifaces(host_dict, endpoints, logger)
     
     # генерим id сессии и складываем host_dict в базу
     storage = {'host_dict': host_dict, 
@@ -1818,10 +1923,14 @@ def configurator_vlan_create(msg=''):
     storage_json = json.dumps(storage, ensure_ascii=False)
     sql_set_session(sid, storage_json, date)
     
+    # Экономим на темплейтах
+    next_action = 'configurator_vlan_confirm'
+    
     #return configurator_init('no can do: {}'.format(host_dict))
     return render_template("configurator_ifcs.html", 
-                           ifaces_dict=ifaces_dict, 
-                           sid=sid)        
+                           ifaces_dict = ifaces_dict,
+                           next_action = next_action,
+                           sid = sid)        
         
 @web_utils_app.route("/configurator_vlan_confirm_<sid>", methods=['POST'])
 def configurator_vlan_confirm(sid):
@@ -1840,7 +1949,8 @@ def configurator_vlan_confirm(sid):
     host_dict = data_dict['host_dict']
     endpoints = data_dict['endpoints']
     vlan_form = data_dict['vlan_form']
-    #sql_del_session(sid)
+    # Убиваем сессию. ЭТО НАДО БУДЕТ УБРАТЬ КОГДА НАПИШЕШЬ ПРОДОЛЖЕНИЕ
+    sql_del_session(sid)
     
     # Формируем словарь конечных интерфейсов
     # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}

@@ -24,7 +24,7 @@ $(document).ready(function() {
             x++;
             $(wrapper).append('<div><select class="select-css" id="configurator_iface_fld_{{ dev }}"name="configurator_iface_{{ dev }}[]">{% for iface in ifaces_dict[dev] %}<option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>{% endfor %}</select><select class="select-css" id="configurator_iftype_fld" name="configurator_iftype_{{ dev }}[]"><option value="None">--None--</option><option value="Access">Access</option><option value="Trunk">Trunk</option></select><a href="#" class="delete" style="padding-left:14px">❌</a></div>');
         } else {
-            alert('Макс портов')
+            alert('Свободных больше нет')
         }
     });
 
@@ -47,7 +47,7 @@ $(document).ready(function() {
     <br>
     <br>
     <form id="configurator_ifaces_form" 
-      action="configurator_vlan_confirm_{{ sid }}" 
+      action="{{ next_action }}_{{ sid }}" 
       method="POST">
     <h2>Выберете конечные интерфейсы (если необходимо)</h2><br>
     <table>
