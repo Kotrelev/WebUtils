@@ -1801,33 +1801,30 @@ def configurator_inet_confirm(sid):
         if ifc == 'None' or mode_arr[i] == 'None': continue
         end_iface_dict[inet_form['hostname']].update({ifc: mode_arr[i]})
     
-    # собираем цепочки от каждого конечного девайса до MPLS железки и строим путь влана.
-    chains = []
-    
-    for hostname in endpoints:
-        # all_links это словарь {host: {iface_id: iface_name}} для всех 
-        # линков всех девайсов в цепочке hostname >> MPLS device
-        # been_there это список всех девайсов в цепочке hostname >> MPLS device
-        # зачем он мне если есть all_links? Отличный вопрос. Отличный. Вопрос. Да.
-        all_links, been_there = configurator.get_hosts(hostname, 
-                                                       host_dict, 
-                                                       logger)
-        #logger.warning(all_links)
-        # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access и пакуем все цепочки в массив.
-        chains.append(configurator.get_chain(all_links, 
-                                             been_there, 
-                                             host_dict, 
-                                             logger))
+    # all_links это словарь {host: {iface_id: iface_name}} для всех 
+    # линков всех девайсов в цепочке hostname >> MPLS device
+    # been_there это список всех девайсов в цепочке hostname >> MPLS device
+    # зачем он мне если есть all_links? Отличный вопрос. Отличный. Вопрос. Да.
+    all_links, been_there = configurator.get_hosts(inet_form['hostname'], 
+                                                   host_dict, 
+                                                   logger,
+                                                   to_mpls = False,)
+    #logger.warning(all_links)
+    # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access и пакуем все цепочки в массив.
+    chain = configurator.get_chain(all_links, 
+                                         been_there, 
+                                         host_dict, 
+                                         logger))
 
     # Из всех цепочек крафтим путь между всеми конечными узлами
-    vpath = configurator.path_maker(chains, 
-                                    host_dict, 
-                                    endpoints, 
-                                    logger)
+    #vpath = configurator.path_maker(chains, 
+    #                                host_dict, 
+    #                                endpoints, 
+    #                                logger)
     
     # Проверяем что влан свободен
     hl, free_vids = configurator.vlan_validator(vlan_form['tag'], 
-                                                vpath, 
+                                                chain, 
                                                 host_dict, 
                                                 logger)
     if hl:
@@ -1837,12 +1834,12 @@ def configurator_inet_confirm(sid):
                                  free_vids))
     
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
-    vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
+    vlan_name = 'inet_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
     # Рисуем картинку и получаем ссылку на нее
     diagram_link = configurator.diagram_maker(vlan_form,
                                               vlan_name,
-                                              vpath, 
+                                              chain, 
                                               host_dict, 
                                               end_iface_dict, 
                                               endpoints, 
@@ -1851,7 +1848,7 @@ def configurator_inet_confirm(sid):
     #Отдаем все полученные данные в генератор конфигов. 
     config_dict = configurator.config_maker(vlan_form, 
                                             vlan_name, 
-                                            vpath, 
+                                            chain, 
                                             host_dict, 
                                             end_iface_dict, 
                                             endpoints, 
