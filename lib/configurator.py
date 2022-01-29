@@ -678,7 +678,7 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.vlan_validator {}'.format(str(err_message)))
             
-    def config_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
+    def vlan_config_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
         try:
             config_dict = {}
             mpls_nodes = [n for n in vlanpath if host_dict[n]['mpls']]
@@ -761,7 +761,7 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.config_maker {}'.format(str(err_message)))
             
-    def diagram_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
+    def diagram_maker(vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, node, logger):
         try:
 
             def short_iface(ifname):
@@ -779,12 +779,6 @@ class configurator:
                         ifname = re.sub('^'+templ, short_iface_dict[templ], ifname)
                         break
                 return ifname
-                
-            #for h in vlanpath:
-            #    for l in vlanpath[h]:
-            #        for r in short_iface_dict:
-            #            if r in vlanpath[h][l]['port']:
-            #                vlanpath[h][l]['port'] = vlanpath[h][l]['port'].replace(r, short_iface_dict[r])
             
             # Тут мы меняем системную переменную PATH а не внтутренню PATH питона. 
             # Системная может не знать где dot лежит (исполняшка graphviz который и рисует диаграму)
@@ -802,7 +796,7 @@ class configurator:
                 #        if not host_dict[x]['mpls']}
                 narr = {}
                 for x in vlanpath:
-                    if not host_dict[x]['mpls']:
+                    if not host_dict[x]['mpls'] and x != node:
                         narr.update({x: Bridge(x, height="0.9", width="0.9", shape="circle", fontsize="8")})
                     else:
                         narr.update({x: Router(x, height="0.9", width="0.9", shape="circle", fontsize="8")})

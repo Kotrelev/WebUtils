@@ -23,6 +23,7 @@ from lib.configurator import ifaces_and_vlans, configurator
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
+from lib.common import ipv4_table
 
 
 #from lib.snmp_common import snmp_common
@@ -1810,11 +1811,11 @@ def configurator_inet_confirm(sid):
                                                    logger,
                                                    to_mpls = False,)
     #logger.warning(all_links)
-    # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access и пакуем все цепочки в массив.
+    # Тут убираем лишние интерфейсы, добавляем инфу по типу Trunk/Access
     chain = configurator.get_chain(all_links, 
                                          been_there, 
                                          host_dict, 
-                                         logger))
+                                         logger)
 
     # Из всех цепочек крафтим путь между всеми конечными узлами
     #vpath = configurator.path_maker(chains, 
@@ -1822,37 +1823,42 @@ def configurator_inet_confirm(sid):
     #                                endpoints, 
     #                                logger)
     
-    # Проверяем что влан свободен
-    hl, free_vids = configurator.vlan_validator(vlan_form['tag'], 
-                                                chain, 
-                                                host_dict, 
-                                                logger)
-    if hl:
-        m = 'Влан {} занят на хостах: {}<br>Свободные вланы в цепочке: {}'
-        return configurator_init(m.format(vlan_form['tag'],
-                                 ', '.join(hl),
-                                 free_vids))
+    #Получаем таблицу ipv4 и формируем список L3 узлов
+    ipv4 = ipv4_table.get_ipv4(logger)
+    nodes = set([r['name'] for r in ipv4 if r['contract'] == 'GW'])
+    
+    # Определяем L3 девайс
+    node = ''
+    for host in chain:
+        if host in nodes:
+            node = host
+    if not node:
+        logger.error('Не нашел L3 для {}'.format(inet_form['hostname']))
+        return configurator_init(msg='Не нашел L3 для {}'.format(inet_form['hostname']))
+    
+    # Находим свободный влан
+    vlan = '555'
     
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
     vlan_name = 'inet_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
     # Рисуем картинку и получаем ссылку на нее
-    diagram_link = configurator.diagram_maker(vlan_form,
-                                              vlan_name,
+    diagram_link = configurator.diagram_maker(vlan_name,
                                               chain, 
                                               host_dict, 
                                               end_iface_dict, 
-                                              endpoints, 
+                                              [inet_form['hostname']],
+                                              node,
                                               logger)
     
     #Отдаем все полученные данные в генератор конфигов. 
-    config_dict = configurator.config_maker(vlan_form, 
-                                            vlan_name, 
-                                            chain, 
-                                            host_dict, 
-                                            end_iface_dict, 
-                                            endpoints, 
-                                            logger)
+    config_dict = configurator.inet_config_maker(vlan_form, 
+                                                 vlan_name, 
+                                                 chain, 
+                                                 host_dict, 
+                                                 end_iface_dict, 
+                                                 endpoints, 
+                                                 logger)
     
     
     
@@ -1999,22 +2005,23 @@ def configurator_vlan_confirm(sid):
     vlan_name = 'l2_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
     
     # Рисуем картинку и получаем ссылку на нее
-    diagram_link = configurator.diagram_maker(vlan_form,
-                                              vlan_name,
+    node = '' # это заглушка, переменная нужна для настройки инета
+    diagram_link = configurator.diagram_maker(vlan_name,
                                               vpath, 
                                               host_dict, 
                                               end_iface_dict, 
-                                              endpoints, 
+                                              endpoints,
+                                              node, 
                                               logger)
     
     #Отдаем все полученные данные в генератор конфигов. 
-    config_dict = configurator.config_maker(vlan_form, 
-                                            vlan_name, 
-                                            vpath, 
-                                            host_dict, 
-                                            end_iface_dict, 
-                                            endpoints, 
-                                            logger)
+    config_dict = configurator.vlan_config_maker(vlan_form, 
+                                                 vlan_name, 
+                                                 vpath, 
+                                                 host_dict, 
+                                                 end_iface_dict, 
+                                                 endpoints, 
+                                                 logger)
     
     
     # Конфиги заливаем в SQL.
