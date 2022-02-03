@@ -34,7 +34,7 @@ class ifaces_and_vlans:
                 or sid not in sysobjectid_dict
                 or sysobjectid_dict[sid]['type'] not in ['router', 'switch']
                 or type(sysobjectid_dict[sid]['vendor']) == str):
-                #logger.info('{}: Не смог собрать SysObjectID'.format(hname))
+                logger.error('{}: Не смог собрать/незнакомый SysObjectID'.format(hname))
                 #host_dict.pop(ip)
                 return False
             host_dict[hname]['sysobjectid'] = sid
@@ -324,7 +324,7 @@ class ifaces_and_vlans:
         try:
             sysobjectid_dict = vendors.sysobjectid_dict
             if not ifaces_and_vlans.fill_host_dict(ip, hname, host_dict, sysobjectid_dict, logger):
-                return host_dict
+                return None
             get_stuff_arr = [ifaces_and_vlans.get_ifaces_type, 
                              ifaces_and_vlans.get_ifaces_name, 
                              ifaces_and_vlans.get_ifaces_description, 
@@ -362,7 +362,9 @@ class ifaces_and_vlans:
                 print('TEMP Its JUNIPER!')
                 # берем json в виде словаря
                 jun_conf = vendor_cls.get_parsed_config(ip, hname, config, logger)
-                if not jun_conf: return host_dict
+                if not jun_conf: 
+                    logger.error('{}: failed to get juniper config'.foramt(hname))
+                    return None
                 print('TEMP Got config!')
                 # забираем интерфейсы в словарь с ключами == имени интерфейса (e.g. ae0.100)
                 ifaces_dict = vendor_cls.get_ifaces(ip, hname, logger, config, jun_conf)
@@ -402,7 +404,7 @@ class ifaces_and_vlans:
             #print(f'TEMP_host_dict: {host_dict}')
             
             #IPs
-            return host_dict
+            #return host_dict
                 
         except Exception as err_message:
             logger.error('{}: Ошибка в функции get_all {}'.format(ip, str(err_message)))
@@ -433,7 +435,12 @@ class configurator:
             uplinks = {}
             pplinks = {}
             links = {}
+            #logger.warning('{} ifaces: {}'.format(hostname, host_dict[hostname]['ifaces']))
             for ifid, iface in host_dict[hostname]['ifaces'].items():
+                d = ['type', 'name', 'state', 'description']
+                if any ([x not in iface for x in d]):
+                    logger.error('{} has broken interface {}'.format(hostname, iface))
+                    continue
                 if iface['type'] not in ['6', '161', '117']:
                     # 6 = ethernet, 161 = Po, 117 = combo
                     continue
@@ -509,8 +516,8 @@ class configurator:
                 return None, None
             host_dict[hostname] = {'ip': hostip}
             logger.info('HOST '+str(hostname)+' IP '+str(hostip))
-            host_dict = ifaces_and_vlans.get_all(hostip, hostname, host_dict, logger)
-            return host_dict
+            ifaces_and_vlans.get_all(hostip, hostname, host_dict, logger)
+            #return host_dict
         except Exception as err_message:
             logger.error('{}: Ошибка в функции configurator.get_host {}'.format(current_hostname, str(err_message)))
             
@@ -530,7 +537,7 @@ class configurator:
                     continue
                 been_there.append(current_hostname)
                 if current_hostname not in host_dict:
-                    host_dict = configurator.get_host(current_hostname, host_dict, logger)
+                    configurator.get_host(current_hostname, host_dict, logger)
                 
                 # Ищем все магистрали на девайсе
                 uplinks, pplinks, links = configurator.get_links(current_hostname,

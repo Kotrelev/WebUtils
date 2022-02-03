@@ -1901,7 +1901,13 @@ def configurator_vlan_create(msg=''):
     
     # Проверяем что данные собрались
     for h in endpoints:
-        if any([x not in host_dict[h] for x in ['model', 'ifaces', 'vlans']]): 
+        if not h in host_dict:
+            logger.error('host_dict: {}'.format(host_dict))
+            return configurator_init('Не нашел {} в заббиксе'.format(h))
+        if any([x not in host_dict[h] 
+                for x in ['model', 'ifaces', 'vlans']]): 
+            logger.error('Споткнулся на {}'.format(h))
+            logger.error('host_dict: {}'.format(host_dict))
             return configurator_init('Не смог опросить {}'.format(h))
         if host_dict[h]['mpls']: return configurator_init('Девайс {} не может быть конечным'.format(h))
     

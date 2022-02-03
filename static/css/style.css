@@ -617,7 +617,7 @@ background-size: .65em auto, 100%;
 }
 
 .configurator_config_details{
-  width: 150%;
+  width: 700px;
   border-color:white;
   border-style:solid;
   border-width:1px;
@@ -628,6 +628,11 @@ background-size: .65em auto, 100%;
 
 .configurator_config_p{
   font-size: 14px;
+}
+.configurator_config_summary{
+  background-color:rgb(105, 128, 141); 
+  border-radius:3px; 
+  padding-left: 5px;"
 }
 
 /*

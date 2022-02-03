@@ -24,7 +24,8 @@ function loading() {
     <div>
     <h2>Configurations:</h2>
     {% for host in config_dict %}
-    <details class="configurator_config_details"><summary><b>{{ host }}</b></summary>
+    <details class="configurator_config_details">
+      <summary class="configurator_config_summary"><b>{{ host }}</b></summary>
       {% if config_dict[host].global %}
         <p class="configurator_config_p">
           {% for line in config_dict[host].global %}
