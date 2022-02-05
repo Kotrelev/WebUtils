@@ -19,7 +19,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 from lib.zabbix_common import zabbix_common
-from lib.configurator import ifaces_and_vlans, configurator
+from lib.configurator import ifaces_and_vlans, configurator, nodes_sql_tables
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
@@ -1723,10 +1723,26 @@ def ddm_report():
 def configurator_init(msg=''):
     hostname_list = zabbix_common.get_hostname_list(logger)
     
+    conf_nodes = nodes_sql_tables.get_nodes(logger)
+    vlan_ranges = nodes_sql_tables.get_vlan_ranges(logger)
+    ip_ranges = nodes_sql_tables.get_ip_ranges(logger)
+    
     return render_template("configurator.html",
                            msg = msg,
                            hostname_list = hostname_list,
-                           policer_dict = config.policer_dict)
+                           policer_dict = config.policer_dict,
+                           conf_nodes = conf_nodes,
+                           vlan_ranges = vlan_ranges,
+                           ip_ranges = ip_ranges,)
+
+#@web_utils_app.route("/configurator_config", methods=['GET'])
+#def configurator_config(msg=''):
+#    hostname_list = zabbix_common.get_hostname_list(logger)
+#    
+#    return render_template("configurator.html",
+#                           msg = msg,
+#                           hostname_list = hostname_list,
+#                           policer_dict = config.policer_dict)
                            
 @web_utils_app.route("/configurator_inet_create", methods=['POST'])
 def configurator_inet_create(msg=''):

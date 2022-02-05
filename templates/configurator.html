@@ -55,6 +55,14 @@ function config_show() {
   document.getElementById("config_form").style.display = "block";
   document.getElementById("error_message").style.display = "none";
 }
+function conf_nodes() {
+  document.getElementById("conf_nodes").style.display = "block";
+  document.getElementById("conf_policers").style.display = "none";
+}
+function conf_policers() {
+  document.getElementById("conf_nodes").style.display = "none";
+  document.getElementById("conf_policers").style.display = "block";
+}
     
 function loading_inet() {
     const form_elems = document.forms["configurator_inet_create"].getElementsByTagName("input");
@@ -410,10 +418,42 @@ function loading_vlan() {
         <br>
     <h1>Under construction</h1>
     </div>
+    <!-- ########### -->
+    <!-- CONFIG FORM -->
+    <!-- ########### -->
     <div id="config_form" style="display:none">
-        <br>
-        <br>
-    <h1>Under construction</h1>
+    <br>
+        <div class="NotifierButtonsGroup">
+            <input id="scale5" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+            <label for="scale5" class="NotifierButtons" onclick="conf_nodes()">Узлы</label>
+            <input id="scale6" class="RadioButtons" name="RadioButtons" type="radio" value="0">
+            <label for="scale6" class="NotifierButtons" onclick="conf_policers()">Полисеры</label>
+        </div>
+        <div id="conf_nodes" style="display:none">
+            <h2>Узлы L3</h2>
+            <form action="configurator_vlan_create"
+                  name="configurator_vlan_create"
+                  method="POST">
+            </form>
+            {{conf_nodes}}
+            <table id="tblType" class="sortable">
+            {% for node_dict in conf_nodes %}
+            <tr>
+            <td>{{ node_dict.node }}</td>
+            </tr>
+            {% endfor %}
+            </table>
+        </div>
+        <div id="conf_policers" style="display:none">
+            <h2>Полисеры</h2>
+            <form action="configurator_vlan_create"
+                  name="configurator_vlan_create"
+                  method="POST">
+            <table>
+        
+            </table>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
