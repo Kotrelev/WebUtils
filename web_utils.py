@@ -1727,13 +1727,88 @@ def configurator_init(msg=''):
     vlan_ranges = nodes_sql_tables.get_vlan_ranges(logger)
     ip_ranges = nodes_sql_tables.get_ip_ranges(logger)
     
+    # агрегируем данные для вывода в таблице. 
+    #nodes_dict = {}
+    for n in conf_nodes:
+        #nodes_dict[n['node']] = n.copy()
+        n['vlan_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
+                                     for x in vlan_ranges 
+                                     if x['node'] == n['node']])
+        n['ip_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
+                                   for x in ip_ranges 
+                                   if x['node'] == n['node']])
+
+    
     return render_template("configurator.html",
                            msg = msg,
                            hostname_list = hostname_list,
                            policer_dict = config.policer_dict,
-                           conf_nodes = conf_nodes,
-                           vlan_ranges = vlan_ranges,
-                           ip_ranges = ip_ranges,)
+                           conf_nodes = conf_nodes,)
+
+@web_utils_app.route("/configurator_edit_node_<node_id>", methods=['POST', 'GET'])
+def configurator_edit_node(node_id):
+    if request.method == 'GET':
+        return configurator_init()
+    #conf_nodes = nodes_sql_tables.get_nodes(logger)
+    #vlan_ranges = nodes_sql_tables.get_vlan_ranges(logger)
+    #ip_ranges = nodes_sql_tables.get_ip_ranges(logger)
+    #
+    #nodes_list = [h['node'] for h in conf_nodes]
+    #hostname_list = zabbix_common.get_hostname_list(logger)
+    #hostname_list = [h for h in hostname_list 
+    #                 if ('-cr' in h or '-ds' in h) and h not in nodes_list]
+    #
+    #nodes_sql_tables.edit_node(node_id, logger)
+    #return render_template("configurator_edit_node.html",
+    #                       node_id = node_id,
+    #                       conf_nodes = conf_nodes,
+    #                       vlan_ranges = vlan_ranges,
+    #                       ip_ranges = ip_ranges,
+    #                       hostname_list = hostname_list,)
+    return configurator_init(msg="Сорямба, пока что не умею")
+
+@web_utils_app.route("/configurator_add_node", methods=['GET'])
+def configurator_add_node():
+    #if request.method == 'GET':
+    #    return configurator_init()
+    
+    conf_nodes = nodes_sql_tables.get_nodes(logger)
+    nodes_list = [h['node'] for h in conf_nodes]
+    hostname_list = zabbix_common.get_hostname_list(logger)
+    hostname_list = [h for h in hostname_list 
+                     if ('-cr' in h or '-ds' in h) and h not in nodes_list]
+    
+    return render_template("configurator_add_node.html",
+                           hostname_list = hostname_list,)
+
+@web_utils_app.route("/configurator_commit_node", methods=['POST', 'GET'])
+def configurator_commit_node():
+    if request.method == 'GET':
+        return configurator_init()
+    hostname = request.form['hostname_fld']
+    mpls = 'mpls_fld' in request.form
+    vpls = 'vpls_fld' in request.form
+    ip_unnum = 'ip_unnum_fld' in request.form
+    ip_common = 'ip_common_fld' in request.form
+    loopback = request.form['loopback_fld']
+    vlan_ranges = request.form.getlist('vlan_ranges_fld[]')
+    ip_ranges = request.form.getlist('ip_ranges_fld[]')
+    
+    nodes_sql_tables.set_node(hostname, '', mpls, vpls, ip_unnum, ip_common, loopback, logger)
+    
+    
+    msg = 'Узел добавлен'
+    #msg = 'Узел обновлен'
+    #msg = [hostname, mpls_fld, vpls_fld, ip_unnum_fld, ip_common_fld, loopback_fld, vlan_ranges, ip_ranges]
+    return configurator_init(msg = msg,)
+
+@web_utils_app.route("/configurator_delete_node_<node_id>", methods=['POST', 'GET'])
+def configurator_delete_node(node_id):
+    if request.method == 'GET':
+        return configurator_init()
+    nodes_sql_tables.del_node(node_id, logger)
+    return configurator_init(msg="Узел удален")
+
 
 #@web_utils_app.route("/configurator_config", methods=['GET'])
 #def configurator_config(msg=''):

@@ -1,0 +1,205 @@
+{% extends "menu.html" %}
+{% block title %}Конфигуратор{% endblock %}
+{% block content %}
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".container1");
+    var add_button = $(".add_vlan_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="text" name="vlan_ranges_fld[]" autocomplete="off" placeholder="1-100" required/><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
+        } else {
+            alert('Остановись')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+    
+$(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".container2");
+    var add_button = $(".add_ip_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="text" name="ip_ranges_fld[]" autocomplete="off" list="hn_list" required/><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
+        } else {
+            alert('Остановись')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+
+</script>
+<div id="loader_div" class="loader"></div> 
+<div id="content_div">
+    <br>
+    <h2>Добавление нового узла</h2>
+    <br>
+    {% if msg %}
+    <div id="error_message" class="alarm">
+    <h3>{{ msg|safe }}</h3>
+    </div>
+    {% endif %}
+    
+    <!-- Node FORM -->
+    <div id="node_form">
+        <form id="node_create_form" 
+              action="configurator_commit_node" 
+              method="POST">
+        <table>
+        <tr>
+        <td>
+        <label class="configurator_label" 
+               for="hostname_fld">Hostname:</label>
+        </td>
+        <td>
+        <input type="text" 
+            class="configurator_form" 
+            id="hostname_fld" 
+            name="hostname_fld"
+            autocomplete="off"            
+            placeholder="Hostname" 
+            list="hn_list" required>
+        <datalist id = "hn_list">
+            {% for host in hostname_list %}
+			<option value = "{{ host }}" label = "{{ host }}">
+			{% endfor %}
+		</datalist>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <label class="configurator_label"
+                 for="mpls_fld">Умеет MPLS:</label>
+        </td>
+        <td>
+          <label class="switch" name="mpls_fld">
+            <input type="checkbox"
+                   name="mpls_fld">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <label class="configurator_label"
+                 for="vpls_fld">Умеет VPLS:</label>
+        </td>
+        <td>
+          <label class="switch" name="vpls_fld">
+            <input type="checkbox"
+                   name="vpls_fld">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <label class="configurator_label"
+                 for="ip_unnum_fld">Умеет IP unnumbered:</label>
+        </td>
+        <td>
+          <label class="switch" name="ip_unnum_fld">
+            <input type="checkbox"
+                   name="ip_unnum_fld">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <label class="configurator_label"
+                 for="ip_common_fld">Умеет обычные IP:</label>
+        </td>
+        <td>
+          <label class="switch" name="ip_common_fld">
+            <input type="checkbox"
+                   name="ip_common_fld">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="loopback_fld">Loopback iface:</label>
+        </td>
+        <td>
+        <input type="text" 
+               class="configurator_form" 
+               id="loopback_fld" 
+               name="loopback_fld" 
+               autocomplete="off" 
+               placeholder="lo0.0" 
+               required><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="vlan_ranges_fld">Вланы под инет:</label>
+        </td>
+        <td>
+        <div class="container1">
+        <input type="text" 
+            class="configurator_form" 
+            id="vlan_ranges_fld" 
+            name="vlan_ranges_fld[]"
+            autocomplete="off"            
+            placeholder="2001-2100" 
+            required>
+        <button id="GenericBlueSmallButton" class="add_vlan_field">➕</button>
+        <br>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <label class="configurator_label"
+               for="ip_ranges_fld">Диапазоны IP:</label>
+        </td>
+        <td>
+        <div class="container2">
+        <input type="text" 
+            class="configurator_form" 
+            id="ip_ranges_fld" 
+            name="ip_ranges_fld[]"
+            autocomplete="off"            
+            placeholder="188.227.45.2-188.227.45.25" 
+            required>
+        <button id="GenericBlueSmallButton" class="add_ip_field">➕</button>
+        <br>
+        </div>
+        </td>
+        </tr>
+        </table>
+        <input id="Generic140pxBlueButton" 
+               type="submit" 
+               name="node_create" 
+               value="Поехали"
+               onclick="loading()">
+        </form>
+    </div>
+</div>
+{% endblock %}

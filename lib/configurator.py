@@ -888,7 +888,7 @@ class nodes_sql_tables:
             connection.close()
             if not nodes_arr:
                 logger.error('Failed to get configurator_nodes table')
-                return None
+                return []
             return nodes_arr
         except Exception as err_message:
             logger.error('Ошибка в функции nodes_sql_tables.get_nodes {}'.format(str(err_message)))
@@ -910,7 +910,7 @@ class nodes_sql_tables:
             connection.close()
             if not vlans_arr:
                 logger.error('Failed to get configurator_vlan_ranges table')
-                return None
+                return []
             return vlans_arr
         except Exception as err_message:
             logger.error('Ошибка в функции nodes_sql_tables.get_vlan_ranges {}'.format(str(err_message)))
@@ -934,7 +934,7 @@ class nodes_sql_tables:
             connection.close()
             if not ips_arr:
                 logger.error('Failed to get configurator_ip_ranges table')
-                return None
+                return []
             return ips_arr
         except Exception as err_message:
             logger.error('Ошибка в функции nodes_sql_tables.get_ip_ranges {}'.format(str(err_message)))
@@ -943,7 +943,7 @@ class nodes_sql_tables:
         try:
             connection = mysql.local_sql_conn()
             req = ("insert into configurator_nodes(node,vendor,mpls,vpls,ip_unnumbered,ip_common,loopback_iface)"
-                   " values ('{}', '{}', '{}', '{}', '{}', '{}', '{}');".format(
+                   " values ('{}', '{}', {}, {}, {}, {}, '{}');".format(
                        node,vendor,mpls,vpls,ip_unnumbered,ip_common,loopback_iface))
             with connection.cursor() as cursor:
                 cursor.execute(req)

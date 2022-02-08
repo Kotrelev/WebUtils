@@ -430,6 +430,7 @@ function loading_vlan() {
             <label for="scale6" class="NotifierButtons" onclick="conf_policers()">Полисеры</label>
         </div>
         <div id="conf_nodes" style="display:none">
+            <br>
             <h2>Узлы L3</h2>
             <form action="configurator_vlan_create"
                   name="configurator_vlan_create"
@@ -437,12 +438,60 @@ function loading_vlan() {
             </form>
             {{conf_nodes}}
             <table id="tblType" class="sortable">
-            {% for node_dict in conf_nodes %}
-            <tr>
-            <td>{{ node_dict.node }}</td>
-            </tr>
-            {% endfor %}
+              <thead>
+                <tr>
+                <th>Node</th>
+                <th>Vendor</th>
+                <th>mpls</th>
+                <th>vpls</th>
+                <th>unnumbered</th>
+                <th>ip regular</th>
+                <th>lo iface</th>
+                <th>vlan ranges</th>
+                <th>ip ranges</th>
+                <th>edit</th>
+                <th>del</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for node_dict in conf_nodes %}
+                <tr>
+                <td>{{ node_dict.node }}</td>
+                <td>{{ node_dict.vendor }}</td>
+                <td>{{ node_dict.mpls }}</td>
+                <td>{{ node_dict.vpls }}</td>
+                <td>{{ node_dict.ip_unnumbered }}</td>
+                <td>{{ node_dict.ip_common }}</td>
+                <td>{{ node_dict.loopback_iface }}</td>
+                <td>{{ node_dict.vlan_ranges }}</td>
+                <td>{{ node_dict.ip_ranges }}</td>
+                <td>
+                  <form action="configurator_edit_node_{{ node_dict.id }}" 
+                        method="POST">
+                  <input id="zabbix95_delete_button" 
+                         type="submit" 
+                         name="configurator_edit_node_{{ node_dict.id }}" 
+                         value="📝">
+                  </form>
+                </td>
+                <td>
+                  <form action="configurator_delete_node_{{ node_dict.id }}" 
+                        method="POST" 
+                        onsubmit="return confirm('Удаляем {{ node_dict.node }}?');">
+                  <input id="zabbix95_delete_button" 
+                         type="submit" 
+                         name="configurator_delete_node_{{ node_dict.id }}" 
+                         value="❌">
+                  </form>
+                </td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
+            <br>
+            <button class="InventorySrtButtons" 
+                    onclick="window.location.href = 'https://devnet.spb.avantel.ru/configurator_add_node';">
+                    Новый</button>
         </div>
         <div id="conf_policers" style="display:none">
             <h2>Полисеры</h2>
