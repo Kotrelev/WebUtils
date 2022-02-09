@@ -14,7 +14,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="text" name="vlan_ranges_fld[]" autocomplete="off" placeholder="1-100" required/><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
+            $(wrapper).append('<div><input type="text" name="vlan_ranges_fld[]" autocomplete="off" placeholder="1-100" pattern = "^[0-9]{1,4}-[0-9]{1,4}$" required/><a href="#" class="delete" style="padding-left:14px">❌</a></div>'); //add input box
         } else {
             alert('Остановись')
         }
@@ -37,7 +37,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="text" name="ip_ranges_fld[]" autocomplete="off" list="hn_list" required/><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
+            $(wrapper).append('<div><input type="text" name="ip_ranges_fld[]" autocomplete="off" pattern = "^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{2}$" required/><a style="padding:6px">gw</a><input type="text" class="configurator_form" id="ip_gw_fld" name="ip_gw_fld[]" autocomplete="off" placeholder="188.227.45.1" pattern = "^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$" required><a href="#" class="delete" style="padding-left:17px">❌</a></div>'); //add input box
         } else {
             alert('Остановись')
         }
@@ -168,6 +168,10 @@ $(document).ready(function() {
             name="vlan_ranges_fld[]"
             autocomplete="off"            
             placeholder="2001-2100" 
+            pattern = "^[0-9]{1,4}-[0-9]{1,4}$"
+            oninvalid="this.setCustomValidity('xxxx-xxxx где x = циферки')"
+            onchange="try{setCustomValidity('')}catch(e){}"
+            oninput="setCustomValidity(' ')"
             required>
         <button id="GenericBlueSmallButton" class="add_vlan_field">➕</button>
         <br>
@@ -177,7 +181,7 @@ $(document).ready(function() {
         <tr>
         <td>
         <label class="configurator_label"
-               for="ip_ranges_fld">Диапазоны IP:</label>
+               for="ip_ranges_fld">Подсеть IP:</label>
         </td>
         <td>
         <div class="container2">
@@ -186,7 +190,23 @@ $(document).ready(function() {
             id="ip_ranges_fld" 
             name="ip_ranges_fld[]"
             autocomplete="off"            
-            placeholder="188.227.45.2-188.227.45.25" 
+            placeholder="188.227.45.0/24" 
+            pattern = "^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{2}$"
+            oninvalid="this.setCustomValidity('1.1.1.0/24 типа так надо')"
+            onchange="try{setCustomValidity('')}catch(e){}"
+            oninput="setCustomValidity(' ')"
+            required>
+        gw
+        <input type="text" 
+            class="configurator_form" 
+            id="ip_gw_fld" 
+            name="ip_gw_fld[]"
+            autocomplete="off"            
+            placeholder="188.227.45.1" 
+            pattern = "^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
+            oninvalid="this.setCustomValidity('1.1.1.1 типа так надо')"
+            onchange="try{setCustomValidity('')}catch(e){}"
+            oninput="setCustomValidity(' ')"
             required>
         <button id="GenericBlueSmallButton" class="add_ip_field">➕</button>
         <br>

@@ -1793,13 +1793,21 @@ def configurator_commit_node():
     loopback = request.form['loopback_fld']
     vlan_ranges = request.form.getlist('vlan_ranges_fld[]')
     ip_ranges = request.form.getlist('ip_ranges_fld[]')
+    ip_gws = request.form.getlist('ip_gw_fld[]')
+    
+    for vrange in vlan_ranges:
+        vr = vrange.split('-')
+        nodes_sql_tables.set_vlan_range(hostname, vr[0], vr[1], logger)
+        
+    for i, iprange in enumerate(ip_ranges):
+        nodes_sql_tables.set_ip_range(node, range_start, range_end, subnet, gateway, logger)
     
     nodes_sql_tables.set_node(hostname, '', mpls, vpls, ip_unnum, ip_common, loopback, logger)
     
     
-    msg = 'Узел добавлен'
+    msg = f'Узел {hostname} добавлен'
     #msg = 'Узел обновлен'
-    #msg = [hostname, mpls_fld, vpls_fld, ip_unnum_fld, ip_common_fld, loopback_fld, vlan_ranges, ip_ranges]
+    msg = [hostname, mpls, vpls, ip_unnum, ip_common, loopback, vlan_ranges, ip_ranges, ip_gws]
     return configurator_init(msg = msg,)
 
 @web_utils_app.route("/configurator_delete_node_<node_id>", methods=['POST', 'GET'])
@@ -1928,7 +1936,9 @@ def configurator_inet_confirm(sid):
         return configurator_init(msg='Не нашел L3 для {}'.format(inet_form['hostname']))
     
     # Находим свободный влан
-    vlan = '555'
+    vlan_id = vlan_finder(chain, host_dict, logger)
+    if not vlan_id:
+        return configurator_init(msg='Нет свободных вланов для {}'.format(inet_form['hostname']))
     
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
     vlan_name = 'inet_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
@@ -1943,12 +1953,13 @@ def configurator_inet_confirm(sid):
                                               logger)
     
     #Отдаем все полученные данные в генератор конфигов. 
-    config_dict = configurator.inet_config_maker(vlan_form, 
+    config_dict = configurator.inet_config_maker(inet_form, 
                                                  vlan_name, 
                                                  chain, 
                                                  host_dict, 
-                                                 end_iface_dict, 
-                                                 endpoints, 
+                                                 end_iface_dict,
+                                                 vlan_id,
+                                                 node,
                                                  logger)
     
     
@@ -1960,10 +1971,10 @@ def configurator_inet_confirm(sid):
     
     
     
-    #return render_template("configurator_confirm.html",
-    #                       diagram_link = diagram_link,
-    #                       config_dict = config_dict,
-    #                       rawdata = rawdata,)
+    return render_template("configurator_confirm.html",
+                           diagram_link = diagram_link,
+                           config_dict = config_dict,
+                           rawdata = rawdata,)
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])
 def configurator_vlan_create(msg=''):

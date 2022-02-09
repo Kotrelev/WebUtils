@@ -651,12 +651,12 @@ class configurator:
         try:
             logger.info('TEMP vpath: {}'.format(vpath))
             #logger.info('TEMP host_dict: {}'.format(host_dict))
-            hl = []
+            host_list = []
             free_vlans = ''
             for host in vpath:
                 if vlan_tag in host_dict[host]['vlans']:
-                    hl.append(host)
-            if hl:
+                    host_list.append(host)
+            if host_list:
                 vlan_set = set([int(vlan) for host in vpath for vlan in host_dict[host]['vlans']])
                 logger.info('TEMP vlan_set: {}'.format(vlan_set))
                 for vid in range(2,4096):
@@ -680,11 +680,22 @@ class configurator:
                             free_vlans += '-' + str(vid-1)
                         prev_vid = None
                     
-            return hl, free_vlans
+            return host_list, free_vlans
             
             
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.vlan_validator {}'.format(str(err_message)))
+            
+    def vlan_finder(vpath, host_dict, logger):
+        try:
+            occupied_vlans = set([v for host in vpath for v in host_dict[host]['vlans']])
+            for vid in config.inet_vlan_range:
+                if str(vid) not in occupied_vlans:
+                    return str(vid)
+            return None
+            
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.vlan_finder {}'.format(str(err_message)))
             
     def vlan_config_maker(vlan_form, vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, logger):
         try:
@@ -767,7 +778,74 @@ class configurator:
             return config_dict    
                 
         except Exception as err_message:
-            logger.error('Ошибка в функции configurator.config_maker {}'.format(str(err_message)))
+            logger.error('Ошибка в функции configurator.vlan_config_maker {}'.format(str(err_message)))
+            
+    def inet_config_maker(inet_form, 
+                          vlan_name, 
+                          vlanpath, 
+                          host_dict, 
+                          end_iface_dict,
+                          vlan_id,
+                          node,
+                          logger):
+        try:
+            config_dict = {}
+            for host in vlanpath:
+                vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
+                config_dict[host] = {
+                    'global': [],
+                    'config': [],
+                    'ifaces': {},
+                }
+                if not 'config_maker' in dir(vendor_cls):
+                    config_dict[host]['global'] = ['ERROR: {} has no config_maker class'.format(host)]
+                    continue
+                config_maker_cls = vendor_cls.config_maker
+
+                
+                if not 'create_vlan' in dir(config_maker_cls):
+                    config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
+                    continue
+                if not 'add_vlan_trunk' in dir(config_maker_cls):
+                    config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
+                    continue
+                config_maker_cls.create_vlan(host, 
+                                             config_dict,
+                                             vlan_id, 
+                                             vlan_name,
+                                             logger)
+                config_maker_cls.add_vlan_trunk(host, 
+                                                config_dict,
+                                                vlan_id,
+                                                vlanpath[host],
+                                                logger)
+                
+                if host in endpoints and end_iface_dict[host]:
+                    # endpoint iface conf
+                    if not 'access_port' in dir(config_maker_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
+                        continue
+                    config_maker_cls.access_port(host, 
+                                                 config_dict,
+                                                 vlan_form, 
+                                                 end_iface_dict[host],
+                                                 logger,
+                                                 rate_l2 = not mpls_nodes,)
+                
+
+                
+                #if 'create_vlan' not in dir(vendor_cls):
+                #    return '{} cannot create vlan'.format(host)
+                #if 'add_port_vlan' not in dir(vendor_cls):
+                #    return '{} cannot add vlan to port'.format(host)
+                
+                
+                #links = vlanpath[host]
+            logger.warning('TEMP config_dict: {}'.format(config_dict))
+            return config_dict    
+                
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.inet_config_maker {}'.format(str(err_message)))
             
     def diagram_maker(vlan_name, vlanpath, host_dict, end_iface_dict, endpoints, node, logger):
         try:
@@ -952,7 +1030,7 @@ class nodes_sql_tables:
         except Exception as err_message:
             logger.error('Ошибка в функции nodes_sql_tables.set_node {}'.format(str(err_message)))
             
-    def set_ip_range(node,range_start,range_end,subnet,gateway,logger):
+    def set_ip_range(node, range_start, range_end, subnet, gateway, logger):
         try:
             connection = mysql.local_sql_conn()
             req = ("insert into configurator_ip_ranges(node,range_start,range_end,subnet,gateway)"
@@ -965,7 +1043,7 @@ class nodes_sql_tables:
         except Exception as err_message:
             logger.error('Ошибка в функции nodes_sql_tables.set_ip_range {}'.format(str(err_message)))
             
-    def set_vlan_range(node,range_start,range_end,logger):
+    def set_vlan_range(node, range_start, range_end, logger):
         try:
             connection = mysql.local_sql_conn()
             req = ("insert into configurator_vlan_ranges(node,range_start,range_end)"
