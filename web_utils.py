@@ -1924,16 +1924,31 @@ def configurator_inet_confirm(sid):
     
     #Получаем таблицу ipv4 и формируем список L3 узлов
     ipv4 = ipv4_table.get_ipv4(logger)
-    nodes = set([r['name'] for r in ipv4 if r['contract'] == 'GW'])
+    all_nodes = set([r['name'] for r in ipv4 if r['contract'] == 'GW'])
     
     # Определяем L3 девайс
-    node = ''
-    for host in chain:
-        if host in nodes:
-            node = host
+    node = [h for h in chain if h in all_nodes]
     if not node:
         logger.error('Не нашел L3 для {}'.format(inet_form['hostname']))
         return configurator_init(msg='Не нашел L3 для {}'.format(inet_form['hostname']))
+    elif len(node) > 1:
+        logger.error('Слишком много узлов для {} ({})'.format(inet_form['hostname'], node))
+        return configurator_init(msg='Слишком много узлов для {} ({})'.format(inet_form['hostname'], node))
+    node = node[0]
+        
+    # Получаем из ipv4 список доступных сетей
+    unnums = {r['ip']: str(r['net']) 
+              for r in ipv4 
+              if r['name'] == node 
+              and r['contract'] == 'GW' 
+              and 'auto - unnumbered' in r['address']}
+    if not unnums:
+        logger.error('Не нашел сетей для узла {} в ipv4'.format(node))
+        return configurator_init(msg='Не нашел сетей для узла {} в ipv4'.format(node))
+    
+    # Ищем свободный IP
+    for gw in unnums:
+        pass
     
     # Находим свободный влан
     vlan_id = vlan_finder(chain, host_dict, logger)

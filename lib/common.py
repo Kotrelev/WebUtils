@@ -1,5 +1,6 @@
-import config
+import config, requests
 import pymysql.cursors
+
 class mysql:
     def local_sql_conn():
         try:
@@ -33,5 +34,5 @@ class ipv4_table:
                 return response.json()
             return None
         except Exception as err_message:
-            logger.error('Ошибка в функции get_ipv4 {}'.format(str(err_message)))
+            logger.error('Ошибка в функции ipv4_table.get_ipv4 {}'.format(str(err_message)))
             return None

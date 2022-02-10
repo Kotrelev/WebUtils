@@ -701,6 +701,10 @@ class configurator:
         try:
             config_dict = {}
             mpls_nodes = [n for n in vlanpath if host_dict[n]['mpls']]
+            if not mpls_nodes:
+                rate = vlan_form['rate']
+            else:
+                rate = None
             for host in vlanpath:
                 vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
                 config_dict[host] = {
@@ -723,13 +727,13 @@ class configurator:
                         config_dict[host]['global'] = ['ERROR: {} cannot make MPLS'.format(host)]
                         continue
                     l2_interface = vlanpath[host][l2_neighbour[0]]['port']
-                    config_maker_cls.mpls(host,
-                                          config_dict,
-                                          vlan_form,
-                                          vlan_name,
-                                          l2_interface,
-                                          host_dict[mpls_nei]['ip'],
-                                          config,
+                    config_maker_cls.mpls(host, 
+                                          config_dict, 
+                                          vlan_form, 
+                                          vlan_name, 
+                                          l2_interface, 
+                                          host_dict[mpls_nei]['ip'], 
+                                          config, 
                                           logger)
                 elif host in mpls_nodes and len(mpls_nodes) > 2:
                     # vpls
@@ -743,14 +747,14 @@ class configurator:
                         config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
                         continue
                     config_maker_cls.create_vlan(host, 
-                                                 config_dict,
+                                                 config_dict, 
                                                  vlan_form['tag'], 
-                                                 vlan_name,
+                                                 vlan_name, 
                                                  logger)
                     config_maker_cls.add_vlan_trunk(host, 
-                                                    config_dict,
-                                                    vlan_form['tag'],
-                                                    vlanpath[host],
+                                                    config_dict, 
+                                                    vlan_form['tag'], 
+                                                    vlanpath[host], 
                                                     logger)
                     
                 if host in endpoints and end_iface_dict[host]:
@@ -760,12 +764,12 @@ class configurator:
                         continue
                     config_maker_cls.access_port(host, 
                                                  config_dict,
-                                                 vlan_form, 
-                                                 end_iface_dict[host],
-                                                 logger,
-                                                 rate_l2 = not mpls_nodes,)
-                
-
+                                                 vlan_form['vlan_id'], 
+                                                 vlan_form['contract'], 
+                                                 vlan_form['latin_name'], 
+                                                 rate, 
+                                                 end_iface_dict[host], 
+                                                 logger,)
                 
                 #if 'create_vlan' not in dir(vendor_cls):
                 #    return '{} cannot create vlan'.format(host)
@@ -784,12 +788,19 @@ class configurator:
                           vlan_name, 
                           vlanpath, 
                           host_dict, 
-                          end_iface_dict,
-                          vlan_id,
-                          node,
+                          end_iface_dict, 
+                          vlan_id, 
+                          node, 
                           logger):
         try:
             config_dict = {}
+            
+            #Костыль. Проверяем что узел - джуник. Если нет то резать на Л2 будем.
+            if 'iso.3.6.1.4.1.2636' not in host_dict[node]['sysobjectid']: 
+                rate = ''
+            else:
+                rate = inet_form['rate']
+            
             for host in vlanpath:
                 vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
                 config_dict[host] = {
@@ -803,34 +814,54 @@ class configurator:
                 config_maker_cls = vendor_cls.config_maker
 
                 
-                if not 'create_vlan' in dir(config_maker_cls):
-                    config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
-                    continue
-                if not 'add_vlan_trunk' in dir(config_maker_cls):
-                    config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
-                    continue
-                config_maker_cls.create_vlan(host, 
-                                             config_dict,
-                                             vlan_id, 
-                                             vlan_name,
-                                             logger)
-                config_maker_cls.add_vlan_trunk(host, 
-                                                config_dict,
-                                                vlan_id,
-                                                vlanpath[host],
-                                                logger)
-                
-                if host in endpoints and end_iface_dict[host]:
-                    # endpoint iface conf
-                    if not 'access_port' in dir(config_maker_cls):
+                if host == node:
+                    if not 'loopback_unnumbered' in dir(config_maker_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot make unnumbered'.format(host)]
+                        continue
+                    l2_interface = vlanpath[host][l2_neighbour[0]]['port']
+                    config_maker_cls.loopback_unnumbered(host,
+                                                         config_dict, 
+                                                         l2_interface,
+                                                         inet_form['tag'],
+                                                         inet_form['tasknum'],
+                                                         inet_form['latin_name'],
+                                                         rate,
+                                                         loopback,
+                                                         ip_address,
+                                                         logger,)
+                    
+                else:
+                    if not 'create_vlan' in dir(config_maker_cls):
                         config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
                         continue
-                    config_maker_cls.access_port(host, 
-                                                 config_dict,
-                                                 vlan_form, 
-                                                 end_iface_dict[host],
-                                                 logger,
-                                                 rate_l2 = not mpls_nodes,)
+                    if not 'add_vlan_trunk' in dir(config_maker_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot configure trunk port'.format(host)]
+                        continue
+                    config_maker_cls.create_vlan(host, 
+                                                 config_dict, 
+                                                 vlan_id, 
+                                                 vlan_name, 
+                                                 logger)
+                    config_maker_cls.add_vlan_trunk(host, 
+                                                    config_dict, 
+                                                    vlan_id, 
+                                                    vlanpath[host], 
+                                                    logger)
+                    
+                    if host in endpoints and end_iface_dict[host]:
+                        # endpoint iface conf
+                        if not 'access_port' in dir(config_maker_cls):
+                            config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
+                            continue
+
+                        config_maker_cls.access_port(host, 
+                                                     config_dict, 
+                                                     vlan_id, 
+                                                     contract, 
+                                                     latin_name, 
+                                                     rate, 
+                                                     end_iface_dict[host], 
+                                                     logger,)
                 
 
                 
