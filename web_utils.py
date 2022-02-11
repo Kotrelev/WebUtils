@@ -1881,12 +1881,14 @@ def configurator_inet_confirm(sid):
     # Забираем из SQL уже собранные данные по конечному девайсу
     sid_storage = sql_get_session(sid)
     if not sid_storage: 
-        logger.error('Проблема с SQL (Не считал данные)')
-        return configurator_init(msg='Проблема с SQL (Не считал данные)')
+        msg = 'Проблема с SQL (Не считал данные)'
+        logger.error(msg)
+        return configurator_init(msg)
     data_dict = json.loads(sid_storage[0]['storage'])
     if not 'host_dict' in data_dict:
-        logger.error('Проблема с SQL (Не смог распаковать данные)')
-        return configurator_init(msg='Проблема с SQL (Не смог распаковать данные)')
+        msg = 'Проблема с SQL (Не смог распаковать данные)'
+        logger.error(msg)
+        return configurator_init(msg)
     host_dict = data_dict['host_dict']
     inet_form = data_dict['inet_form']
     # Убиваем сессию. ЭТО НАДО БУДЕТ УБРАТЬ КОГДА НАПИШЕШЬ ПРОДОЛЖЕНИЕ
@@ -1929,29 +1931,25 @@ def configurator_inet_confirm(sid):
     # Определяем L3 девайс
     node = [h for h in chain if h in all_nodes]
     if not node:
-        logger.error('Не нашел L3 для {}'.format(inet_form['hostname']))
-        return configurator_init(msg='Не нашел L3 для {}'.format(inet_form['hostname']))
+        msg = 'Не нашел L3 для {}: chain = {}, all nodes = {}'.format(inet_form['hostname'], 
+                                                                      [h for h in chain], 
+                                                                      all_nodes)
+        logger.error(msg)
+        return configurator_init(msg)
     elif len(node) > 1:
-        logger.error('Слишком много узлов для {} ({})'.format(inet_form['hostname'], node))
-        return configurator_init(msg='Слишком много узлов для {} ({})'.format(inet_form['hostname'], node))
+        msg = 'Слишком много узлов для {} ({})'.format(inet_form['hostname'], node)
+        logger.error(msg)
+        return configurator_init(msg)
     node = node[0]
         
-    # Получаем из ipv4 список доступных сетей
-    unnums = {r['ip']: str(r['net']) 
-              for r in ipv4 
-              if r['name'] == node 
-              and r['contract'] == 'GW' 
-              and 'auto - unnumbered' in r['address']}
-    if not unnums:
-        logger.error('Не нашел сетей для узла {} в ipv4'.format(node))
-        return configurator_init(msg='Не нашел сетей для узла {} в ipv4'.format(node))
-    
-    # Ищем свободный IP
-    for gw in unnums:
-        pass
-    
+    # Ищем свободные IP
+    for n in range(0, int(inet_form['amount_ip'])):
+        msg, ip_addresses = ipv4_table.get_free_ip(ipv4, node, int(inet_form['amount_ip']), logger):
+        if msg != 'OK': 
+            return configurator_init(msg)
+                    
     # Находим свободный влан
-    vlan_id = vlan_finder(chain, host_dict, logger)
+    vlan_id = configurator.vlan_finder(chain, host_dict, logger)
     if not vlan_id:
         return configurator_init(msg='Нет свободных вланов для {}'.format(inet_form['hostname']))
     
@@ -1967,14 +1965,16 @@ def configurator_inet_confirm(sid):
                                               node,
                                               logger)
     
+    inet_form['vlan_id'] = vlan_id
+    inet_form['vlan_name'] = vlan_name
+    inet_form['node'] = node
+    
     #Отдаем все полученные данные в генератор конфигов. 
     config_dict = configurator.inet_config_maker(inet_form, 
-                                                 vlan_name, 
                                                  chain, 
                                                  host_dict, 
-                                                 end_iface_dict,
-                                                 vlan_id,
-                                                 node,
+                                                 end_iface_dict, 
+                                                 ip_addresses, 
                                                  logger)
     
     

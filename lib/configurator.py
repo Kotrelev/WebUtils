@@ -784,13 +784,11 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.vlan_config_maker {}'.format(str(err_message)))
             
-    def inet_config_maker(inet_form, 
-                          vlan_name, 
+    def inet_config_maker(inet_form,  
                           vlanpath, 
                           host_dict, 
                           end_iface_dict, 
-                          vlan_id, 
-                          node, 
+                          ip_addresses, 
                           logger):
         try:
             config_dict = {}
@@ -819,15 +817,12 @@ class configurator:
                         config_dict[host]['global'] = ['ERROR: {} cannot make unnumbered'.format(host)]
                         continue
                     l2_interface = vlanpath[host][l2_neighbour[0]]['port']
-                    config_maker_cls.loopback_unnumbered(host,
+                    config_maker_cls.loopback_unnumbered(host, 
+                                                         inet_form, 
                                                          config_dict, 
-                                                         l2_interface,
-                                                         inet_form['tag'],
-                                                         inet_form['tasknum'],
-                                                         inet_form['latin_name'],
-                                                         rate,
-                                                         loopback,
-                                                         ip_address,
+                                                         l2_interface, 
+                                                         rate, 
+                                                         ip_addresses, 
                                                          logger,)
                     
                 else:
