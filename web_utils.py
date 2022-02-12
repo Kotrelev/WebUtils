@@ -1944,7 +1944,7 @@ def configurator_inet_confirm(sid):
         
     # Ищем свободные IP
     for n in range(0, int(inet_form['amount_ip'])):
-        msg, ip_addresses = ipv4_table.get_free_ip(ipv4, node, int(inet_form['amount_ip']), logger):
+        msg, ip_addresses = ipv4_table.get_free_ip(ipv4, node, int(inet_form['amount_ip']), logger)
         if msg != 'OK': 
             return configurator_init(msg)
                     
@@ -1954,7 +1954,7 @@ def configurator_inet_confirm(sid):
         return configurator_init(msg='Нет свободных вланов для {}'.format(inet_form['hostname']))
     
     # Тут надо подумать. Имя влана по номеру заявки не прокатит.
-    vlan_name = 'inet_{}_{}'.format(vlan_form['tasknum'], vlan_form['latin_name'])
+    vlan_name = 'inet_{}_{}'.format(inet_form['tasknum'], inet_form['latin_name'])
     
     # Рисуем картинку и получаем ссылку на нее
     diagram_link = configurator.diagram_maker(vlan_name,
@@ -1965,7 +1965,7 @@ def configurator_inet_confirm(sid):
                                               node,
                                               logger)
     
-    inet_form['vlan_id'] = vlan_id
+    inet_form['tag'] = vlan_id
     inet_form['vlan_name'] = vlan_name
     inet_form['node'] = node
     
@@ -1984,7 +1984,7 @@ def configurator_inet_confirm(sid):
     
     
     
-    
+    rawdata = [inet_form, ip_addresses, config_dict, chain, host_dict]
     
     return render_template("configurator_confirm.html",
                            diagram_link = diagram_link,

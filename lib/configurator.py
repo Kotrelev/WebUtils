@@ -784,22 +784,39 @@ class configurator:
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.vlan_config_maker {}'.format(str(err_message)))
             
-    def inet_config_maker(inet_form,  
-                          vlanpath, 
-                          host_dict, 
-                          end_iface_dict, 
-                          ip_addresses, 
-                          logger):
+    def inet_config_maker(
+        inet_form,  
+        vlanpath, 
+        host_dict, 
+        end_iface_dict, 
+        ip_addresses, 
+        logger
+    ):
         try:
-            config_dict = {}
+            
+            config_dict = {
+                'Summary': {
+                    'global': 
+                        ['IP {}'.format(i) for i in ip_addresses['ip']] + [
+                        'NM {}'.format(ip_addresses['mask']),
+                        'GW {}'.format(ip_addresses['gateway']),
+                        'DNS1 188.68.187.2',
+                        'DNS2 188.68.186.2',
+                        'vlan {}'.format(inet_form['tag']),
+                    ],
+                    'config': [],
+                    'ifaces': {},
+                    }
+            }
             
             #Костыль. Проверяем что узел - джуник. Если нет то резать на Л2 будем.
-            if 'iso.3.6.1.4.1.2636' not in host_dict[node]['sysobjectid']: 
+            if 'iso.3.6.1.4.1.2636' not in host_dict[inet_form['node']]['sysobjectid']: 
                 rate = ''
             else:
                 rate = inet_form['rate']
             
             for host in vlanpath:
+                
                 vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
                 config_dict[host] = {
                     'global': [],
@@ -812,17 +829,19 @@ class configurator:
                 config_maker_cls = vendor_cls.config_maker
 
                 
-                if host == node:
+                if host == inet_form['node']:
                     if not 'loopback_unnumbered' in dir(config_maker_cls):
                         config_dict[host]['global'] = ['ERROR: {} cannot make unnumbered'.format(host)]
                         continue
-                    l2_interface = vlanpath[host][l2_neighbour[0]]['port']
+                    l2_neighbour = list(vlanpath[host].keys())[0]
+                    l2_interface = vlanpath[host][l2_neighbour]['port']
                     config_maker_cls.loopback_unnumbered(host, 
                                                          inet_form, 
                                                          config_dict, 
                                                          l2_interface, 
                                                          rate, 
                                                          ip_addresses, 
+                                                         config, 
                                                          logger,)
                     
                 else:
@@ -834,16 +853,16 @@ class configurator:
                         continue
                     config_maker_cls.create_vlan(host, 
                                                  config_dict, 
-                                                 vlan_id, 
-                                                 vlan_name, 
+                                                 inet_form['tag'], 
+                                                 inet_form['vlan_name'], 
                                                  logger)
                     config_maker_cls.add_vlan_trunk(host, 
                                                     config_dict, 
-                                                    vlan_id, 
+                                                    inet_form['tag'], 
                                                     vlanpath[host], 
                                                     logger)
                     
-                    if host in endpoints and end_iface_dict[host]:
+                    if host in end_iface_dict:
                         # endpoint iface conf
                         if not 'access_port' in dir(config_maker_cls):
                             config_dict[host]['global'] = ['ERROR: {} cannot make vlan'.format(host)]
@@ -851,9 +870,9 @@ class configurator:
 
                         config_maker_cls.access_port(host, 
                                                      config_dict, 
-                                                     vlan_id, 
-                                                     contract, 
-                                                     latin_name, 
+                                                     inet_form['tag'], 
+                                                     inet_form['contract'], 
+                                                     inet_form['latin_name'], 
                                                      rate, 
                                                      end_iface_dict[host], 
                                                      logger,)

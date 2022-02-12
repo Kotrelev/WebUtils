@@ -62,9 +62,9 @@ class ipv4_table:
                     if (not ipv4_d[shost]['contract'] 
                         and not ipv4_d[shost]['name']
                         and not ipv4_d[shost]['address']):
-                        ipaddresses[gateway]['ip'].append(shost)
+                        ipaddresses['ip'].append(shost)
                         
-                    if len(ipaddresses[gateway]['ip']) == amount:
+                    if len(ipaddresses['ip']) == amount:
                         return 'OK', ipaddresses
 
             msg = 'Нет свободных/недостаточно IP для узла {} в ipv4 ({})'.format(node, unnums)
