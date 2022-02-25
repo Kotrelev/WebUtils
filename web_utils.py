@@ -1926,7 +1926,9 @@ def configurator_inet_confirm(sid):
     
     #Получаем таблицу ipv4 и формируем список L3 узлов
     ipv4 = ipv4_table.get_ipv4(logger)
-    all_nodes = set([r['name'] for r in ipv4 if r['contract'] == 'GW'])
+    all_nodes = set([r['name'] for r in ipv4 
+                     if r['contract'] == 'GW'
+                     and 'auto' in r['address']])
     
     # Определяем L3 девайс
     node = [h for h in chain if h in all_nodes]
