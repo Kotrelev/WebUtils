@@ -764,7 +764,7 @@ class configurator:
                         continue
                     config_maker_cls.access_port(host, 
                                                  config_dict,
-                                                 vlan_form['vlan_id'], 
+                                                 vlan_form['tag'], 
                                                  vlan_form['contract'], 
                                                  vlan_form['latin_name'], 
                                                  rate, 
