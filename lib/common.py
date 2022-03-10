@@ -3,6 +3,7 @@ import pymysql.cursors
 
 class mysql:
     def local_sql_conn():
+        # это соединение будет возвращать словари
         try:
             connection = pymysql.connect(host=config.local_mysqlhost,
                 user=config.local_mysqluser,
@@ -13,9 +14,9 @@ class mysql:
             return(connection)
         except Exception as err_message:
             logger.error('Ошибка в функции mysql.local_sql_conn {}'.format(str(err_message)))
-        
-    # это соединение будет возвращать списки
+    
     def local_sql_conn_l():
+        # это соединение будет возвращать списки
         try:
             connection = pymysql.connect(host=config.local_mysqlhost,
                 user=config.local_mysqluser,

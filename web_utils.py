@@ -19,7 +19,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 from lib.zabbix_common import zabbix_common
-from lib.configurator import ifaces_and_vlans, configurator, nodes_sql_tables
+from lib.configurator.configurator import configurator
+from lib.configurator.sql import nodes_sql_tables
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
