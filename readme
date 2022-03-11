@@ -1,3 +1,15 @@
+This project combines a number of functions:
+1. Search in Zabbix by device name
+2. Inventory web interface (tables and search in database)
+3. Notification of customers about upcoming works on the network
+4. Custom notifications to Telegram groups
+5. Network devices accessability report
+6. 95th percentile report for uplinks and customers
+7. DDM report from SFP modules in the network
+8. Access to ARP database
+9. Configurator of new customer services (vlans and internet access)
+
+--------------------------------------------------------------------
 #run with gunicorn from folder:
 
 gunicorn --bind 0.0.0.0:4000 wsgi:app

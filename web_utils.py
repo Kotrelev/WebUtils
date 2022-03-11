@@ -19,8 +19,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 from lib.zabbix_common import zabbix_common
-from lib.configurator.configurator import configurator
-from lib.configurator.sql import nodes_sql_tables
+from lib.configurator import ifaces_and_vlans, configurator, nodes_sql_tables
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
@@ -68,7 +67,6 @@ def hostid_by_ip(zabbix_conn, ip):
         return host_iface[0]['hostid']
     except Exception as err_message:
         logger.error('Ошибка в функции hostid_by_ip {}'.format(str(err_message)))
-        return None
         
 # achtung! эта функция может вернуть больше одного id
 def hostid_by_name(zabbix_conn, name, logger):
@@ -83,7 +81,6 @@ def hostid_by_name(zabbix_conn, name, logger):
         return dev_arr # [{'hostid': '10934', 'host': 'BMor18-cs2', 'name': 'BMor18-cs2'}]
     except Exception as err_message:
         logger.error('Ошибка в функции hostid_by_name {}'.format(str(err_message)))
-        return None
         
 def hostname_by_id(zabbix_conn, hostid):
     try:
@@ -94,7 +91,6 @@ def hostname_by_id(zabbix_conn, hostid):
         return dev_arr
     except Exception as err_message:
         logger.error('Ошибка в функции hostname_by_id {}'.format(str(err_message)))
-        return None
         
 def ip_by_hostname(hostname, logger):
     try:
@@ -150,7 +146,6 @@ def get_email_by_contract(contract, logger):
         return None
     except Exception as err_message:
         logger.error('Ошибка в функции get_email_by_contract {}'.format(str(err_message)))
-        return None
         
 ### INVENTORY FUNCTIONS
 # уникальная модель с макс датой за последний год
