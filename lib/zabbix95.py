@@ -1,13 +1,13 @@
 import config, re
 from pyzabbix import ZabbixAPI
 from datetime import datetime
-from lib.common import mysql
+from lib.common import common_mysql
 from lib.zabbix_common import zabbix_common
 
 class zabbix95:
     def get_ifaces(logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("select * from Zabbix95")
             with connection.cursor() as cursor:
                 cursor.execute(req)
@@ -26,7 +26,7 @@ class zabbix95:
     
     def sql_del_iface(int_id, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("delete from Zabbix95 where id = '{}'".format(int_id))
             logger.info('executing {}'.format(req))
             with connection.cursor() as cursor:
@@ -38,7 +38,7 @@ class zabbix95:
             
     def sql_add_iface(neighbour, node, interface, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("insert into Zabbix95(peer, node, interface)"
                    " values ('{}', '{}', '{}');".format(neighbour, node, interface))
             with connection.cursor() as cursor:

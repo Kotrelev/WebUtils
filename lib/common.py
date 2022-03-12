@@ -1,8 +1,8 @@
 import config, requests, ipaddress
 import pymysql.cursors
 
-class mysql:
-    def local_sql_conn():
+class common_mysql:
+    def local_sql_conn(logger):
         # это соединение будет возвращать словари
         try:
             connection = pymysql.connect(host=config.local_mysqlhost,
@@ -15,7 +15,7 @@ class mysql:
         except Exception as err_message:
             logger.error('Ошибка в функции mysql.local_sql_conn {}'.format(str(err_message)))
     
-    def local_sql_conn_l():
+    def local_sql_conn_l(logger):
         # это соединение будет возвращать списки
         try:
             connection = pymysql.connect(host=config.local_mysqlhost,
@@ -26,6 +26,74 @@ class mysql:
             return(connection)
         except Exception as err_message:
             logger.error('Ошибка в функции mysql.local_sql_conn_l {}'.format(str(err_message)))
+            
+    def sql_set_session(sid, storage, date, logger):
+        try:
+            logger.warning('TEMP STORAGE {}'.format(storage))
+            connection = common_mysql.local_sql_conn(logger)
+            req = ("insert into web_utils_session(sid, storage, date)" 
+                   "values ('{}', '{}', '{}')".format(sid, storage, date))
+            with connection.cursor() as cursor:
+                cursor.execute(req)
+            connection.commit()
+            connection.close()
+        except Exception as err_message:
+            logger.error('Ошибка в функции sql_set_session {}'.format(str(err_message)))
+        
+    def sql_upd_session(sid, storage, logger):
+        try:
+            connection = common_mysql.local_sql_conn(logger)
+            req = ("update web_utils_session set storage = '{}' where sid = '{}';".format(storage.replace("'", '***'), sid))
+            logger.info('UPD REQ: {}'.format(req))
+            with connection.cursor() as cursor:
+                cursor.execute(req)
+            connection.commit()
+            connection.close()
+        except Exception as err_message:
+            logger.error('Ошибка в функции sql_upd_session {}'.format(str(err_message)))
+        
+    def sql_get_session(sid, logger):
+        try:
+            connection = common_mysql.local_sql_conn(logger)
+            req = ('SELECT * from web_utils_session where sid = "{}"'.format(sid))
+            with connection.cursor() as cursor:
+                cursor.execute(req)
+                session_vars = cursor.fetchall()
+            connection.close()
+            return session_vars
+        except Exception as err_message:
+            logger.error('Ошибка в функции sql_get_session {}'.format(str(err_message)))
+        
+    def sql_del_session(sid, logger):
+        try:
+            connection = common_mysql.local_sql_conn(logger)
+            req = ('DELETE from web_utils_session where sid = "{}"'.format(sid))
+            with connection.cursor() as cursor:
+                cursor.execute(req)
+            connection.commit()
+            connection.close()
+        except Exception as err_message:
+            logger.error('Ошибка в функции sql_get_session {}'.format(str(err_message)))
+            
+    def sql_clean_sessions(logger):
+        try:
+            connection = common_mysql.local_sql_conn(logger)
+            req = ('SELECT * from web_utils_session;')
+            with connection.cursor() as cursor:
+                cursor.execute(req)
+                session_vars = cursor.fetchall()
+            if session_vars:
+                for session in session_vars:
+                    if session['date'] != datetime.now().date():
+                        req = ('DELETE from web_utils_session where sid = "{}"'.format(session['sid']))
+                        with connection.cursor() as cursor:
+                            cursor.execute(req)
+                        connection.commit()
+            connection.close()
+        except Exception as err_message:
+            logger.error('Ошибка в функции sql_clean_sessions {}'.format(str(err_message)))
+            
+            
             
 class ipv4_table:
     def get_ipv4(logger):

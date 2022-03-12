@@ -19,11 +19,15 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 from lib.zabbix_common import zabbix_common
-from lib.configurator import ifaces_and_vlans, configurator, nodes_sql_tables
+from lib.snmp_common import snmp_common
+from lib.configurator.configurator import configurator
+from lib.configurator.sql import nodes_sql_tables
 from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
 from lib.common import ipv4_table
+from lib.common import common_mysql
+from lib.inventory.mysql import inventory_mysql
 
 
 #from lib.snmp_common import snmp_common
@@ -37,27 +41,6 @@ handler.setLevel(logging.INFO)
 handler.setFormatter(formatter)
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
-
-states = {0: '<font color="#ff0000">Suspended</font>', 1: '<font color="#009900">Active</font>'}
-
-# это соединение будет возвращать словари
-def local_sql_conn():
-    connection = pymysql.connect(host=config.local_mysqlhost,
-        user=config.local_mysqluser,
-        password=config.local_mysqlpass,
-        db=config.local_mysqldb,
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor)
-    return(connection)
-    
-# это соединение будет возвращать списки
-def local_sql_conn_l():
-    connection = pymysql.connect(host=config.local_mysqlhost,
-        user=config.local_mysqluser,
-        password=config.local_mysqlpass,
-        db=config.local_mysqldb,
-        charset='utf8mb4')
-    return(connection)
 
 def hostid_by_ip(zabbix_conn, ip):
     try:
@@ -146,306 +129,25 @@ def get_email_by_contract(contract, logger):
         return None
     except Exception as err_message:
         logger.error('Ошибка в функции get_email_by_contract {}'.format(str(err_message)))
-        
-### INVENTORY FUNCTIONS
-# уникальная модель с макс датой за последний год
-def sql_dynamic_month(connection, model):
-    try:
-        req = ('SELECT DISTINCT '
-        ' FIRST_VALUE(date) OVER (PARTITION BY model, MONTH(date), YEAR(date) ORDER BY date desc ) as date,'
-        ' FIRST_VALUE(quantity) OVER (PARTITION BY model, MONTH(date), YEAR(date) ORDER BY date desc ) as quantity'
-        ' FROM InventoryDynamic WHERE model = \"{}\" and date > DATE_SUB(NOW(),INTERVAL 1 YEAR);'.format(model))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            dynamic = cursor.fetchall()
-        return dynamic
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_dynamic_month {}'.format(str(err_message)))
-        
-# уникальные модели
-def sql_dynamic_models(connection):
-    try:
-        req = ('select type, vendor, model from InventoryDynamic GROUP BY model;')
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            dynamic = cursor.fetchall()
-        return dynamic
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_dynamic_models {}'.format(str(err_message)))
 
-# берем серийник, возвращаем запись из Inventory, последнюю запись из Vars и все записи из Inventory+Vars
-def sql_inventory_serial(connection, serial):
-    try:
-        req_inv = ('select * from Inventory where serial = \'{}\';'.format(serial))
-        req_vars = ('select * from InventoryVars where date=(select MAX(date) from InventoryVars where serial = \'{}\') and serial = \'{}\';'.format(serial, serial))
-        # Есть идея выдавать инвентарные данные и последние переменные одной строкой.
-        #req = ('SELECT * FROM Inventory, InventoryVars'
-        #       ' WHERE Inventory.serial = InventoryVars.serial'
-        #       ' and date=(select MAX(date) from InventoryVars where InventoryVars.serial = \'{}\')'
-        #       ' and Inventory.serial = \'{}\';'.format(serial, serial))
-        
-        #req3 = ('select * from InventoryVars where serial = \'{}\';'.format(serial))
-        req_history = ('SELECT * FROM Inventory, InventoryVars'
-               ' WHERE Inventory.serial = InventoryVars.serial'
-               ' and Inventory.serial = \'{}\';'.format(serial))
-        cursor = connection.cursor()
-        cursor.execute(req_inv)
-        inventory = cursor.fetchall()
-        if not inventory:
-            cursor.close()
-            return None, None, None
-        # tuple to list и заодно уберем лишний индекс
-        inventory = list(inventory[0])
-        # подменяем код состояния текстом.
-        inventory[6] = states[inventory[6]]
-        cursor.execute(req_vars)
-        inventory_vars = cursor.fetchall()
-        cursor.execute(req_history)
-        inventory_vars_history = cursor.fetchall()
-        # tuple >> list
-        inventory_vars_history = [list(line) for line in inventory_vars_history]
-        # подменяем коды состояний текстом
-        for x in range(len(inventory_vars_history)):
-            inventory_vars_history[x][6] = states[inventory_vars_history[x][6]]
-        cursor.close()
-        return inventory, inventory_vars[0], inventory_vars_history
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_inventory_serial: {}'.format(str(err_message)))
-        
 
-# берем имя/IP, возвращаем запись из Inventory, последнюю запись из Vars и все записи из Inventory+Vars
-def sql_inventory_ipname(connection, ipname):
-    try:
-        ipaddress.ip_address(ipname)
-    # не нашли ип, видимо это имя. Имя ищем через "like" чтобы можно было искать по части имени
-    except:
-        vars_req = ('select * from InventoryVars '
-                    ' where date=(select MAX(date) from InventoryVars where name like "%{}%")'
-                    ' and name like "%{}%";'.format(ipname, ipname))
-        # тут берем самые новые записи для уникальных серийных по указанному имени
-        hist_req = ('SELECT * FROM Inventory, InventoryVars'
-                    ' WHERE Inventory.serial = InventoryVars.serial'
-                    ' and date=(select MAX(date) from InventoryVars where InventoryVars.serial = Inventory.serial)'
-                    ' and InventoryVars.name like "%{}%";'.format(ipname))
-    # нашли ип
-    else:
-        vars_req = ('select * from InventoryVars '
-                    ' where date=(select MAX(date) from InventoryVars where ip = "{}")'
-                    ' and ip = "{}";'.format(ipname, ipname))
-        # тут берем самые новые записи для уникальных серийных по указанному ip
-        hist_req = ('SELECT * FROM Inventory, InventoryVars'
-                    ' WHERE Inventory.serial = InventoryVars.serial'
-                    ' and date=(select MAX(date) from InventoryVars where InventoryVars.serial = Inventory.serial)'
-                    ' and InventoryVars.ip = "{}";'.format(ipname))
-    try:
-        cursor = connection.cursor()
-        cursor.execute(vars_req)
-        last_vars = cursor.fetchall()
-        if not last_vars:
-            cursor.close()
-            return None, None, None
-        # для самого нового девайса в vars запросим инфу из Inventory
-        inv_req = ('select * from Inventory where serial = "{}";'.format(last_vars[0][0]))
-        cursor.execute(inv_req)
-        inventory = cursor.fetchall()
-        inventory = list(inventory[0])
-        inventory[6] = states[inventory[6]]
-        cursor.execute(hist_req)
-        inventory_vars_history = cursor.fetchall()
-        inventory_vars_history = [list(line) for line in inventory_vars_history]
-        for x in range(len(inventory_vars_history)):
-            url = 'https://devnet.spb.avantel.ru/inventory_serial_{}'.format(
-                                urllib.parse.quote(inventory_vars_history[x][0].replace('/','slash'), safe=''))
-            model_url = '<a href={}>{}</a>'.format(url, inventory_vars_history[x][0])
-            inventory_vars_history[x][0] = model_url
-            inventory_vars_history[x][6] = states[inventory_vars_history[x][6]]
-        cursor.close()
-        return inventory, last_vars[0], inventory_vars_history
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_inventory_ipname: {}'.format(str(err_message)))
-        
-# берет дату и кол-во месяцев (m), возвращает имя месяца.год для даты минус m
 def month_back(date, m):
+    # берет дату и кол-во месяцев (m), возвращает имя месяца.год для даты минус m
     for month in range(0, m):
         date = date - timedelta(days = date.day)
     return(date)
-        
-    
-# уникальные серийники с макс. датой по ip
-def sql_many_ip(connection, ip):
-    try:
-        many_ip_arr = []
-        # уникальные серийники с макс. датой по ip
-        req = ('SELECT DISTINCT'
-               ' serial,'
-               ' FIRST_VALUE(date) OVER (PARTITION BY ip, MONTH(date), YEAR(date) ORDER BY date desc ) as date'
-               ' FROM InventoryVars where ip = \'{}\';'.format(ip))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            serials = cursor.fetchall()
-            for serial in serials:
-                # собираем в одну строку данные из инвентори и варс
-                req2 = ('SELECT * FROM Inventory, InventoryVars '
-                        ' WHERE Inventory.serial = InventoryVars.serial'
-                        ' and date=(select MAX(date) from InventoryVars where InventoryVars.serial = \"{}\")'
-                        ' and Inventory.serial = \"{}\";'.format(serial[0], serial[0])
-                        )
-                cursor.execute(req2)
-                data = cursor.fetchall()
-                many_ip_arr.append(data[0])
-        return many_ip_arr
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_many_ip {}'.format(str(err_message)))
-    
-# inventory + vars по типу/вендору/модели
-def sql_inventory_vmt(connection, req, vmt):
-    try:
-        dev_req = ('SELECT * FROM Inventory, InventoryVars'
-            ' WHERE Inventory.serial = InventoryVars.serial'
-            ' and date=(select MAX(date) from InventoryVars where InventoryVars.serial = Inventory.serial)'
-            ' and Inventory.{} = "{}";'.format(vmt, req))
-        cursor = connection.cursor()
-        cursor.execute(dev_req)
-        dev_arr = cursor.fetchall()
-        if not dev_arr:
-            cursor.close()
-            return None
-        dev_arr = [list(line) for line in dev_arr]
-        for x in range(len(dev_arr)):
-            url = 'https://devnet.spb.avantel.ru/inventory_serial_{}'.format(
-                                        urllib.parse.quote(dev_arr[x][0].replace('/','slash'), safe=''))
-            model_url = '<a href={}>{}</a>'.format(url, dev_arr[x][0])
-            
-            dev_arr[x][0] = model_url
-            dev_arr[x][6] = states[dev_arr[x][6]]
-        cursor.close()
-        return dev_arr
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_inventory_vmt: {}'.format(str(err_message)))
-        
-# inventory suspended
-def sql_inventory_suspended(connection):
-    try:
-        dev_req = ('SELECT * FROM Inventory WHERE monitored = "0";')
-        cursor = connection.cursor()
-        cursor.execute(dev_req)
-        dev_arr = cursor.fetchall()
-        if not dev_arr:
-            cursor.close()
-            return None
-        dev_arr = [list(line) for line in dev_arr]
-        for x in range(len(dev_arr)):
-            url = 'https://devnet.spb.avantel.ru/inventory_serial_{}'.format(
-                                        urllib.parse.quote(dev_arr[x][0].replace('/','slash'), safe=''))
-            model_url = '<a href={}>{}</a>'.format(url, dev_arr[x][0])
-            
-            dev_arr[x][0] = model_url
-            dev_arr[x][6] = states[dev_arr[x][6]]
-        cursor.close()
-        return dev_arr
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_inventory_suspended: {}'.format(str(err_message)))
-        
-        
-### INVENTORY FUNCTIONS END
-     
-def getSysObjectID(ip, community, logger):
-    try:
-        proc = subprocess.Popen("/bin/snmpwalk -Ov -t 2 -v1 -c {} {} 1.3.6.1.2.1.1.2".format(community, ip),
-                                stdout=subprocess.PIPE,shell=True)
-        (out,err) = proc.communicate()
-        if out:
-            return out.decode('utf-8').strip('OID: ').strip('\n')
-        return None
-    except Exception as err_message:
-        logger.error('{}: Ошибка в функции getSysObjectID {}'.format(ip, str(err_message)))
-        
-def getSNMPstuff(ip, community, oid, logger):
-    try:
-        proc = subprocess.Popen(
-            "/bin/snmpwalk -Ov -t 2 -v1 -c {} {} {}".format(community, ip, oid),
-            stdout=subprocess.PIPE,shell=True)
-        (out,err) = proc.communicate()
-        if out:
-            return out.decode('utf-8')
-        return None
-    except Exception as err_message:
-        logger.error('{}: Ошибка в функции getSNMPstuff {}'.format(ip, str(err_message)))
+
     
 def make_session_id():
     alphabet = string.ascii_letters + string.digits
     sid = ''.join(secrets.choice(alphabet) for i in range(8))
     return sid
     
-def sql_set_session(sid, storage, date):
-    try:
-        connection = local_sql_conn()
-        req = ("insert into web_utils_session(sid, storage, date)" 
-               "values ('{}', '{}', '{}')".format(sid, storage, date))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-        connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_set_session {}'.format(str(err_message)))
-    
-def sql_upd_session(sid, storage):
-    try:
-        connection = local_sql_conn()
-        req = ("update web_utils_session set storage = '{}' where sid = '{}';".format(storage.replace("'", '***'), sid))
-        logger.info('UPD REQ: {}'.format(req))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-        connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_upd_session {}'.format(str(err_message)))
-    
-def sql_get_session(sid):
-    try:
-        connection = local_sql_conn()
-        req = ('SELECT * from web_utils_session where sid = "{}"'.format(sid))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            session_vars = cursor.fetchall()
-        connection.close()
-        return session_vars
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_get_session {}'.format(str(err_message)))
-    
-def sql_del_session(sid):
-    try:
-        connection = local_sql_conn()
-        req = ('DELETE from web_utils_session where sid = "{}"'.format(sid))
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-        connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_get_session {}'.format(str(err_message)))
-        
-def sql_clean_sessions():
-    try:
-        connection = local_sql_conn()
-        req = ('SELECT * from web_utils_session;')
-        with connection.cursor() as cursor:
-            cursor.execute(req)
-            session_vars = cursor.fetchall()
-        if session_vars:
-            for session in session_vars:
-                if session['date'] != datetime.now().date():
-                    req = ('DELETE from web_utils_session where sid = "{}"'.format(session['sid']))
-                    with connection.cursor() as cursor:
-                        cursor.execute(req)
-                    connection.commit()
-        connection.close()
-    except Exception as err_message:
-        logger.error('Ошибка в функции sql_clean_sessions {}'.format(str(err_message)))
     
 def sql_add_notification_history(nid, ndate, wdate, subject, 
                                  addr, devs, emails, body, logger):
     try:
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req = ("INSERT into webutils_notif_history"
                "(id, notif_date, works_date, subject, address, devices, emails, body) values "
                "('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(nid, ndate, wdate, 
@@ -461,7 +163,7 @@ def sql_add_notification_history(nid, ndate, wdate, subject,
 def sql_get_notification_history():
     try:
         table = {}
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req = ("select id, notif_date, works_date from webutils_notif_history group by id ORDER BY notif_date DESC")
         with connection.cursor() as cursor:
             cursor.execute(req)
@@ -483,7 +185,7 @@ def sql_get_notification_history():
     
 def sql_get_notification_history_msg(msgid):
     try:
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req = ("select * from webutils_notif_history where id = '{}'".format(msgid))
         with connection.cursor() as cursor:
             cursor.execute(req)
@@ -519,9 +221,9 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
             # в all_devices_arr записываем тоже что и в devices_arr но отсюда девайсы не будем удалять после обработки
             all_devices_arr.append(ip)
             
-            # собираем getSysObjectID из за mikrotik RB260 у которых дискрипшны прям в названиях интерфейсов. 
+            # собираем SysObjectID из за mikrotik RB260 у которых дискрипшны прям в названиях интерфейсов. 
             # Заодно проверяем доступность железки.
-            sysobjectid = getSysObjectID(ip, config.community, logger)
+            sysobjectid, community = snmp_common.get_sysobjectid(ip, logger)
             if not sysobjectid:
                 devices_arr.remove(ip)
                 contract_dict[ip]['alive'] = 0
@@ -537,7 +239,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                 else: descoid = '1.3.6.1.2.1.31.1.1.1.18'
             
             # собираем дескрипшны
-            descs = getSNMPstuff(ip, config.community, descoid, logger)
+            descs, community = snmp_common.generic_request(ip, descoid, logger, omit_oid=True)
             if not descs: 
                 logger.error('{}: Не нашел подписей на портах'.format(ip))
                 continue
@@ -704,7 +406,7 @@ def send_email(subject, body_text, to_email, nf_logger):
         
 def sql_add_notification_tg(str_now, message_text, msg_date, telegram_id, logger):
     try:
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req = ("INSERT into NotifierTG(message, telegram_id, msg_date, cur_date)"
                "values ('{}', '{}', '{}', '{}')".format(message_text, 
                                                         telegram_id,
@@ -871,7 +573,7 @@ def arp_out():
         # ip address
         else:
             search_obj = 'ip'
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         arp_arr = get_arp(connection, search_obj, dev, logger)
         connection.close()
         if not arp_arr:
@@ -892,17 +594,17 @@ def arp_out():
     
 @web_utils_app.route("/inventory")
 def inventory():
-    connection = local_sql_conn()
+    connection = common_mysql.local_sql_conn(logger)
     now = datetime.now()
     headers = ['Type','Vendor','Model']
     #сделаем массив с названиями последних 12 месяцев
     headers += (month_back(now, x).strftime('%b.%y') for x in reversed(range(0, 12)))
     models = []
     # получим массив диктов вида {'type': 'switch', 'vendor': 'Cisco', 'model': 'SF352-08'}
-    db = sql_dynamic_models(connection)
+    db = inventory_mysql.get_dynamic_models(connection, logger)
     for model in db:
         # из inventoryDynamic выгружаем данные по кол-ву по конкретной модели за последний год
-        data = sql_dynamic_month(connection, model['model'])
+        data = inventory_mysql.get_dynamic_month(connection, model['model'], logger)
         # преобразуем в словарь вида {месяц.год: количество}
         ndata = {format(x['date'], '%b.%y'):x['quantity'] for x in data}
         for x in range(3,15):
@@ -948,15 +650,15 @@ def inventory_out():
     if re.match(b'^(\w{4}\.){2}\w{4}$|^(\w{2}[:-]){5}\w{2}$', dev.encode('utf-8')):
         return inventory()
         
-    connection = local_sql_conn_l()
+    connection = common_mysql.local_sql_conn_l(logger)
     # пробуем найти по имени сначала
-    inv_data, vars_last, vars_all = sql_inventory_ipname(connection, dev)
+    inv_data, vars_last, vars_all = inventory_mysql.get_ipname(connection, dev, logger)
     # если нашли больше одного девайса
     if inv_data:
         return render_template('inventory_many2.html', vars_all=vars_all, req=dev)
     # если не нашли ничего, пробуем по серийнику
     if not inv_data:
-        inv_data, vars_last, vars_all = sql_inventory_serial(connection, dev)
+        inv_data, vars_last, vars_all = inventory_mysql.get_serial(connection, dev, logger)
     connection.close()
     # снова ничего не нашли, сдаемся
     if not inv_data:
@@ -966,9 +668,9 @@ def inventory_out():
 
 @web_utils_app.route("/inventory_model_<model>")
 def inventory_model(model):
-    connection = local_sql_conn_l()
+    connection = common_mysql.local_sql_conn_l(logger)
     model = urllib.parse.unquote(model).replace('slash','/')
-    vars_all = sql_inventory_vmt(connection, model, 'model')
+    vars_all = inventory_mysql.get_vmt(connection, model, 'model', logger)
     #if len(vars) == 1:
     #    return inventory_serial(vars[0][0])
     connection.close()
@@ -976,32 +678,32 @@ def inventory_model(model):
 
 @web_utils_app.route("/inventory_vendor_<vendor>")
 def inventory_vendor(vendor):
-    connection = local_sql_conn_l()
+    connection = common_mysql.local_sql_conn_l(logger)
     vendor = urllib.parse.unquote(vendor).replace('slash','/')
-    vars_all = sql_inventory_vmt(connection, vendor, 'vendor')
+    vars_all = inventory_mysql.get_vmt(connection, vendor, 'vendor', logger)
     connection.close()
     return render_template('inventory_many2.html', vars_all=vars_all, req=vendor)
 
 @web_utils_app.route("/inventory_type_<dtype>")
 def inventory_dtype(dtype):
-    connection = local_sql_conn_l()
+    connection = common_mysql.local_sql_conn_l(logger)
     dtype = urllib.parse.unquote(dtype).replace('slash','/')
-    vars_all = sql_inventory_vmt(connection, dtype, 'type')
+    vars_all = inventory_mysql.get_vmt(connection, dtype, 'type', logger)
     connection.close()
     return render_template('inventory_many2.html', vars_all=vars_all, req=dtype)
     
 @web_utils_app.route("/inventory_serial_<serial>")
 def inventory_serial(serial):
-    connection = local_sql_conn_l()
+    connection = common_mysql.local_sql_conn_l(logger)
     serial = urllib.parse.unquote(serial).replace('slash','/')
-    inv_data, vars_last, vars_all = sql_inventory_serial(connection, serial)
+    inv_data, vars_last, vars_all = inventory_mysql.get_serial(connection, serial, logger)
     connection.close()
     return render_template("inventory_one.html", inv_data=inv_data, vars_last=vars_last, vars_all=vars_all)
 
 @web_utils_app.route("/inventory_suspended")
 def inventory_suspended():
-    connection = local_sql_conn_l()
-    suspended_arr = sql_inventory_suspended(connection)
+    connection = common_mysql.local_sql_conn_l(logger)
+    suspended_arr = inventory_mysql.get_suspended(connection, logger)
     connection.close()
     return render_template("inventory_suspended.html", suspended_arr=suspended_arr)
 
@@ -1016,7 +718,7 @@ def inventory_suspended():
 @web_utils_app.route("/client_notification")
 def client_notification(msg=''):
     # чистим старые сессии если есть
-    sql_clean_sessions()
+    common_mysql.sql_clean_sessions(logger)
     notification_history = sql_get_notification_history()
     if not notification_history:
         msg = 'Беда! Не смог считать историю оповещений из базы.'
@@ -1066,7 +768,7 @@ def client_notification_out():
     # генерячим session id и записываем его вместе с имейлами в mysql
     sid = make_session_id()
     today_date = format(datetime.now(), '%Y-%m-%d')
-    sql_set_session(sid, contract_dict_json, today_date)
+    common_mysql.sql_set_session(sid, contract_dict_json, today_date, logger)
     
     return render_template("client_notification_out.html", 
                            contract_dict=contract_dict,
@@ -1108,7 +810,7 @@ def client_notification_confirm_(sid):
     addresses = {key.replace("_address_fld", ''):str(request.form.get(key)) 
                  for key in request.form.keys() if "_address_fld" in key}
     logger.info('addresses: {}'.format(str(addresses)))
-    sid_storage = sql_get_session(sid)
+    sid_storage = common_mysql.sql_get_session(sid, logger)
     logger.info('sid_storage: {}'.format(str(sid_storage)))
     if not sid_storage: 
         return client_notification(msg='Проблема с SQL')
@@ -1169,7 +871,7 @@ def client_notification_confirm_(sid):
     else:
         storage = {'addr_d': addr_d, 'text_vars': text_vars, 'hostids': host_id_arr}
         storage_json = json.dumps(storage, ensure_ascii=False)
-        sql_upd_session(sid, storage_json)
+        common_mysql.sql_upd_session(sid, storage_json, logger)
     logger.info('ADDR DICT {}'.format(str(addr_d)))
     return render_template("client_notification_confirm.html",
                            addr_d = addr_d, 
@@ -1193,7 +895,7 @@ def client_notification_sent_(sid):
     nf_logger.setLevel(logging.INFO)
     nf_logger.addHandler(nf_handler)
 
-    sid_storage = sql_get_session(sid)
+    sid_storage = common_mysql.sql_get_session(sid, logger)
     if not sid_storage: 
         nf_logger.error('Проблема с SQL (Не считал данные)')
         return client_notification(msg='Проблема с SQL (Не считал данные)')
@@ -1202,7 +904,7 @@ def client_notification_sent_(sid):
     if not data_dict['addr_d']:
         nf_logger.error('Проблема с SQL (Не смог распаковать данные)')
         return client_notification(msg='Проблема с SQL (Не смог распаковать данные)')
-    sql_del_session(sid)
+    common_mysql.sql_del_session(sid, logger)
     nf_logger.info('Data to work with: {}'.format(str(data_dict)))
     
     subject = data_dict['text_vars']['subject'].replace('***', "'")
@@ -1299,7 +1001,7 @@ def client_notification_history(sid):
 
 def sql_get_notifications(logger):
     try:
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req_active = ("select * from NotifierTG")
         req_history = ("select * from NotifierTG_history")
         with connection.cursor() as cursor:
@@ -1314,7 +1016,7 @@ def sql_get_notifications(logger):
         
 def sql_del_notification(nid):
     try:
-        connection = local_sql_conn()
+        connection = common_mysql.local_sql_conn(logger)
         req = ("delete from NotifierTG where id = '{}'".format(nid))
         with connection.cursor() as cursor:
             cursor.execute(req)
@@ -1719,27 +1421,27 @@ def ddm_report():
 def configurator_init(msg=''):
     hostname_list = zabbix_common.get_hostname_list(logger)
     
-    conf_nodes = nodes_sql_tables.get_nodes(logger)
-    vlan_ranges = nodes_sql_tables.get_vlan_ranges(logger)
-    ip_ranges = nodes_sql_tables.get_ip_ranges(logger)
+    #conf_nodes = nodes_sql_tables.get_nodes(logger)
+    #vlan_ranges = nodes_sql_tables.get_vlan_ranges(logger)
+    #ip_ranges = nodes_sql_tables.get_ip_ranges(logger)
     
     # агрегируем данные для вывода в таблице. 
     #nodes_dict = {}
-    for n in conf_nodes:
-        #nodes_dict[n['node']] = n.copy()
-        n['vlan_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
-                                     for x in vlan_ranges 
-                                     if x['node'] == n['node']])
-        n['ip_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
-                                   for x in ip_ranges 
-                                   if x['node'] == n['node']])
+    #for n in conf_nodes:
+    #    #nodes_dict[n['node']] = n.copy()
+    #    n['vlan_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
+    #                                 for x in vlan_ranges 
+    #                                 if x['node'] == n['node']])
+    #    n['ip_ranges'] = ', '.join([f'{x["range_start"]}-{x["range_end"]}' 
+    #                               for x in ip_ranges 
+    #                               if x['node'] == n['node']])
 
     
     return render_template("configurator.html",
                            msg = msg,
                            hostname_list = hostname_list,
                            policer_dict = config.policer_dict,
-                           conf_nodes = conf_nodes,)
+                           )
 
 @web_utils_app.route("/configurator_edit_node_<node_id>", methods=['POST', 'GET'])
 def configurator_edit_node(node_id):
@@ -1827,9 +1529,10 @@ def configurator_delete_node(node_id):
 def configurator_inet_create(msg=''):
     inet_form = {}
     inet_form['hostname'] = request.form['hostname_fld']
-    inet_form['contract'] = request.form['contract_fld']
+    inet_form['contract'] = request.form['contract_fld'].replace("\\", "&&&")
     inet_form['rate'] = request.form['rate_fld']
-    inet_form['name'] = request.form['name_fld']
+    inet_form['name'] = request.form['name_fld'].replace("'", "***").replace('"', "***")
+    # replace is needed to put the value into mysql without errors
     inet_form['latin_name'] = request.form['latname_fld']
     inet_form['tasknum'] = request.form['inet_tasknum_fld']
     inet_form['address'] = request.form['addr_fld']
@@ -1859,7 +1562,7 @@ def configurator_inet_create(msg=''):
     sid = make_session_id()
     date = format(datetime.now(), '%Y-%m-%d')
     storage_json = json.dumps(storage, ensure_ascii=False)
-    sql_set_session(sid, storage_json, date)
+    common_mysql.sql_set_session(sid, storage_json, date, logger)
     
     # Экономим на темплейтах
     next_action = 'configurator_inet_confirm'
@@ -1875,7 +1578,7 @@ def configurator_inet_create(msg=''):
 def configurator_inet_confirm(sid):
     
     # Забираем из SQL уже собранные данные по конечному девайсу
-    sid_storage = sql_get_session(sid)
+    sid_storage = common_mysql.sql_get_session(sid, logger)
     if not sid_storage: 
         msg = 'Проблема с SQL (Не считал данные)'
         logger.error(msg)
@@ -1888,7 +1591,7 @@ def configurator_inet_confirm(sid):
     host_dict = data_dict['host_dict']
     inet_form = data_dict['inet_form']
     # Убиваем сессию. ЭТО НАДО БУДЕТ УБРАТЬ КОГДА НАПИШЕШЬ ПРОДОЛЖЕНИЕ
-    sql_del_session(sid)
+    common_mysql.sql_del_session(sid, logger)
     
     # Формируем словарь конечных интерфейсов
     # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
@@ -2045,7 +1748,7 @@ def configurator_vlan_create(msg=''):
     sid = make_session_id()
     date = format(datetime.now(), '%Y-%m-%d')
     storage_json = json.dumps(storage, ensure_ascii=False)
-    sql_set_session(sid, storage_json, date)
+    common_mysql.sql_set_session(sid, storage_json, date, logger)
     
     # Экономим на темплейтах
     next_action = 'configurator_vlan_confirm'
@@ -2062,7 +1765,7 @@ def configurator_vlan_confirm(sid):
 
     
     # Забираем из SQL уже собранные данные по конечным девайсам
-    sid_storage = sql_get_session(sid)
+    sid_storage = common_mysql.sql_get_session(sid, logger)
     if not sid_storage: 
         logger.error('Проблема с SQL (Не считал данные)')
         return configurator_init(msg='Проблема с SQL (Не считал данные)')
@@ -2074,7 +1777,7 @@ def configurator_vlan_confirm(sid):
     endpoints = data_dict['endpoints']
     vlan_form = data_dict['vlan_form']
     # Убиваем сессию. ЭТО НАДО БУДЕТ УБРАТЬ КОГДА НАПИШЕШЬ ПРОДОЛЖЕНИЕ
-    sql_del_session(sid)
+    common_mysql.sql_del_session(sid, logger)
     
     # Формируем словарь конечных интерфейсов
     # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
@@ -2258,8 +1961,8 @@ def obi_out():
 @web_utils_app.route("/obi-wan-out_<sid>", methods=['POST'])
 def obi_out2(sid):
     avar2 = request.form['text']
-    sid_storage = sql_get_session(sid)
-    sql_del_session(sid)
+    sid_storage = common_mysql.sql_get_session(sid, logger)
+    common_mysql.sql_del_session(sid, logger)
     if not sid_storage: return obi()
     return render_template("obi-wan-out2.html", avar=sid_storage[0]['storage'], avar2=avar2)
 

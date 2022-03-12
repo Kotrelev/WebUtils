@@ -1,4 +1,4 @@
-from lib.common import mysql
+from lib.common import common_mysql
 
 class nodes_sql_tables:
     def get_nodes(logger):
@@ -14,7 +14,7 @@ class nodes_sql_tables:
         #primary key (id)
         #);
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("select * from configurator_nodes")
             with connection.cursor() as cursor:
                 cursor.execute(req)
@@ -36,7 +36,7 @@ class nodes_sql_tables:
         #primary key (id)
         #);
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("select * from configurator_vlan_ranges")
             with connection.cursor() as cursor:
                 cursor.execute(req)
@@ -60,7 +60,7 @@ class nodes_sql_tables:
         #primary key (id)
         #);
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("select * from configurator_ip_ranges")
             with connection.cursor() as cursor:
                 cursor.execute(req)
@@ -75,7 +75,7 @@ class nodes_sql_tables:
             
     def set_node(node, vendor, mpls, vpls, ip_unnumbered, ip_common, loopback_iface, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("insert into configurator_nodes(node,vendor,mpls,vpls,ip_unnumbered,ip_common,loopback_iface)"
                    " values ('{}', '{}', {}, {}, {}, {}, '{}');".format(
                        node,vendor,mpls,vpls,ip_unnumbered,ip_common,loopback_iface))
@@ -88,7 +88,7 @@ class nodes_sql_tables:
             
     def set_ip_range(node, range_start, range_end, subnet, gateway, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("insert into configurator_ip_ranges(node,range_start,range_end,subnet,gateway)"
                    " values ('{}', '{}', '{}', '{}', '{}');".format(
                        node,range_start,range_end,subnet,gateway))
@@ -101,7 +101,7 @@ class nodes_sql_tables:
             
     def set_vlan_range(node, range_start, range_end, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("insert into configurator_vlan_ranges(node,range_start,range_end)"
                    " values ('{}', '{}', '{}');".format(
                        node,range_start,range_end))
@@ -120,7 +120,7 @@ class nodes_sql_tables:
             
     def del_node(node_id, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("delete from configurator_nodes where id = '{}'".format(node_id))
             logger.info('executing {}'.format(req))
             with connection.cursor() as cursor:
@@ -132,7 +132,7 @@ class nodes_sql_tables:
             
     def del_ip_range(ipr_id, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("delete from configurator_ip_ranges where id = '{}'".format(ipr_id))
             logger.info('executing {}'.format(req))
             with connection.cursor() as cursor:
@@ -144,7 +144,7 @@ class nodes_sql_tables:
             
     def del_vlan_range(vlr_id, logger):
         try:
-            connection = mysql.local_sql_conn()
+            connection = common_mysql.local_sql_conn(logger)
             req = ("delete from configurator_vlan_ranges where id = '{}'".format(vlr_id))
             logger.info('executing {}'.format(req))
             with connection.cursor() as cursor:

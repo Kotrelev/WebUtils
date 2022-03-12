@@ -20,7 +20,7 @@ class ddm:
         
     def snr_ddm(ip, hname, alarm_dict, logger):
         try:
-            soi, comm = snmp_common.getSysObjectID(ip, logger)
+            soi, comm = snmp_common.get_sysobjectid(ip, logger)
             if soi and '40418' in soi:
                 #logger.warning('TEMP found SNR! '+ip)
                 oid = 'iso.3.6.1.4.1.40418.7.100.30.1.1.17'
