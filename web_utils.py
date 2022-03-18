@@ -260,7 +260,7 @@ def client_notification_get_emails(devices_arr, contract_dict, logger):
                     else:
                         contract_dict[ip]['unrecognized'].append(desc)
                 elif downlink:
-                    if 'UP' in desc or 'U_' in desc:
+                    if any(x in desc for x in ['UP', 'U_', 'PP_']):
                         continue
                     else:
                         ipx, host_id = ip_by_hostname(downlink.group(1), logger)
