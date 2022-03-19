@@ -1678,8 +1678,8 @@ def configurator_inet_confirm(sid):
                                                  ip_addresses, 
                                                  logger)
     
-    
-    
+    #Генерим конфиг роутера клиента
+    #inet_router_config(inet_form, ip_addresses, logger)
     
     
     

@@ -8,7 +8,7 @@ class ifaces_and_vlans:
 
     def fill_host_dict(ip, hname, host_dict, sysobjectid_dict, logger):
         try:
-            sid, community = snmp_common.getSysObjectID(ip, logger)
+            sid, community = snmp_common.get_sysobjectid(ip, logger)
             if (not sid 
                 or sid not in sysobjectid_dict
                 or sysobjectid_dict[sid]['type'] not in ['router', 'switch']
@@ -34,8 +34,7 @@ class ifaces_and_vlans:
         # 135 = intOfPo, 131 = tunnel, 22 = propPointToPointSerial
         # 1 = Null, 136 = int vlan
         try:
-            ifaces_type = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_type, community = snmp_common.generic_request(ip, 
                                           '1.3.6.1.2.1.2.2.1.3', 
                                           logger)
             if not ifaces_type: 
@@ -54,8 +53,7 @@ class ifaces_and_vlans:
             
     def get_vlan_names(ip, hname, host_dict, logger):
         try:
-            vlans_name = snmp_common.request(ip, 
-                                        host_dict[hname]['community'], 
+            vlans_name, community = snmp_common.generic_request(ip, 
                                         '1.3.6.1.2.1.17.7.1.4.3.1.1', 
                                         logger)
             
@@ -84,8 +82,7 @@ class ifaces_and_vlans:
         try:
             if host_dict[hname]['sysobjectid'] != 'iso.3.6.1.4.1.14988.2':
                 
-                ifaces_name = snmp_common.request(ip, 
-                                            host_dict[hname]['community'], 
+                ifaces_name, community = snmp_common.generic_request(ip, 
                                             '1.3.6.1.2.1.2.2.1.2', 
                                             logger)
                 if not ifaces_name: 
@@ -129,8 +126,7 @@ class ifaces_and_vlans:
             if host_dict[hname]['sysobjectid'] != 'iso.3.6.1.4.1.14988.2':
                 descoid = 'iso.3.6.1.2.1.31.1.1.1.18'
             else: descoid = 'iso.3.6.1.2.1.31.1.1.1.1'
-            ifaces_descs = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_descs, community = snmp_common.generic_request(ip, 
                                           descoid, 
                                           logger)
             if not ifaces_descs: 
@@ -159,8 +155,7 @@ class ifaces_and_vlans:
     def get_ifaces_status(ip, hname, host_dict, logger):
         #(1 = on, 2 = off)
         try:
-            ifaces_status = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_status, community = snmp_common.generic_request(ip, 
                                           '1.3.6.1.2.1.2.2.1.7', 
                                           logger)
             if not ifaces_status: 
@@ -184,8 +179,7 @@ class ifaces_and_vlans:
     def get_ifaces_state(ip, hname, host_dict, logger):
         #(1 = up, 2 = down)
         try:
-            ifaces_state = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_state, community = snmp_common.generic_request(ip, 
                                           '1.3.6.1.2.1.2.2.1.8', 
                                           logger)
             if not ifaces_state: 
@@ -208,8 +202,7 @@ class ifaces_and_vlans:
             
     def get_ifaces_speed(ip, hname, host_dict, logger):
         try:
-            ifaces_speed = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_speed, community = snmp_common.generic_request(ip, 
                                           '1.3.6.1.2.1.31.1.1.1.15', 
                                           logger)
             if not ifaces_speed: 
@@ -232,8 +225,7 @@ class ifaces_and_vlans:
             
     def get_ifaces_mtu(ip, hname, host_dict, logger):
         try:
-            ifaces_mtu = snmp_common.request(ip, 
-                                          host_dict[hname]['community'], 
+            ifaces_mtu, community = snmp_common.generic_request(ip, 
                                           '1.3.6.1.2.1.2.2.1.4', 
                                           logger)
             if not ifaces_mtu: 
@@ -268,12 +260,10 @@ class ifaces_and_vlans:
             #                         host_dict[hname]['community'], 
             #                         'iso.3.6.1.2.1.4.20.1.1', 
             #                         logger)
-            ip_iface = snmp_common.request(ip, 
-                                     host_dict[hname]['community'], 
+            ip_iface, community = snmp_common.generic_request(ip, 
                                      'iso.3.6.1.2.1.4.20.1.2', 
                                      logger)
-            ip_netmask = snmp_common.request(ip, 
-                                        host_dict[hname]['community'], 
+            ip_netmask, community = snmp_common.generic_request(ip, 
                                         'iso.3.6.1.2.1.4.20.1.3', 
                                         logger)
             if not any([ip_iface, ip_netmask]): 

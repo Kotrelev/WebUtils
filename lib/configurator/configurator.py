@@ -1,8 +1,9 @@
-import config, sys, re, os
+import config, sys, re, os, random, ipaddress
 from datetime import datetime
-from lib.snmp_common import snmp_common
 from lib.zabbix_common import zabbix_common
 from lib.configurator.gatherer import ifaces_and_vlans
+from lib.configurator import config_templates
+from lib.common import common
 from diagrams import Diagram, Edge
 from diagrams.custom import Custom
 from diagrams.ibm.network import Bridge
@@ -11,13 +12,6 @@ from diagrams.ibm.network import InternetServices
 from diagrams.ibm.network import DirectLink
 from diagrams.ibm.user import Browser
 from diagrams.generic.blank import Blank
-#sys.path.append('/usr/local/bin/Python37/WebUtils/env/lib/python3.7/site-packages/graphviz/')
-#sys.path.append('/usr/local/bin/Python37/Playground/env/lib/python3.7/site-packages/graphviz/')
-#sys.path.append('/usr/local/bin/Python37/WebUtils/env/lib/python3.7/site-packages/')
-#sys.path.append('/usr/lib/x86_64-linux-gnu/graphviz/')
-#sys.path.append('/usr/share/doc/graphviz/')
-#sys.path.append('/usr/share/graphviz/')
-
 
 sys.path.append('/usr/local/bin/Python37/Common/')
 from Vendors import vendors
@@ -395,6 +389,29 @@ class configurator:
                 
         except Exception as err_message:
             logger.error('Ошибка в функции configurator.vlan_config_maker {}'.format(str(err_message)))
+            
+    def inet_router_config(inet_form, logger):
+        try:
+            wifi_password = 'av'+''.join(x for x in inet_form['contract'] if x.isdigit())
+            while len(wifi_password) < 8: 
+                wifi_password += str(random.randint(0, 9))
+            identity = inet_form['contract']+'_'+inet_form['latin_name']
+            admin_password = common.id_generator(10, logger)
+            router_conf = config_templates.router.mikrotik.format(
+                ssid = inet_form['latin_name'],
+                wifi_password = wifi_password,
+                ip_address = ipaddresses['ip'][0],
+                subnet = ipaddresses['mask_bits'],
+                gateway = ipaddresses['gateway'],
+                identity = identity,
+                contract = inet_form['contract'],
+                admin_password = admin_password,
+                )
+            return router_conf
+            
+            
+        except Exception as err_message:
+            logger.error('Ошибка в функции configurator.inet_router_config {}'.format(str(err_message)))
             
     def inet_config_maker(
         inet_form,  

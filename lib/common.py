@@ -1,5 +1,15 @@
-import config, requests, ipaddress
+import config, requests, ipaddress, string, secrets
 import pymysql.cursors
+from datetime import datetime
+
+class common:
+    def id_generator(size, logger):
+        try:
+            alphabet = string.ascii_letters + string.digits
+            sid = ''.join(secrets.choice(alphabet) for i in range(int(size)))
+            return sid
+        except Exception as err_message:
+            logger.error('Ошибка в функции common.id_generator {}'.format(str(err_message)))
 
 class common_mysql:
     def local_sql_conn(logger):
@@ -124,6 +134,7 @@ class ipv4_table:
                 gateway = str(gw_iface.ip)
                 ipaddresses = {'ip': [], 
                                'mask': str(gw_iface.netmask),
+                               'mask_bits': str(gw_iface.netmask.max_prefixlen)
                                'gateway': gateway,
                                'loopback': unnums[gw]}
                 for host in gw_iface.network:
