@@ -134,7 +134,7 @@ class ipv4_table:
                 gateway = str(gw_iface.ip)
                 ipaddresses = {'ip': [], 
                                'mask': str(gw_iface.netmask),
-                               'mask_bits': str(gw_iface.netmask.max_prefixlen)
+                               'mask_bits': str(gw_iface.netmask.max_prefixlen),
                                'gateway': gateway,
                                'loopback': unnums[gw]}
                 for host in gw_iface.network:

@@ -179,10 +179,10 @@ class zabbix95:
                                     user=config.zabbix_user,
                                     password=config.zabbix_pass)
             for neighbour in checked:
-                # Генерячим словарик с таймкодами каждой минуты за прошедший месяц
+                # Генерячим словарики с таймкодами каждой минуты за указанный период
                 values_aggregated_tx = {m: 0 for m in range(fromd, tilld, 60)}
-                values_aggregated_rx = {m: 0 for m in range(fromd, tilld, 60)}
-                values_aggregated_all = {m: 0 for m in range(fromd, tilld, 60)}
+                values_aggregated_rx = values_aggregated_tx.copy()
+                values_aggregated_all = values_aggregated_tx.copy()
                 msg = '<h2>'+neighbour+'</h2><br>'
                 for hostname in zabbix95_ifaces[neighbour]:
                     host_id = ''

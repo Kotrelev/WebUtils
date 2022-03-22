@@ -1,8 +1,8 @@
 import ipaddress, urllib
 
 class inventory_mysql:
-    states = {0: '<font color="#ff0000">Suspended</font>', 1: '<font color="#009900">Active</font>'}
-    
+    states = {0: '<font color="#ff0000">Suspended</font>', 
+              1: '<font color="#009900">Active</font>'}
     def get_dynamic_month(connection, model, logger):
         # уникальная модель с макс датой за последний год
         try:
@@ -33,7 +33,6 @@ class inventory_mysql:
     def get_serial(connection, serial, logger):
         # берем серийник, возвращаем запись из Inventory, последнюю запись из Vars и все записи из Inventory+Vars
         try:
-            
             req_inv = ('select * from Inventory where serial = \'{}\';'.format(serial))
             req_vars = ('select * from InventoryVars where date=(select MAX(date) '
                         'from InventoryVars where serial = \'{}\') and serial = \'{}\';'.format(serial, serial))
@@ -56,7 +55,7 @@ class inventory_mysql:
             # tuple to list и заодно уберем лишний индекс
             inventory = list(inventory[0])
             # подменяем код состояния текстом.
-            inventory[6] = states[inventory[6]]
+            inventory[6] = inventory_mysql.states[inventory[6]]
             cursor.execute(req_vars)
             inventory_vars = cursor.fetchall()
             cursor.execute(req_history)
@@ -65,7 +64,7 @@ class inventory_mysql:
             inventory_vars_history = [list(line) for line in inventory_vars_history]
             # подменяем коды состояний текстом
             for x in range(len(inventory_vars_history)):
-                inventory_vars_history[x][6] = states[inventory_vars_history[x][6]]
+                inventory_vars_history[x][6] = inventory_mysql.states[inventory_vars_history[x][6]]
             cursor.close()
             return inventory, inventory_vars[0], inventory_vars_history
         except Exception as err_message:
@@ -109,7 +108,7 @@ class inventory_mysql:
             cursor.execute(inv_req)
             inventory = cursor.fetchall()
             inventory = list(inventory[0])
-            inventory[6] = states[inventory[6]]
+            inventory[6] = inventory_mysql.states[inventory[6]]
             cursor.execute(hist_req)
             inventory_vars_history = cursor.fetchall()
             inventory_vars_history = [list(line) for line in inventory_vars_history]
@@ -118,7 +117,7 @@ class inventory_mysql:
                                     urllib.parse.quote(inventory_vars_history[x][0].replace('/','slash'), safe=''))
                 model_url = '<a href={}>{}</a>'.format(url, inventory_vars_history[x][0])
                 inventory_vars_history[x][0] = model_url
-                inventory_vars_history[x][6] = states[inventory_vars_history[x][6]]
+                inventory_vars_history[x][6] = inventory_mysql.states[inventory_vars_history[x][6]]
             cursor.close()
             return inventory, last_vars[0], inventory_vars_history
         except Exception as err_message:
@@ -170,7 +169,7 @@ class inventory_mysql:
                 model_url = '<a href={}>{}</a>'.format(url, dev_arr[x][0])
                 
                 dev_arr[x][0] = model_url
-                dev_arr[x][6] = states[dev_arr[x][6]]
+                dev_arr[x][6] = inventory_mysql.states[dev_arr[x][6]]
             cursor.close()
             return dev_arr
         except Exception as err_message:
@@ -194,7 +193,7 @@ class inventory_mysql:
                 model_url = '<a href={}>{}</a>'.format(url, dev_arr[x][0])
                 
                 dev_arr[x][0] = model_url
-                dev_arr[x][6] = states[dev_arr[x][6]]
+                dev_arr[x][6] = inventory_mysql.states[dev_arr[x][6]]
             cursor.close()
             return dev_arr
         except Exception as err_message:
