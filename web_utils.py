@@ -781,9 +781,9 @@ def client_notification_confirm_(sid):
     msg = ''
     text_vars = {}
     text_vars['subject'] = request.form['subject']
-    text_vars['time_date'] = format(
-                                datetime.strptime(request.form['time_date'], 
-                                '%Y-%m-%d'), '%d.%m.%Y')
+    date_start = datetime.strptime(request.form['time_date'], '%Y-%m-%d')
+    text_vars['time_date'] = format(date_start, '%d.%m.%Y')
+    text_vars['time_date_end'] = text_vars['time_date']
     text_vars['time_start'] = ('{:02d}:{:02d}'.format(
                                     int(request.form['time_start_hr']),
                                     int(request.form['time_start_min'])))
@@ -797,13 +797,26 @@ def client_notification_confirm_(sid):
     time_end = datetime.strptime(text_vars['time_end'], '%H:%M')
     time_span = timedelta(minutes=int(text_vars['time_span']))
     #ТУт проблема если мы начинаем в один день и заканчиваем в другой.
-    #if time_end <= time_start:
-    #    msg = ('Проверь время работ. Начало в {}, '
-    #           'конец в {}, что-то не сходится'.format(text_vars['time_start'], 
-    #                                                   text_vars['time_end']))
-    #elif (time_end - time_start) < time_span:
-    #    msg = ('Продолжительность перерыва ({} мин) '
-    #           'не может быть больше чем длительность работ в целом<br>'.format(text_vars['time_span']))
+    if time_end == time_start:
+        msg = ('Проверь время работ. Начало в {} и '
+               'конец в {}, что-то не сходится'.format(text_vars['time_start'], 
+                                                       text_vars['time_end']))
+    elif time_end < time_start:
+        day = timedelta(minutes=1440)
+        text_vars['time_date_end'] = format(date_start + day, '%d.%m.%Y')
+        time_end = time_end + day
+    
+    max_span = time_end - time_start
+    if max_span < time_span:
+        msg = ('Продолжительность перерыва ({} мин) '
+               'не может быть больше чем длительность '
+               'работ в целом.<br>C {} до {} это {} минут максимум<br>'.format(
+                   text_vars['time_span'],
+                   text_vars['time_start'],
+                   text_vars['time_end'],
+                   str(int(max_span.seconds/60)),
+               )
+              )
     
     checked = request.form.getlist('mail_send')
     logger.info('CHECKED: {}'.format(str(checked)))
@@ -917,7 +930,7 @@ def client_notification_sent_(sid):
     wdate_dt = datetime.strptime(wdate, '%d.%m.%Y %H:%M')
     wdate = format(wdate_dt, '%Y-%m-%d %H:%M:%S')
     # edate = end date (время окончания работ)
-    edate = '{} {}'.format(data_dict['text_vars']['time_date'], 
+    edate = '{} {}'.format(data_dict['text_vars']['time_date_end'], 
                            data_dict['text_vars']['time_end'])
     edate_dt = datetime.strptime(edate, '%d.%m.%Y %H:%M')
     edate = format(edate_dt, '%Y-%m-%d %H:%M:%S')
@@ -954,6 +967,8 @@ def client_notification_sent_(sid):
     w_end = format(edate_dt, '%d.%m.%y %H:%M')
     message_text = config.notifier_tg_msg.format(w_start, w_end, data_dict['text_vars']['time_span'], addr_list, device_list)
 
+    # Создаем уведомление с телегу.
+    # You should make an API for this one.
     sql_add_notification_tg(ndate, 
                             message_text, 
                             msg_date, 
