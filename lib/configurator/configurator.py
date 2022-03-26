@@ -444,6 +444,16 @@ class configurator:
             else:
                 rate = inet_form['rate']
             
+            # Тут я буду искать QinQ
+            #cur_host = inet_form['hostname']
+            #host_list = []
+            #while cur_host not in host_list:
+            #    for mag in vlanpath[cur_host]:
+            #        if mag not in host_list:
+            #            cur_host = mag
+            #
+            #    host_list.append(cur_host)
+            
             for host in vlanpath:
                 
                 vendor_cls = vendors.sysobjectid_dict[host_dict[host]['sysobjectid']]['vendor']
