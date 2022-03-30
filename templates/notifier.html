@@ -1,49 +1,38 @@
 {% extends "menu.html" %}
 {% block title %}Уведомление для Telegram{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="css/jquery.dataTables.min.css">
+<script src="js/jquery-3.5.0.js"></script>
+<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#history_notifications_table').DataTable();
+} );
 
 function notifier_create() {
   var f = document.getElementById("notification_create_form");
   var t = document.getElementById("active_notifications_div");
   var h = document.getElementById("history_notifications_div");
-  if (f.style.display === "none") {
-    f.style.display = "block";
-    t.style.display = "none";
-    h.style.display = "none";
-  } else {
-    f.style.display = "block";
-    t.style.display = "none";
-    h.style.display = "none";
-  }
+  f.style.display = "block";
+  t.style.display = "none";
+  h.style.visibility = "hidden";
 }
 function notifier_active() {
   var f = document.getElementById("notification_create_form");
   var t = document.getElementById("active_notifications_div");
   var h = document.getElementById("history_notifications_div");
-  if (t.style.display === "none") {
-    f.style.display = "none";
-    t.style.display = "block";
-    h.style.display = "none";
-  } else {
-    f.style.display = "none";
-    t.style.display = "block";
-    h.style.display = "none";
-  }
+  f.style.display = "none";
+  t.style.display = "block";
+  h.style.visibility = "hidden";
 }
 function notifier_history() {
   var f = document.getElementById("notification_create_form");
   var t = document.getElementById("active_notifications_div");
   var h = document.getElementById("history_notifications_div");
-  if (h.style.display === "none") {
-    f.style.display = "none";
-    t.style.display = "none";
-    h.style.display = "block";
-  } else {
-    f.style.display = "none";
-    t.style.display = "none";
-    h.style.display = "block";
-  }
+  var ht = document.getElementById("history_notifications_table");
+  f.style.display = "none";
+  t.style.display = "none";
+  h.style.visibility = "visible";
 }
 </script>
     <br>
@@ -150,13 +139,17 @@ function notifier_history() {
         <h2>Нет активных уведомлений<br><br></h2>
         {% endif %}
     </div>
-    <div id="history_notifications_div" style="display:none">
+    <div id="history_notifications_div" style="visibility:hidden">
         <br>
         <br>
         {% if history %}
-        <table id="history_notifications_table" class="sortable">
+        <table id="history_notifications_table" 
+               class="display"
+               style="width:95%">
+            <thead>
             <tr>
-                <th colspan="5">История уведомлений</th>
+                <th colspan="4" 
+                    style="text-align:center;font-size:large">История уведомлений</th>
             </tr>
             <tr>
                 <th>Дата создания</th>
@@ -164,6 +157,8 @@ function notifier_history() {
                 <th>Чат в Telegram</th>
                 <th>Сообщение</th>
             </tr>
+            </thead>
+            <tbody>
             {% for an in history %}
             <tr>
                 <td>{{ an.create_date }}</td>
@@ -172,8 +167,10 @@ function notifier_history() {
                 <td>{{ an.message }}</td>
             </tr>
             {% endfor %}
-        
+            </tbody>
         </table>
         {% endif %}
+    <br>
+    <br>
     </div>
 {% endblock %}

@@ -1,11 +1,18 @@
 {% extends "menu.html" %}
 {% block title %}Уведомление клиентов{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="css/jquery.dataTables.min.css">
+<script src="js/jquery-3.5.0.js"></script>
+<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    function loading() {
-        document.getElementById("loader_div").style.display = "block";
-        document.getElementById("content_div").style.display = "none";
-    }
+$(document).ready(function() {
+    $('#notification_history_table').DataTable();
+} );
+
+function loading() {
+    document.getElementById("loader_div").style.display = "block";
+    document.getElementById("content_div").style.display = "none";
+}
 </script>
 <div id="loader_div" class="loader"></div> 
 <div id="content_div">
@@ -30,24 +37,33 @@
     <br>
     {% if notification_history %}
     <div id="notification_history_div">
-        <table id="notification_history_table" class="sortable">
+        <table id="notification_history_table" 
+               class="display" 
+               style="width:95%">
+            <thead>
             <tr>
-                <th colspan="4">История оповещений</th>
+                <th colspan="5" 
+                    style="text-align:center;font-size:large">История оповещений</th>
             </tr>
             <tr>
+                <th>🔍</th>
                 <th>Дата оповещения</th>
                 <th>Дата работ</th>
                 <th>Устройства</th>
                 <th>Адреса</th>
             </tr>
+            </thead>
+            <tbody>
             {% for nf in notification_history %}
             <tr>
-                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_{{ nf }}">{{ notification_history[nf].notif_date }}</a></td>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_{{ nf }}">🔍</a></td>
+                <td>{{ notification_history[nf].notif_date }}</td>
                 <td>{{ notification_history[nf].works_date }}</td>
                 <td>{{ notification_history[nf].devices }}</td>
                 <td>{{ notification_history[nf].address }}</td>
             </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
     <br>

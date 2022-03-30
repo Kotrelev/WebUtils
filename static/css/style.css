@@ -394,9 +394,10 @@ hr{
   transform: scale(1.6);
 }
 
-#active_notifications_table,#history_notifications_table,#notification_history_table{
+#active_notifications_table,#notification_history_table{
   width: 95%;
 }
+
 #notifier_delete_button,#zabbix95_delete_button{
   background: #2B2B2B;
   border-color: #454545;

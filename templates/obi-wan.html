@@ -7,7 +7,14 @@
   </style>
 {% endblock %}
 {% block content %}
+<link rel="stylesheet" href="css/jquery.dataTables.min.css">
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+
     function loading() {
         var l = document.getElementById("loader");
         var c = document.getElementById("content");
@@ -61,4 +68,660 @@
     </form>
 </div>
 <button class="InventorySrtButtons" onclick="loading()">Не в сети</button>
+
+<table id="example" class="display" style="width:100%">
+    <thead>
+            <tr>
+                <th>Дата оповещения</th>
+                <th>Дата работ</th>
+                <th>Устройства</th>
+                <th>Адреса</th>
+            </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1648131686">2022-03-24 17:21:26</a></td>
+                <td>2022-03-25 13:00:00</td>
+                <td>Karpovki5-as3</td>
+                <td>г. Санкт-Петербург, наб. реки Карповки, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1648043120">2022-03-23 16:45:20</a></td>
+                <td>2022-03-23 20:00:00</td>
+                <td>Salova47-as2, Salova47-as1, Salova53k1-as1, Salova53k1-as5, Salova53-as6, Salova53-as7, Salova53k1-as8, Salova53k1V-as9, Salova53k1-as10, Salova53-as2, Salova53-as4, Salova53-as3</td>
+                <td>г. Санкт-Петербург, ул. Салова 47, г. Санкт-Петербург, ул. Салова 53, г. Санкт-Петербург, ул. Салова, 53, г. Санкт-Петербург, ул. Салова, 47</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647973942">2022-03-22 21:32:22</a></td>
+                <td>2022-03-24 09:00:00</td>
+                <td>Mitrofan2-as3</td>
+                <td>Санкт-Петербург, ш. Митрофаньевское, 2</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647940652">2022-03-22 12:17:32</a></td>
+                <td>2022-03-25 09:30:00</td>
+                <td>Uchitel23-as1, Uchitel23-as3, Uchitel23-as2</td>
+                <td>Санкт-Петербург, ул. Учительская, 23</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647524509">2022-03-17 16:41:49</a></td>
+                <td>2022-03-26 23:00:00</td>
+                <td>Mosk179-as5, Mosk179-as9, Mosk179k3-as1, Mosk70k4A-ds1, Mosk189-as1, Mosk177-as10, Mosk177-as2, Mosk177-as5, Mosk177-as6, Mosk177-as7, Mosk177-as20, Mosk177-as12, Mosk177a-as21, Mosk177-as16, Mosk177-as13, Mosk177-as9, Mosk177-ds1, Mosk153-as1</td>
+                <td>г. Санкт-Петербург, ш. Московское, 177, г. Санкт-Петербург, ш. Московское, 189, г. Санкт-Петербург, ш. Московское, 179, г. Санкт-Петербург, ш. Московское, 153, г. Санкт-Петербург, ш. Московское, 70</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647283073">2022-03-14 21:37:53</a></td>
+                <td>2022-03-18 04:00:00</td>
+                <td>Loman11-as1</td>
+                <td>г. Санкт-Петербург, ул. Ломаная, 11 к. 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647109057">2022-03-12 21:17:37</a></td>
+                <td>2022-03-15 22:00:00</td>
+                <td>Vyborg-sh-5-as1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1647108985">2022-03-12 21:16:25</a></td>
+                <td>2022-03-14 22:00:00</td>
+                <td>Vyborg-sh-5-as1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1646143461">2022-03-01 17:04:21</a></td>
+                <td>2022-03-04 18:00:00</td>
+                <td>Finlyand38-as1, Finlyand38-as3, Finlyand38-as2</td>
+                <td>г. Колпино, ул. Финляндская, 38</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1646058442">2022-02-28 17:27:22</a></td>
+                <td>2022-03-03 10:00:00</td>
+                <td>Pulkov56k4-ds1, Pulkov56k4-as1</td>
+                <td>г. Санкт-Петербург, ш. Пулковское, 56 к. 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1645713575">2022-02-24 17:39:35</a></td>
+                <td>2022-02-28 20:00:00</td>
+                <td>vish12-as1, Vish12-as2, Vish12-as5, Vish12-as3, Vish12-as8, Vish12-as4, Chkal50-as1, Chkal50-as2, Chkal50-as3, Chkal50-as4, Chkal50-as5</td>
+                <td>Санкт-Петербург, ул. Всеволода Вишневского, 12, Санкт-Петербург, пр-т Чкаловский, 50</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1645707297">2022-02-24 15:54:57</a></td>
+                <td>2022-02-28 19:30:00</td>
+                <td>Borov47k2-as1</td>
+                <td>г. Санкт-Петербург, ул. Боровая, 47 </td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1645453077">2022-02-21 17:17:57</a></td>
+                <td>2022-02-24 21:00:00</td>
+                <td>loman11-as1</td>
+                <td>г. Санкт-Петербург, ул. Ломаная, 11 </td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1645176532">2022-02-18 12:28:52</a></td>
+                <td>2022-02-22 19:00:00</td>
+                <td>Ryleeva11-as2, Ryleeva11-as3, Ryleeva11-as1</td>
+                <td>г. Санкт-Петербург, ул. Рылеева, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644855667">2022-02-14 19:21:07</a></td>
+                <td>2022-02-22 00:00:00</td>
+                <td>Mosk97-as1</td>
+                <td>г. Санкт-Петербург, пр-т Московский, 97</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644855588">2022-02-14 19:19:48</a></td>
+                <td>2022-02-22 00:00:00</td>
+                <td>Nastavnik38-as1</td>
+                <td>г. Санкт-Петербург, пр-т Наставников, 38</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644855506">2022-02-14 19:18:26</a></td>
+                <td>2022-02-22 00:00:00</td>
+                <td>Kolomyag24-as1</td>
+                <td>г. Санкт-Петербург, пр-т Коломяжский, 24</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644408754">2022-02-09 15:12:34</a></td>
+                <td>2022-02-15 05:00:00</td>
+                <td>Kolpinsk135-ds1, Kolpinsk135-as1, Kolpinsk135-as2, Kolpinsk135-as3, Kolpinsk135-as4</td>
+                <td>Санкт-Петербург, ш. Колпинское, 135</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644404078">2022-02-09 13:54:38</a></td>
+                <td>2022-02-10 08:00:00</td>
+                <td>Nevsk157-as1</td>
+                <td>г. Санкт-Петербург, пр-т Невский, 157</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1644323429">2022-02-08 15:30:29</a></td>
+                <td>2022-02-10 21:00:00</td>
+                <td>Vish12-as3</td>
+                <td>Санкт-Петербург, ул. Всеволода Вишневского, 12</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643956635">2022-02-04 09:37:15</a></td>
+                <td>2022-02-17 00:00:00</td>
+                <td>Mosk97-as1</td>
+                <td>г. Санкт-Петербург, пр-т Московский, 97</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643956527">2022-02-04 09:35:27</a></td>
+                <td>2022-02-17 00:00:00</td>
+                <td>Nastavnik38-as1</td>
+                <td>г. Санкт-Петербург, пр-т Наставников, 38</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643956423">2022-02-04 09:33:43</a></td>
+                <td>2022-02-17 00:00:00</td>
+                <td>Kolomyag24-as1</td>
+                <td>г. Санкт-Петербург, пр-т Коломяжский, 24</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643956359">2022-02-04 09:32:39</a></td>
+                <td>2022-02-17 00:00:00</td>
+                <td>Vosstan1-as1</td>
+                <td>г. Санкт-Петербург, пл. Восстания, 1</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643359988">2022-01-28 11:53:08</a></td>
+                <td>2022-01-31 18:00:00</td>
+                <td>Savushkina126-ds1, Savushkina126-as3, Savushkina126-as2, Savushkina126-as1, Mebelnaja9-as1</td>
+                <td>Санкт-Петербург, ул. Савушкина, 126, Санкт-Петербург, ул. Мебельная, 9</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643277227">2022-01-27 12:53:47</a></td>
+                <td>2022-02-01 17:00:00</td>
+                <td>Sedova10-as1, TDSistema-dr1, Sedova10-as8, Sedova10-ds1, Sedova10-as2, Sedova10-as7, Sedova10-as3</td>
+                <td>г. Санкт-Петербург, ул. Седова, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1643040196">2022-01-24 19:03:16</a></td>
+                <td>2022-01-25 18:00:00</td>
+                <td>Savushkina126-ds1, Savushkina126-as3, Savushkina126-as2, Savushkina126-as1, Mebelnaja9-as1</td>
+                <td>Санкт-Петербург, ул. Савушкина, 126, Санкт-Петербург, ул. Мебельная, 9</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642704232">2022-01-20 21:43:52</a></td>
+                <td>2022-01-26 07:00:00</td>
+                <td>Repisch20-ds1, Kolomyag33-as1, Kolomyag27-as2, MNovik36-as1, Repisch20-ds2, Makul3v-as1, MNovik28-as1</td>
+                <td>г. Санкт-Петербург, пр-д Макулатурный, 3 лит. В, г. Санкт-Петербург, ул. Маршала Новикова, 36, Санкт-Петербург, ул. Репищева, 20, г. Санкт-Петербург, ул. Маршала Новикова, 28, г. Санкт-Петербург, пр-т Коломяжский, 27а, г. Санкт-Петербург, ул. Автобусная, 7, Санкт-Петербург, пр-т Коломяжский, 27</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642704002">2022-01-20 21:40:02</a></td>
+                <td>2022-01-26 07:00:00</td>
+                <td>Vyborgskoe503-ds1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 503</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642703800">2022-01-20 21:36:40</a></td>
+                <td>2022-01-26 07:00:00</td>
+                <td>Beloostr6-as0, Beloostr6-fl2-0-as4, Beloostr6-fl2-1-as5, Beloostr6-fl3-1-as7, Beloostr6-fl5-2-as10, Beloostr6-fl8-2-as12, Beloostr6-fl1-1-as3, Konstant1-24-as1, Popova23M-as1, Chkal50-as1, Chkal50-as2, Chkal50-as3, Chkal50-as4, Chkal50-as5, Bolshoy102-as1, Sezhinsk22-as1, Rentgena25-as1, Aptekar18-as1, Uchitel23-as1, Uchitel23-as2, Kamennostr10-as0, Kamennostr10-as2, Kamennostr10-as3, Kamennostr10A-as5, Kamennostr10-as6, Kamennostr10-as1, Bluher1k1-as1, Bluher1k1-as2, BolPush10-ds2, BolPush10-as1, BolPush10-as7, BolPush10-as8, BolPush10-as3, BolPush10-as6, BolPush10-as5, BZelenina24-as2, Instrum3-as1, Lenina49-as1, Chkal15-10-as3, Chkal15-2-as4, Chkal15-7-as11, Chkal15-3-as7, Chkal15-5-as8, Chkal15-6-as9, Chkal15-13-as1, Chkal15-15-as12, Chkal15-2-as10, Chkal15-2-as5, Chkal15-7-as6, Rentgena3-as1, LTolst9-as1, LTolst9-as3, LTolst9-as2, Krestov11-as1, Vish13-as1, Vish13-as2, Vish12-as1, Vish12-as6, Vish12-as2, Vish12-as5, Vish12-as3, Vish12-as8, Vish12-as4, Pirog17-ds4, Pirog17-as1, Lenina44-as1, Bolshoy53-as1, Rentgena4-as1, Savushkina82-as1, KKursant25-as1, BolPush37-as1, Remesl7-as1, 6Verhniy12b-ds1, 6Verhniy12b-as3, Vyaz10-as1, MSamp2a-as1, MDudina17-as1, Dinamo2-as1, APavlov5-as1</td>
+                <td>Санкт-Петербург, пр-т Каменноостровский, 10, Санкт-Петербург, ул. Съезжинская, 22, Санкт-Петербург, наб. Пироговская, 17, Санкт-Петербург, пр-т Большой Петроградской стороны, 53, г. Санкт-Петербург, ул. Большая Пушкарская, 37, Санкт-Петербург, ул. Рентгена, 4, Санкт-Петербург, пр-т Крестовский, 11, г. Санкт-Петербург, ул. Профессора Попова, 23, г. Санкт-Петербург, ул. Михаила Дудина, 17, Санкт-Петербург, ул. Всеволода Вишневского, 13, Санкт-Петербург, ул. Рентгена, 25, Санкт-Петербург, ул. Инструментальная, 3, Санкт-Петербург, ул. Академика Павлова, 5, Санкт-Петербург, ул. Ремесленная, 7, Санкт-Петербург, ул. Льва Толстого, 9, г. Санкт-Петербург, ул. Белоостровская, 6, г. Санкт-Петербург, пер. 6-й Верхний, 12, Санкт-Петербург, пр-т Чкаловский, 50, Санкт-Петербург, ул. Всеволода Вишневского, 12, Санкт-Петербург, ул. Ленина, 49, г. Санкт-Петербург, ул. Савушкина, 82, Санкт-Петербург, наб. Аптекарская, 18, Санкт-Петербург, ул. Рентгена, 3, Санкт-Петербург, ул. Красного Курсанта, 25, Санкт-Петербург, пр-т Чкаловский, 15, Санкт-Петербург, ул. Вязовая, 10, г. Санкт-Петербург, пр-т Маршала Блюхера, 1, Санкт-Петербург, пр-т Динамо, 2, Санкт-Петербург, пр-т Малый Сампсониевский, 2, Санкт-Петербург, пр-т Большой Петроградской стороны, 102, Санкт-Петербург, ул. Учительская, 23, Санкт-Петербург, пр-т Константиновский, 1/24, Санкт-Петербург, ул. Ленина, 44, г. Санкт-Петербург, ул. Большая Пушкарская, 10, Санкт-Петербург, ул. Большая Зеленина, 24</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642702067">2022-01-20 21:07:47</a></td>
+                <td>2022-01-26 07:00:00</td>
+                <td>Vyborg-nab55-ds1, Vyborg-nab55k3-as5, Vyborg-nab55-as3, Vyborg-nab55-as4, Vyborg-nab55-as2, Karavaev57-as3, Kantemir2-as1, Finlyand17-as1, Kantemir4-ds1, Finlyand38-as1, Finlyand38-as3, Finlyand38-as2, Alpiyskiy29-as2, Alpiyskiy29-as3, Finlyand31-as1, Vyborg-nab61-as3, Vyborg-nab61-as4, Vyborg-nab61-as2, Alpiyskiy29-as1, Finlyand35-as2, Finlyand35-as3, Finlyand35-as6, Finlyand35-as1, Finlyand35-as5, Finlyand35-as4, Shafir17P-as1, Metallostroy5-as1, Metallost5ab-as2, Vyborg-sh-5-as1, Kantemir5-as3, Kantemir5-as1, Piskar63-as0, Piskar63-as1, Piskar63-as2, Piskar63-as5, Piskar63-as3, Piskar63-as4, Metallostroy3-as1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 5, г. Санкт-Петербург, ул. Караваевская, 57,  п. Металлострой, ул. дорога на Металлострой, 5, г. Санкт-Петербург, ул. Кантемировская, 4, г. Санкт-Петербург, пер. Альпийский, 29, г. Колпино, ул. Финляндская, 35, г. Колпино, ул. Финляндская, 38, г. Санкт-Петербург, ул. Кантемировская, 2, г. Колпино, ул. Финляндская, 17, г. Санкт-Петербург, пр-т Шафировский, 17, Санкт-Петербург, пр-т Славы, 43, г. Санкт-Петербург, наб. Выборгская, 61, г. Санкт-Петербург, пр-т Пискарёвский, 63А, г. Колпино, ул. Финляндская, 31,  п. Металлострой, ул. дорога на Металлострой, 3, г. Санкт-Петербург, ул. Кантемировская, 5, г. Санкт-Петербург, наб. Выборгская, 55</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642681802">2022-01-20 15:30:02</a></td>
+                <td>2022-01-24 18:00:00</td>
+                <td>Savushkina126-ds1, Savushkina126-as3, Savushkina126-as2, Savushkina126-as1, Mebelnaja9-as1</td>
+                <td>Санкт-Петербург, ул. Савушкина, 126, Санкт-Петербург, ул. Мебельная, 9</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1642000934">2022-01-12 18:22:14</a></td>
+                <td>2022-01-14 11:00:00</td>
+                <td>Pisareva10-as1</td>
+                <td>Санкт-Петербург, ул. Писарева, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1640770556">2021-12-29 12:35:56</a></td>
+                <td>2021-12-29 18:00:00</td>
+                <td>Kiroch9-as1, Kiroch9-as2</td>
+                <td>г. Санкт-Петербург, ул. Кирочная, 9</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1640417938">2021-12-25 10:38:58</a></td>
+                <td>2021-12-28 02:00:00</td>
+                <td>Galerniy3-as1</td>
+                <td>г. Санкт-Петербург, пр-д Галерный, 3</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1639226930">2021-12-11 15:48:50</a></td>
+                <td>2021-12-13 00:00:00</td>
+                <td>P.Malinovsk11-as1</td>
+                <td>г. Пушкин, ул. Малиновская, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1638794950">2021-12-06 15:49:10</a></td>
+                <td>2021-12-08 18:00:00</td>
+                <td>Promysh38-as1</td>
+                <td>г. Санкт-Петербург, ул. Промышленная, 38</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1637593833">2021-11-22 18:10:33</a></td>
+                <td>2021-11-24 18:00:00</td>
+                <td>Popova23-as1</td>
+                <td>г. Санкт-Петербург, ул. Профессора Попова, 23 </td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1637051352">2021-11-16 11:29:12</a></td>
+                <td>2021-11-17 18:00:00</td>
+                <td>Salova53k1-as1, Salova53k1-as5</td>
+                <td>г. Санкт-Петербург, ул. Салова, 53</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1636718381">2021-11-12 14:59:41</a></td>
+                <td>2021-11-17 01:00:00</td>
+                <td>K.Naberezh1-as1</td>
+                <td>г. Кировск, ул. Набережная, 1/27</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1636643444">2021-11-11 18:10:44</a></td>
+                <td>2021-11-11 22:00:00</td>
+                <td>Sedova11-as1</td>
+                <td>г. Санкт-Петербург, ул. Седова, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1636020248">2021-11-04 13:04:08</a></td>
+                <td>2021-11-09 01:00:00</td>
+                <td>P.Saper79-as1</td>
+                <td>г. Пушкин, ул. Саперная, 79</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635973289">2021-11-04 00:01:29</a></td>
+                <td>2021-11-08 22:00:00</td>
+                <td>Sedova11-as1</td>
+                <td>г. Санкт-Петербург, ул. Седова, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635864385">2021-11-02 17:46:25</a></td>
+                <td>2021-11-03 01:15:00</td>
+                <td>P.Saper79-as1</td>
+                <td>г. Пушкин, ул. Саперная, 79</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635862532">2021-11-02 17:15:32</a></td>
+                <td>2021-11-08 18:00:00</td>
+                <td>popova23-as1</td>
+                <td>г. Санкт-Петербург, ул. Профессора Попова, 23</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635708256">2021-10-31 22:24:16</a></td>
+                <td>2021-11-02 02:00:00</td>
+                <td>P.Malinovsk11-as1</td>
+                <td>г. Пушкин, ул. Малиновская, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635505198">2021-10-29 13:59:58</a></td>
+                <td>2021-11-01 11:00:00</td>
+                <td>Zaozer14-as1</td>
+                <td> г. Санкт-Петербург, ул. Заозерная, 14</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635321363">2021-10-27 10:56:03</a></td>
+                <td>2021-10-28 07:30:00</td>
+                <td>Lenina5k2-as1, Lenina31-as1, Sofi183-as1, Sofi127k12-as1, Sofi129-as1, sofi125k4-ds1, Sofi125k4-as2, Sofi125k5-as1, Sofi125k4A-as2, Sofi125k4A-as1, Sofi125k4A-as3</td>
+                <td>г. Санкт-Петербург, ул. Софийская, 127, г. Санкт-Петербург, ул. Софийская, 183, г. Санкт-Петербург, ул. Ленина, 5 к. 2, г. Санкт-Петербург, ул. Софийская, 125, г. Санкт-Петербург, ул. Софийская, 129, п-к Шушары, ул. Ленина, 31</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1635250134">2021-10-26 15:08:54</a></td>
+                <td>2021-10-29 17:00:00</td>
+                <td>Sofi79-as1, Sofi72-as1</td>
+                <td>г. Санкт-Петербург, ул. Софийская, 79, г. Санкт-Петербург, ул. Софийская, 72</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1634565200">2021-10-18 16:53:20</a></td>
+                <td>2021-10-22 06:00:00</td>
+                <td>Vitebskij3-as1, Cvetoch25-as1, Zastav22-as1, Cvetoch17-as1, KTomch1-6-as1, KTomch25-as1, KTomch9-as1, Cvetoch19-ds1, Zastav4-as1, Lubot8v-as1, KTomch20-as1</td>
+                <td>г. Санкт-Петербург, ул. Коли Томчака, 9, г. Санкт-Петербург, ул. Коли Томчака, 20, г. Санкт-Петербург, ул. Коли Томчака, 25, г. Санкт-Петербург, ул. Коли Томчака, 1/6, г. Санкт-Петербург, пр-т Витебский, 3, г. Санкт-Петербург, ул. Цветочная, 25, г. Санкт-Петербург, ул. Цветочная, 17, г. Санкт-Петербург, ул. Цветочная, 19, г. Санкт-Петербург, пр-т Люботинский, 8, г. Санкт-Петербург, ул. Заставская, 4, г. Санкт-Петербург, ул. Заставская, 22</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1633963406">2021-10-11 17:43:26</a></td>
+                <td>2021-10-15 07:00:00</td>
+                <td>Aptekar4k3-as1, Karpovki5-as3, Karpovki5-as1, Popova4-as1, medikov3a-as2, Medikov9-as1, Medikov9-as2, Medikov9-as3, Medikov9-as5, Medikov9-as4, Karpovki7-as1</td>
+                <td>г. Санкт-Петербург, пр-т Медиков, 9, г. Санкт-Петербург, наб. реки Карповки, 5,  г. Санкт-Петербург, пр-т Аптекарский, 4/3 , г. Санкт-Петербург, ул. Профессора Попова, 4, г. Санкт-Петербург, наб. реки Карповки, 7</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1633962700">2021-10-11 17:31:40</a></td>
+                <td>2021-10-14 11:00:00</td>
+                <td>Pulkov56k4-as1</td>
+                <td>г. Санкт-Петербург, ш. Пулковское, 56 к. 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1633697336">2021-10-08 15:48:56</a></td>
+                <td>2021-10-11 10:30:00</td>
+                <td>BPetrograd76-as1</td>
+                <td>г. Санкт-Петербург, пр-т Большой Петроградской стороны, 76/78</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1633697170">2021-10-08 15:46:10</a></td>
+                <td>2021-10-11 17:45:00</td>
+                <td>BolPush10-as2, BolPush10-as3</td>
+                <td>г. Санкт-Петербург, ул. Большая Пушкарская, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1633440016">2021-10-05 16:20:16</a></td>
+                <td>2021-10-07 08:45:00</td>
+                <td>6Verhniy12b-as2, 6Verhniy12b-as3, MDudina17-as1</td>
+                <td>г. Санкт-Петербург, ул. Михаила Дудина, 17, г. Санкт-Петербург, пер. 6-й Верхний, 12</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1632766788">2021-09-27 21:19:48</a></td>
+                <td>2021-09-29 17:45:00</td>
+                <td>Domostroit3-as1, Engelsa160-as1, 6Verhniy12a-as1</td>
+                <td>Санкт-Петербург, ул. Домостроительная, 3, Санкт-Петербург, пер. 6-й Верхний, 12а, Санкт-Петербург, пр-т Энгельса, 160</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1631283102">2021-09-10 17:11:42</a></td>
+                <td>2021-09-13 09:00:00</td>
+                <td>Kolomyag27-as2, Repisch20-as2, MNovik36-as1, Makul3v-as1, MNovik28-as1</td>
+                <td>г. Санкт-Петербург, пр-д Макулатурный, 3 лит. В, г. Санкт-Петербург, ул. Маршала Новикова, 36, г. Санкт-Петербург, ул. Репищева, 20, г. Санкт-Петербург, пр-т Коломяжский, 27а, г. Санкт-Петербург, ул. Маршала Новикова, 28</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1630487668">2021-09-01 12:14:28</a></td>
+                <td>2021-09-02 10:00:00</td>
+                <td>Pulkov56k4-as1</td>
+                <td>г. Санкт-Петербург, ш. Пулковское, 56 к. 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1630406490">2021-08-31 13:41:30</a></td>
+                <td>2021-09-02 09:00:00</td>
+                <td>Sofi125k4-ds1, Sofi125k4-as2, Sofi125k5-as1, Sofi125k4A-as2, Sofi125k4A-as1, Sofi125k4A-as3, Lenina31-as1, Lenina25-as1, Lenina25-as2, Sofi183-as1, Lenina2-as1, Mosk189-as1, Sofi127k12-as1, Mosk177-ds1, Mosk177-as20, Mosk177a-as21, Mosk177-as7, Mosk177-as16, Mosk177-as6, Mosk177-as2, Mosk177-as10, Mosk177-as12, Mosk177-as17, Mosk177-as5, Lenina1b-ds1, Sofi129-as1, 1Badaev11b-as1, 2Badaev8a-as1, Mosk179-as9, Mosk179-as5</td>
+                <td>г. Санкт-Петербург, ш. Московское, 177, п-к Шушары, ул. Ленина, 1, п-к Шушары, ул. Ленина, 25, п-к Шушары, ул. Ленина, 2, г. Санкт-Петербург, пр-д 2-й Бадаевский, 8а, г. Санкт-Петербург, ул. Софийская, 127, г. Санкт-Петербург, ш. Московское, 189, г. Санкт-Петербург, ул. Софийская, 183, г. Санкт-Петербург, ш. Московское, 179, г. Санкт-Петербург, пр-д 1-й Бадаевский, 11, г. Санкт-Петербург, ул. Софийская, 125, г. Санкт-Петербург, ул. Софийская, 129, п-к Шушары, ул. Ленина, 31</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1629888472">2021-08-25 13:47:52</a></td>
+                <td>2021-08-26 06:00:00</td>
+                <td>Shpaler52-as2, Degtyar11-as1, Degtyar11-as3, Degtyar11-as4, Million8-as1, Kazan37-as1, Shpaler2-as2, BMor18-ds2, Shkiper12a-as2, Nevsk22-as1, 9Sovet2-as1, Srednij48-27-as1, Italjan11-as1, Kovensk5-as1, Moyka36-as2, Artiller1-as1, Moyka26-as1, Grivcova4-as2, Grivcova4-as3, 7LiniyaVO44-as1, 7LiniyaVO44-as2, MMor8-as1, MalyiPetSt5-as1, MKonyshen1k3-as1, MKonyshen1k3-as2, AleksGrin1-as1, Moyka18-as1, Moyka18-as2, Kiroch9-as1, Kiroch9-as2, Million10-as1, BPetrograd76-as1, MalSadovaya3-as1, Moyka85-as1, Nevsk10-as1, Liteyniy22-as1, Vosstan8-as1, Million4-as1, Ryleeva11-as2, Ryleeva11-as3, Ryleeva11-as1, Korpusnaja12-as1, Konstantin11-as1, Konstantin11-as3, Moyka11-as1, Moyka11-as2, Odoevsk5-as1</td>
+                <td>г. Санкт-Петербург, ул. Шкиперский проток, 12 литер А, г. Санкт-Петербург, наб. реки Мойки, 36, г. Санкт-Петербург, ул. Миллионная, 8, г. Санкт-Петербург, ул. Малая Морская, 8, г. Санкт-Петербург, ул. Казанская, 37, г. Санкт-Петербург, ул. Артиллерийская, 1, г. Санкт-Петербург, ул. 7-я линия Васильевского острова, 44, г. Санкт-Петербург, пер. Дегтярный, 11, г. Санкт-Петербург, ул. Шпалерная, 2, г. Санкт-Петербург, б. Александра Грина, 1, г. Санкт-Петербург, ул. Малая Конюшенная, 1/3, г. Санкт-Петербург, ул. Большая Морская, 18, г. Санкт-Петербург, ул. Восстания, 8, г. Санкт-Петербург, ул. Кирочная, 9, г. Санкт-Петербург, ул. 9-я Советская, 2, г. Санкт-Петербург, ул. Корпусная, 12, г. Санкт-Петербург, ул. Шпалерная, 52, г. Санкт-Петербург, наб. реки Мойки, 85, г. Санкт-Петербург, ул. Одоевского, 5, г. Санкт-Петербург, пр-т Большой Петроградской стороны, 76/78, г. Санкт-Петербург, пр-т Средний, 48/27, г. Санкт-Петербург, пер. Ковенский, 5, г. Санкт-Петербург, ул. Рылеева, 11, г. Санкт-Петербург, пер. Гривцова, 4, г. Санкт-Петербург, пр-т Малый Петроградской стороны, 5, г. Санкт-Петербург, пр-т Литейный, 22, г. Санкт-Петербург, пр-т Невский, 10, г. Санкт-Петербург, наб. реки Мойки, 11, г. Санкт-Петербург, ул. Миллионная, 10,, г. Санкт-Петербург, ул. Малая Садовая, 3, г. Санкт-Петербург, пр-т Невский, 22, г. Санкт-Петербург, ул. Миллионная, 4, г. Санкт-Петербург, наб. реки Мойки, 26, г. Санкт-Петербург, наб. реки Мойки, 18, г. Санкт-Петербург, ул. Итальянская, 11, г. Санкт-Петербург, пр-т Константиновский, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1629727139">2021-08-23 16:58:59</a></td>
+                <td>2021-08-27 23:00:00</td>
+                <td>Kursk27-ds1, Kursk27-as1, Lig74-as1, Sedova12-as1, Obvod187-as1, Volkovki7-as1, Balt51-as2, Balt51-as1, Govorova52-as1, Govorova52-as2, Krasnoputil9a-as1, Rasstan18-as1, Promysh6-as1, Obvod199-as1, Obvod199-as2, Mezhevoy3-2-as1, Obvod229-as1, Tyushina11-as1, Drovyan6-as1, Rasstan2-as1, Krasnoputil5-as1, Marata69-as1, Trefoleva1-as1, Trefoleva1-as2, Nevsk137-as1, BMosk4B-as1, Lig92-as1, Borov47k2-as1, Govorova47-as1, Zaozer14-as2, Stremyan7-as1, Kursk21-as1, Narvsk22-as1, Social14-as1, Lig73-as1, Korabel6-as3, Korabel6-as2, Promysh38-as1</td>
+                <td>г. Санкт-Петербург, пр-т Лиговский, 74, г. Санкт-Петербург, ул. Большая Московская, 4б, г. Санкт-Петербург, наб. Обводного канала, 187, г. Санкт-Петербург, ул. Социалистическая, 14, г. Санкт-Петербург, наб. реки Волковки, 7, г. Санкт-Петербург, наб. Обводного канала, 199, г. Санкт-Петербург, ул. Промышленная, 6, г. Санкт-Петербург, ул. Трефолева, 1, г. Санкт-Петербург, к-л Межевой, 3, г. Санкт-Петербург, ул. Марата, 69, г. Санкт-Петербург, ул. Краснопутиловская, 9, г. Санкт-Петербург, ул. Корабельная, 6, г. Санкт-Петербург, ул. Маршала Говорова, 47, г. Санкт-Петербург, ул. Дровяная, 6, г. Санкт-Петербург, ул. Расстанная, 18, ., г. Санкт-Петербург, пр-т Невский, 137, г. Санкт-Петербург, ул. Курская, 21, г. Санкт-Петербург, пр-т Лиговский, 92, г. Санкт-Петербург, пр-т Лиговский, 73, г. Санкт-Петербург, ул. Седова, 12, г. Санкт-Петербург, ул. Заозёрная, 14, г. Санкт-Петербург, ул. Тюшина, 11, г. Санкт-Петербург, ул. Маршала Говорова, 52, г. Санкт-Петербург, ул. Балтийская, 51, г. Санкт-Петербург, ул. Курская, 27, г. Санкт-Петербург, пр-т Нарвский, 22, г. Санкт-Петербург, ул. Промышленная, 38, г. Санкт-Петербург, ул. Боровая, 47 , г. Санкт-Петербург, ул. Расстанная, 2, г. Санкт-Петербург, ул. Стремянная, 7, г. Санкт-Петербург, наб. Обводного канала, 229, г. Санкт-Петербург, ул. Краснопутиловская, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1628777755">2021-08-12 17:15:55</a></td>
+                <td>2021-08-20 23:00:00</td>
+                <td>Kursk27-as1, Lig74-as1, Sedova12-as1, Obvod187-as1, Volkovki7-as1, Balt51-as2, Balt51-as1, Govorova52-as1, Govorova52-as2, Krasnoputil9a-as1, Rasstan18-as1, Promysh6-as1, Obvod199-as1, Obvod199-as2, Rasstan2-as1, Rasstan2-as2, Mezhevoy3-2-as1, Obvod229-as1, Tyushina11-as1, Drovyan6-as1, Krasnoputil5-as1, Marata69-as1, Trefoleva1-as1, Trefoleva1-as2, Nevsk137-as1, BMosk4B-as1, Lig92-as1, Borov47k2-as1, Govorova47-as1, Stremyan7-as1, Kursk21-as1, Narvsk22-as1, Social14-as1, Lig73-as1, Korabel6-as3, Korabel6-as2, Promysh38-as1</td>
+                <td>г. Санкт-Петербург, пр-т Лиговский, 74, г. Санкт-Петербург, ул. Большая Московская, 4б, г. Санкт-Петербург, наб. Обводного канала, 187, г. Санкт-Петербург, ул. Социалистическая, 14, г. Санкт-Петербург, наб. реки Волковки, 7, г. Санкт-Петербург, наб. Обводного канала, 199, г. Санкт-Петербург, ул. Промышленная, 6, г. Санкт-Петербург, ул. Трефолева, 1, г. Санкт-Петербург, к-л Межевой, 3, г. Санкт-Петербург, ул. Марата, 69, г. Санкт-Петербург, ул. Краснопутиловская, 9, г. Санкт-Петербург, ул. Корабельная, 6, г. Санкт-Петербург, ул. Маршала Говорова, 47, г. Санкт-Петербург, ул. Дровяная, 6, г. Санкт-Петербург, ул. Расстанная, 18, г. Санкт-Петербург, пр-т Невский, 137, г. Санкт-Петербург, ул. Курская, 21, г. Санкт-Петербург, пр-т Лиговский, 92, г. Санкт-Петербург, пр-т Лиговский, 73, г. Санкт-Петербург, ул. Седова, 12, г. Санкт-Петербург, ул. Тюшина, 11, г. Санкт-Петербург, ул. Маршала Говорова, 52, г. Санкт-Петербург, ул. Балтийская, 51, г. Санкт-Петербург, ул. Курская, 27, г. Санкт-Петербург, пр-т Нарвский, 22, г. Санкт-Петербург, ул. Промышленная, 38, г. Санкт-Петербург, ул. Боровая, 47 , г. Санкт-Петербург, ул. Расстанная, 2, г. Санкт-Петербург, ул. Стремянная, 7, г. Санкт-Петербург, наб. Обводного канала, 229, г. Санкт-Петербург, ул. Краснопутиловская, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1628754010">2021-08-12 10:40:10</a></td>
+                <td>2021-08-13 09:00:00</td>
+                <td>6Verhniy12b-as2, 6Verhniy12b-as3</td>
+                <td>г. Санкт-Петербург, пер. 6-й Верхний, 12</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1628688609">2021-08-11 16:30:09</a></td>
+                <td>2021-08-13 08:00:00</td>
+                <td>6Verhniy12b-as2, 6Verhniy12b-as3</td>
+                <td>г. Санкт-Петербург, пер. 6-й Верхний, 12</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1628682776">2021-08-11 14:52:56</a></td>
+                <td>2021-08-19 08:00:00</td>
+                <td>Sedova10-as2</td>
+                <td>г. Санкт-Петербург, ул. Седова, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1628682642">2021-08-11 14:50:42</a></td>
+                <td>2021-08-19 08:00:00</td>
+                <td>Sedova10-as5, Sedova10-as3</td>
+                <td>г. Санкт-Петербург, ул. Седова, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1627302637">2021-07-26 15:30:37</a></td>
+                <td>2021-07-28 09:00:00</td>
+                <td>Nevsk10-as1</td>
+                <td>г. Санкт-Петербург, пр-т Невский, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1626788383">2021-07-20 16:39:43</a></td>
+                <td>2021-07-26 08:00:00</td>
+                <td>Finlyand35-as2, Finlyand35-as3, Finlyand35-as1, Finlyand35-as5, Finlyand35-as4, Karavaev57-as3, Kantemir2-as1, Finlyand17-as1, Finlyand38-as1, Finlyand38-as3, Finlyand38-as2, Alpiyskiy29-as2, Alpiyskiy29-as3, Finlyand31-as1, Piskar63-as0, Piskar63-as1, Piskar63-as2, Piskar63-as3, Piskar63-as4, Vyborg-nab61-as3, Vyborg-nab61-as4, Vyborg-nab61-as2, Vyborg-nab55-as1, Vyborg-nab55-as2, Kantemir5-as3, Kantemir5-as1, Metallostroy5-as1, Metallost5ab-as2, Vyborg-sh-5-as1, Kantemir4-as1, Metallostroy3-as1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 5, г. Санкт-Петербург, ул. Караваевская, 57,  п. Металлострой, ул. дорога на Металлострой, 5, г. Санкт-Петербург, ул. Кантемировская, 4, г. Санкт-Петербург, пер. Альпийский, 29, г. Колпино, ул. Финляндская, 35, г. Колпино, ул. Финляндская, 38, г. Санкт-Петербург, ул. Кантемировская, 2, г. Колпино, ул. Финляндская, 17, г. Санкт-Петербург, наб. Выборгская, 61, г. Санкт-Петербург, пр-т Пискарёвский, 63А, г. Колпино, ул. Финляндская, 31,  п. Металлострой, ул. дорога на Металлострой, 3, г. Санкт-Петербург, ул. Кантемировская, 5, г. Санкт-Петербург, наб. Выборгская, 55</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1625494079">2021-07-05 17:07:59</a></td>
+                <td>2021-07-06 09:00:00</td>
+                <td>Mosk94-as1</td>
+                <td>г. Санкт-Петербург, пр-т Московский, 94</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1625129668">2021-07-01 11:54:28</a></td>
+                <td>2021-07-05 09:00:00</td>
+                <td>Mosk94-as1</td>
+                <td>г. Санкт-Петербург, пр-т Московский, 94</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1624539836">2021-06-24 16:03:56</a></td>
+                <td>2021-06-29 08:00:00</td>
+                <td>Mosk94-as1</td>
+                <td>г. Санкт-Петербург, пр-т Московский, 94</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1624020526">2021-06-18 15:48:46</a></td>
+                <td>2021-06-22 22:00:00</td>
+                <td>Vyborgskoe503-ds1, Vyborgskoe503-as1</td>
+                <td>г. Санкт-Петербург, ш. Выборгское, 503</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1622038652">2021-05-26 17:17:32</a></td>
+                <td>2021-05-28 08:00:00</td>
+                <td>Salova53k1-as1, Salova53-as2, Salova53-as3, Salova53-as4, Salova53k1-as5, Salova47-as1</td>
+                <td>г. Санкт-Петербург, ул. Салова 47, г. Санкт-Петербург, ул. Салова 53</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1620127046">2021-05-04 14:17:26</a></td>
+                <td>2021-05-06 20:00:00</td>
+                <td>Kantemir2-as1, Kantemir4-as2, Vyborg-nab55-as1, Vyborg-nab55-as2, Vyborg-nab61-as1, Vyborg-nab61-as3, Vyborg-nab61-as4, Vyborg-nab61-as2, Kantemir5-as3, Kantemir5-as1</td>
+                <td>г. Санкт-Петербург, ул. Кантемировская, 4, г. Санкт-Петербург, ул. Кантемировская, 2, г. Санкт-Петербург, наб. Выборгская, 61, г. Санкт-Петербург, ул. Кантемировская, 5, г. Санкт-Петербург, наб. Выборгская, 55</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1620126770">2021-05-04 14:12:50</a></td>
+                <td>2021-05-06 19:00:00</td>
+                <td>Liteyniy22-as1</td>
+                <td>г. Санкт-Петербург, пр-т Литейный, 22</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1620126585">2021-05-04 14:09:45</a></td>
+                <td>2021-05-06 19:00:00</td>
+                <td>MMor23-as1, MMor8-as1, Italjan11-as1, Shkiper12a-as1, Shkiper12a-as2, BMor18-ds3, AleksGrin1-as1, Moyka26-as1</td>
+                <td>г. Санкт-Петербург, б. Александра Грина, 1, г. Санкт-Петербург, ул. Шкиперский проток, 12 литер А, г. Санкт-Петербург, ул. Большая Морская, 18, г. Санкт-Петербург, наб. реки Мойки, 26, г. Санкт-Петербург, ул. Малая Морская, 8, г. Санкт-Петербург, ул. Малая Морская, 23, г. Санкт-Петербург, ул. Итальянская, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1619441892">2021-04-26 15:58:12</a></td>
+                <td>2021-04-28 20:00:00</td>
+                <td>Kantemir2-as1, Kantemir4-as2, Vyborg-nab55-as1, Vyborg-nab55-as2, Vyborg-nab61-as1, Vyborg-nab61-as3, Vyborg-nab61-as4, Vyborg-nab61-as2, Kantemir5-as3, Kantemir5-as1</td>
+                <td>г. Санкт-Петербург, ул. Кантемировская, 4, г. Санкт-Петербург, ул. Кантемировская, 2, г. Санкт-Петербург, наб. Выборгская, 61, г. Санкт-Петербург, ул. Кантемировская, 5, г. Санкт-Петербург, наб. Выборгская, 55</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1618857438">2021-04-19 21:37:18</a></td>
+                <td>2021-04-20 11:00:00</td>
+                <td>Vyborg-nab61-as4</td>
+                <td>г. Санкт-Петербург, наб. Выборгская, 61</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617783036">2021-04-07 11:10:36</a></td>
+                <td>2021-04-08 23:00:00</td>
+                <td>klin23-cr1, Klin23-as1, Smolensk21b-as1, Kiev5-as1, Kiev5-as2, Kiev5-as3, 5Krasnoarm22-as1, 5Krasnoarm22-as3, 5Krasnoarm22-as2, Zaozer1-as1</td>
+                <td>Санкт-Петербург, ул. 5-я Красноармейская, 22, г. Санкт-Петербург, ул. Киевская, 5, Санкт-Петербург, ул. Заозерная, 1к3, г. Санкт-Петербург, пр-т Смоленский, 21Б, г. Санкт-Петербург, пр-т Клинский, 23</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617654889">2021-04-05 23:34:49</a></td>
+                <td>2021-04-07 11:00:00</td>
+                <td>Vyborg-nab61-as4</td>
+                <td>г. Санкт-Петербург, наб. Выборгская, 61</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617634379">2021-04-05 17:52:59</a></td>
+                <td>2021-04-09 00:00:00</td>
+                <td>klin23-cr1, Klin23-as1, Smolensk21b-as1, Zaslonova4-as1, Kiev5-as1, Kiev5-as2, Kiev5-as3, 5Krasnoarm22-as1, 5Krasnoarm22-as3, 5Krasnoarm22-as2, Zaozer1-as1, Zaslonova7-as1</td>
+                <td>Санкт-Петербург, ул. 5-я Красноармейская, 22, г. Санкт-Петербург, ул. Киевская, 5, Санкт-Петербург, ул. Заозерная, 1к3, г. Санкт-Петербург, пр-т Смоленский, 21Б, г. Санкт-Петербург, пр-т Клинский, 23, г. Санкт-Петербург, ул. Константина Заслонова, 7, г. Санкт-Петербург, ул. Константина Заслонова, 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617199990">2021-03-31 17:13:10</a></td>
+                <td>2021-04-01 10:30:00</td>
+                <td>Konstantin11-as1, Konstantin11-as3</td>
+                <td>г. Санкт-Петербург, пр-т Константиновский, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617196053">2021-03-31 16:07:33</a></td>
+                <td>2021-04-02 11:00:00</td>
+                <td>Vyborg-nab61-as4</td>
+                <td>г. Санкт-Петербург, наб. Выборгская, 61</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1617107604">2021-03-30 15:33:24</a></td>
+                <td>2021-04-02 08:00:00</td>
+                <td>Lig48-as2, Lig113-as1, Zaslonova4-as1, Lig50-6-as1, Lig50-13-as1, Zaslonova7-as1</td>
+                <td>. Санкт-Петербург, пр-т Лиговский, 48, . Санкт-Петербург, пр-т Лиговский, 50, г. Санкт-Петербург, пр-т Лиговский, 113, г. Санкт-Петербург, пр-т Лиговский, 50, г. Санкт-Петербург, ул. Константина Заслонова, 7, г. Санкт-Петербург, ул. Константина Заслонова, 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1616071158">2021-03-18 15:39:18</a></td>
+                <td>2021-03-23 00:00:00</td>
+                <td>Nekrasov11-as1, Suvorov65-as1, Gospital4-as1, Vosstan11-as1, Liteyniy6-as1, Tavri17-as1, 9Sovet4-as1, 9sovet4-as2, 9sovet4-as3</td>
+                <td>г. Санкт-Петербург, пр-т Суворовский, 65Б, г. Санкт-Петербург, ул. 9-я Советская, 4, г. Санкт-Петербург, пр. Литейный 6, г. Санкт-Петербург, ул. Госпитальная, 4, г. Санкт-Петербург, ул. Некрасова, 11, г. Санкт-Петербург, ул. Таврическая, 17, г. Санкт-Петербург, ул. Восстания, 11</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1616070095">2021-03-18 15:21:35</a></td>
+                <td>2021-03-23 00:00:00</td>
+                <td>Lig73-as1</td>
+                <td>г. Санкт-Петербург, пр-т Лиговский, 73</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1615997949">2021-03-17 19:19:09</a></td>
+                <td>2021-03-19 00:30:00</td>
+                <td>kolomyag24-as1</td>
+                <td>г. Санкт-Петербург, пр-т Коломяжский, 24</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1615808869">2021-03-15 14:47:49</a></td>
+                <td>2021-03-15 00:00:00</td>
+                <td>Metallostroy5-as1</td>
+                <td> п. Металлострой, ул. дорога на Металлострой, 5</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1615461692">2021-03-11 14:21:32</a></td>
+                <td>2021-03-15 18:00:00</td>
+                <td>BolPush10-as2, BolPush10-as3</td>
+                <td>г. Санкт-Петербург, ул. Большая Пушкарская, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1615461498">2021-03-11 14:18:18</a></td>
+                <td>2021-03-15 18:00:00</td>
+                <td>BolPush10-as1</td>
+                <td>г. Санкт-Петербург, ул. Большая Пушкарская, 10</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1613745425">2021-02-19 17:37:05</a></td>
+                <td>2021-02-21 09:00:00</td>
+                <td>Melnich4-as1, Melnich4-as5, Melnich4-as4, Melnich4-as3, Melnich4-as6, Melnich4-as2</td>
+                <td>г. Санкт-Петербург, ул. Мельничная, 4</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://devnet.spb.avantel.ru/client_notification_history_1613639956">2021-02-18 12:19:16</a></td>
+                <td>2021-02-20 15:00:00</td>
+                <td>BSam45-as1, BSam45-as3, BSam45-as2</td>
+                <td>г. Санкт-Петербург, пр-т Большой Сампсониевский, 45</td>
+            </tr>
+    </tbody>
+</table>
 {% endblock %}
