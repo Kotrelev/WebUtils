@@ -22,6 +22,10 @@ function loading() {
     </div>
     <br>
     <div>
+    <form id="configurator_inet_execute" 
+          action="configurator_inet_execute_{{ sid }}" 
+          onsubmit="return confirm('Точно?');" 
+          method="POST">
     <h2>Configurations:</h2>
     {% for host in config_dict %}
     <details class="configurator_config_details">
@@ -54,6 +58,12 @@ function loading() {
 
     </details>
     {% endfor %}
+    <input id="Generic140pxBlueButton" 
+    type="submit" 
+    name="inet_execute" 
+    value="Поехали"
+    onclick="loading()">
+    </form>
     </div>
     <br>
     <div>

@@ -76,7 +76,7 @@ function loading() {
             </tr>
             </thead>
             <tbody>
-            {% for neighbour in zabbix95_ifaces %}
+            {% for neighbour in zabbix95_ifaces_sorted %}
             <tr>
                 <td rowspan="{{span_dict[neighbour]}}">
                     <input type="checkbox" 
@@ -159,7 +159,7 @@ function loading() {
             </tr>
             </thead>
             <tbody>
-            {% for neighbour in zabbix95_ifaces %}
+            {% for neighbour in zabbix95_ifaces_sorted %}
             <tr>
                 <td rowspan="{{span_dict[neighbour]}}">{{ neighbour }}</a></td>
                 {% for node in zabbix95_ifaces[neighbour] %}
