@@ -1538,10 +1538,12 @@ def configurator_inet_confirm(sid):
 @web_utils_app.route("/configurator_inet_execute_<sid>", methods=['POST'])
 def configurator_inet_execute(sid):
     
-    # Забираем из SQL уже собранные данные по конечному девайсу
+    # Забираем из SQL анкету, конфиги, ипы
     sid_storage = common_mysql.sql_get_session(sid, logger)
+    # Убиваем сессию.
+    common_mysql.sql_del_session(sid, logger)
     if not sid_storage: 
-        msg = 'Проблема с SQL (Не считал данные)'
+        msg = 'Проблема с SQL (Не считал данные сессии {})'.format(sid)
         logger.error(msg)
         return configurator_init(msg)
     data_dict = json.loads(sid_storage[0]['storage'])
@@ -1549,10 +1551,24 @@ def configurator_inet_execute(sid):
         msg = 'Проблема с SQL (Не смог распаковать данные)'
         logger.error(msg)
         return configurator_init(msg)
-    host_dict = data_dict['host_dict']
     inet_form = data_dict['inet_form']
-    # Убиваем сессию.
-    common_mysql.sql_del_session(sid, logger)
+    config_dict = data_dict['config_dict']
+    ip_addresses = data_dict['ip_addresses']
+        
+    for ip in ip_addresses['ip']:
+        setip = ipv4_table.set_ipv4_address(
+                ip, 
+                ip_addresses['mask_bits'], 
+                inet_form['contract'],
+                inet_form['name'].replace("***", "'"),
+                inet_form['address'],
+                logger,
+        )
+        
+        
+    return render_template("configurator_service.html",
+                           config_dict = config_dict,
+                           rawdata = rawdata,)
 
 
 @web_utils_app.route("/configurator_vlan_create", methods=['POST'])

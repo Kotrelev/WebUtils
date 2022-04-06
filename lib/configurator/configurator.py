@@ -432,7 +432,9 @@ class configurator:
                         'DNS1 188.68.187.2',
                         'DNS2 188.68.186.2',
                         'vlan {}'.format(inet_form['tag']),
-                    ],
+                        ] + [host+' '+iface 
+                             for iface in end_iface_dict[host] 
+                             for host in end_iface_dict],
                     'config': [],
                     'ifaces': {},
                     }

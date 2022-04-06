@@ -12,14 +12,16 @@ class ipv4_table:
         except Exception as err_message:
             logger.error('Ошибка в функции ipv4_table.get_ipv4 {}'.format(str(err_message)))
     
-    def set_ipv4_address(logger):
+    def set_ipv4_address(ip, net, contract, name, address, logger):
         try:
-            params = 'ipv4?ip={ipadr}&net={network}&netdescr=&contract={contract}&name="{customer}"&address="{address}"'
+            params = f'ipv4?ip={ip}&net={net}&netdescr=&contract={contract}&name="{name}"&address="{address}"'
             req = set_contract_api+params
             response = requests.put(req)
             if response.ok:
                 return response.json()
+            logger.error('Could not write ip into ipv4. Request: {}'.format(params))
             return None
+            
         except Exception as err_message:
             logger.error('Ошибка в функции ipv4_table.set_ipv4_address {}'.format(str(err_message)))
     
