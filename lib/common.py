@@ -15,7 +15,8 @@ class common_mysql:
     def local_sql_conn(logger):
         # это соединение будет возвращать словари
         try:
-            connection = pymysql.connect(host=config.local_mysqlhost,
+            connection = pymysql.connect(
+                host=config.local_mysqlhost,
                 user=config.local_mysqluser,
                 password=config.local_mysqlpass,
                 db=config.local_mysqldb,
@@ -28,7 +29,8 @@ class common_mysql:
     def local_sql_conn_l(logger):
         # это соединение будет возвращать списки
         try:
-            connection = pymysql.connect(host=config.local_mysqlhost,
+            connection = pymysql.connect(
+                host=config.local_mysqlhost,
                 user=config.local_mysqluser,
                 password=config.local_mysqlpass,
                 db=config.local_mysqldb,

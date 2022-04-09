@@ -1,0 +1,7 @@
+This folder is for scripts that are not part of devnet.spb.avantel.ru web utilities, but which use same custom libraries.
+I didn't want to make those libraries completely separate, so I just piled it all into one project.
+Scripts from this folder probably run by crontab.
+
+Это папка для скриптов которые не являются частью devnet.spb.avantel.ru веб утилит, но используют кастомные библиотеки оттуда.
+Не хотел делать эти библиотеки совсем отдельными, так что просто слил все в один проект.
+Скрипты из этой папки запускаются кронтабом.

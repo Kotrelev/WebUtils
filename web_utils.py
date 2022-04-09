@@ -1528,7 +1528,7 @@ def configurator_inet_confirm(sid):
     storage_json = json.dumps(storage, ensure_ascii=False)
     common_mysql.sql_upd_session(sid, storage, logger)
     
-    rawdata = [inet_form, ip_addresses, config_dict, chain, host_dict]
+    rawdata = [inet_form, ip_addresses, config_dict, chain, end_iface_dict, host_dict]
     
     return render_template("configurator_confirm.html",
                            diagram_link = diagram_link,

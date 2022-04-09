@@ -422,7 +422,7 @@ class configurator:
         logger
     ):
         try:
-            
+            host = inet_form['hostname']
             config_dict = {
                 'Summary': {
                     'global': 
