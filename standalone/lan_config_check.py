@@ -36,11 +36,17 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
         chain = {}
         end_iface_dict = {}
         host_list = [host]
+        been_list = []
         while host_list:
             cur_host = host_list[0]
-            chain[cur_host] = {}
-            
-            for ifid, iface in host_dict[hname]['ifaces'].items():
+            while cur_host in host_list:
+                host_list.remove(cur_host)
+            been_list.append(cur_host)
+                
+            if not vlan in host_dict[cur_host]['vlans']:
+                continue
+                
+            for ifid, iface in host_dict[cur_host]['ifaces'].items():
                 if iface['type'] not in ['6', '161', '117']:
                     continue
                 elif any(x in iface['name'] for x in ['.', ':']):
@@ -55,14 +61,22 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                 if vlan not in iface['Tag']+iface['Untag']:
                     continue
                     
+                iftype = 'trunk'
+                if (iface['Untag'] and not iface['Tag']): iftype = 'access'
+                    
                 mag = re.search(config.mag_regex, iface['description'])
                 
-                if mag:
-                    chain[cur_host] = {}
+                if mag and not mag.groupdict()['lag']:
                     
+                    chain.setdefault(cur_host, {})
+
+                    chain[cur_host][mag.groupdict()['host']] = {
+                        'ifid': ifid, 
+                        'port': iface['name'], 
+                        'type': iftype,}
+                    host_list.append(mag.groupdict()['host'])
                     
-                    
-                    chain[cur_host][mag.groupdict()['host']] = {}
+                elif not mag:
                     
                     
                     if mag.groupdict()['host'] not in host_dict:
@@ -88,7 +102,7 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                 
                 
                 
-end_iface_dict = {'BMor18-ds4': {'Ethernet1/0/3': 'Access', 'Ethernet1/0/8': 'Trunk'}}
+end_iface_dict = {'BMor18-ds4': {'Ethernet1/0/3': 'Access', 'Ethernet1/0/8': 'trunk'}}
 chain = {'Vish12-as0': {'Mira3-ds2': {'ifid': '1000', 'port': 'Po1', 'type': 'trunk'}},
         
     except Exception as err_message:

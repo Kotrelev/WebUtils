@@ -22,7 +22,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><select class="select-css" id="configurator_iface_fld_{{ dev }}"name="configurator_iface_{{ dev }}[]">{% for iface in ifaces_dict[dev] %}<option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>{% endfor %}</select><select class="select-css" id="configurator_iftype_fld" name="configurator_iftype_{{ dev }}[]"><option value="Access">Access</option><option value="Trunk">Trunk</option></select><a href="#" class="delete" style="padding-left:14px">❌</a></div>');
+            $(wrapper).append('<div><select class="select-css" id="configurator_iface_fld_{{ dev }}"name="configurator_iface_{{ dev }}[]">{% for iface in ifaces_dict[dev] %}<option value="{{ iface }}">{{ iface }}: {{ ifaces_dict[dev][iface] }}</option>{% endfor %}</select><select class="select-css" id="configurator_iftype_fld" name="configurator_iftype_{{ dev }}[]"><option value="access">Access</option><option value="trunk">Trunk</option></select><a href="#" class="delete" style="padding-left:14px">❌</a></div>');
         } else {
             alert('Свободных больше нет')
         }
@@ -69,8 +69,8 @@ $(document).ready(function() {
                 id="configurator_iftype_fld" 
                 name="configurator_iftype_{{ dev }}[]">
           <!--<option value="None">--None--</option>-->
-          <option value="Access">Access</option>
-          <option value="Trunk">Trunk</option>
+          <option value="access">Access</option>
+          <option value="trunk">Trunk</option>
         </select>
         <button id="GenericBlueSmallButton" class="add_form_field{{ dev }}">➕</button>
         <br>
