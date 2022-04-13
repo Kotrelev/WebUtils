@@ -1434,7 +1434,7 @@ def configurator_inet_confirm(sid):
     #common_mysql.sql_del_session(sid, logger)
     
     # Формируем словарь конечных интерфейсов
-    # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'Access'}}
+    # пример end_iface_dict = {'Avtov17-as0': {'gigabitethernet8': 'access'}}
     end_iface_dict = {inet_form['hostname']: {}}
     if_arr = request.form.getlist('configurator_iface_{}[]'.format(inet_form['hostname']))
     mode_arr = request.form.getlist('configurator_iftype_{}[]'.format(inet_form['hostname']))
