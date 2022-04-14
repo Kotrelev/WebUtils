@@ -324,7 +324,7 @@ class configurator:
                 config_maker_cls = vendor_cls.config_maker
                 if host in mpls_nodes and len(mpls_nodes) == 2:
                     # mpls
-                    mpls_nei = [x for x in mpls_nodes if x != host][0]
+                    mpls_nei = [x for x in mpls_nodes if x != host]
                     l2_neighbour = [x for x in vlanpath[host] if x not in mpls_nodes]
                     if len(l2_neighbour) > 1: 
                         config_dict[host]['global'] = ['ERROR: {} has more than 1 l2 nei'.format(host)]
@@ -343,7 +343,26 @@ class configurator:
                                           logger)
                 elif host in mpls_nodes and len(mpls_nodes) > 2:
                     # vpls
-                    pass
+                    mpls_nei = [x for x in mpls_nodes if x != host]
+                    l2_neighbour = [x for x in vlanpath[host] 
+                                    if x not in mpls_nodes 
+                                    and x != 'VPLS']
+                    if len(l2_neighbour) > 1: 
+                        config_dict[host]['global'] = ['ERROR: {} has more than 1 l2 nei'.format(host)]
+                        continue
+                    if not 'vpls' in dir(config_maker_cls):
+                        config_dict[host]['global'] = ['ERROR: {} cannot make VPLS'.format(host)]
+                        continue
+                    l2_interface = vlanpath[host][l2_neighbour[0]]['port']
+                    siteid = str(mpls_nodes.index(host)+1)
+                    config_maker_cls.vpls(host, 
+                                          config_dict, 
+                                          vlan_form, 
+                                          vlan_name, 
+                                          l2_interface, 
+                                          siteid, 
+                                          config, 
+                                          logger)
                 else:
                     # l2
                     if not 'create_vlan' in dir(config_maker_cls):
