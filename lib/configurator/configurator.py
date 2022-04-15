@@ -324,7 +324,7 @@ class configurator:
                 config_maker_cls = vendor_cls.config_maker
                 if host in mpls_nodes and len(mpls_nodes) == 2:
                     # mpls
-                    mpls_nei = [x for x in mpls_nodes if x != host]
+                    mpls_nei = mpls_nei.remove(host)
                     l2_neighbour = [x for x in vlanpath[host] if x not in mpls_nodes]
                     if len(l2_neighbour) > 1: 
                         config_dict[host]['global'] = ['ERROR: {} has more than 1 l2 nei'.format(host)]
@@ -338,7 +338,7 @@ class configurator:
                                           vlan_form, 
                                           vlan_name, 
                                           l2_interface, 
-                                          host_dict[mpls_nei]['ip'], 
+                                          host_dict[mpls_nei][0]['ip'], 
                                           config, 
                                           logger)
                 elif host in mpls_nodes and len(mpls_nodes) > 2:

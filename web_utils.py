@@ -1446,8 +1446,8 @@ def configurator_inet_confirm(sid):
     # линков всех девайсов в цепочке hostname >> MPLS device
     # been_there это список всех девайсов в цепочке hostname >> MPLS device
     # зачем он мне если есть all_links? Отличный вопрос. Отличный. Вопрос. Да.
-    logging.error('TEMP inet_form {}'.format(inet_form))
-    logging.error('TEMP host_dict {}'.format(host_dict))
+    #logging.error('TEMP inet_form {}'.format(inet_form))
+    #logging.error('TEMP host_dict {}'.format(host_dict))
     all_links, been_there = configurator.get_hosts(inet_form['hostname'], 
                                                    host_dict, 
                                                    logger,

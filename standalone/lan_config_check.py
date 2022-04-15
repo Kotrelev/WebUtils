@@ -58,52 +58,100 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                 elif iface['name'] in ['em0', 'em1', 'em2', 'em3', 'em4', 'me0', 'fxp0']:
                     # джуниковские фейк интерфейсы
                     continue
-                if vlan not in iface['Tag']+iface['Untag']:
-                    continue
                     
-                iftype = 'trunk'
-                if (iface['Untag'] and not iface['Tag']): iftype = 'access'
-                    
-                mag = re.search(config.mag_regex, iface['description'])
-                
-                if mag and not mag.groupdict()['lag']:
-                    
-                    chain.setdefault(cur_host, {})
-
-                    chain[cur_host][mag.groupdict()['host']] = {
-                        'ifid': ifid, 
-                        'port': iface['name'], 
-                        'type': iftype,}
-                    host_list.append(mag.groupdict()['host'])
-                    
-                elif not mag:
-                    
-                    
-                    if mag.groupdict()['host'] not in host_dict:
-                        err_switch = True
-                        if mag.groupdict()['host'] in disabled_hosts:
-                            err_switch = False
+                if 'Untag' in iface: # L2 switch interface
+                    if vlan not in iface['Tag']+iface['Untag']:
+                        continue
                         
-                        # Этот блок посвящен микротам со swos, и их 16 символьным дескрипшнам
-                        if host_dict[hname]['sysobjectid'] == 'iso.3.6.1.4.1.14988.2':
-                            # берем дескр который предположительно порезан, вычленяем то что идет перед номером дома
-                            name_len = len(mag.groupdict()['name'])
-                            cut_hname_arr = []
-                            # берем все известные хостнеймы и режем их на ту же длинну что и наш дескр.
-                            for host in host_dict:
-                                rh = re.search(config.mag_regex, host)
-                                if not rh: continue
-                                cut_hname = rh.groupdict()['name'][0:name_len]
-                                cut_hname_arr.append(cut_hname+rh.groupdict()['tail'])
-                            # ищем наш дескр в полученном списке порезанных хостнеймов.
-                            if mag.groupdict()['host'] in cut_hname_arr:
-                                #logging.warning('TEMP cut_hname_arr: {}'.format(cut_hname_arr))
-                                err_switch = False
-                
-                
-                
-end_iface_dict = {'BMor18-ds4': {'Ethernet1/0/3': 'Access', 'Ethernet1/0/8': 'trunk'}}
-chain = {'Vish12-as0': {'Mira3-ds2': {'ifid': '1000', 'port': 'Po1', 'type': 'trunk'}},
+                    iftype = 'trunk'
+                    if (iface['Untag'] and not iface['Tag']): iftype = 'access'
+                        
+                    mag = re.search(config.mag_regex, iface['description'])
+                    
+                    if mag and not mag.groupdict()['lag']:
+                        
+                        chain.setdefault(cur_host, {})
+                        nei_host = mag.groupdict()['host']
+                        
+                        #RB260 can have problems with description length
+                        if mag.groupdict()['host'] not in host_dict:
+                            if host_dict[cur_host]['sysobjectid'] == 'iso.3.6.1.4.1.14988.2':
+                                # берем дескр который предположительно порезан, вычленяем то что идет перед номером дома
+                                name_len = len(mag.groupdict()['name'])
+                                cut_hname_dict = {}
+                                # берем все известные хостнеймы и режем их на ту же длинну что и наш дескр.
+                                for host in host_dict:
+                                    rh = re.search(config.mag_regex, host)
+                                    if not rh: continue
+                                    cut_hname = rh.groupdict()['name'][0:name_len]
+                                    cut_hname_dict[cut_hname+rh.groupdict()['tail']] = rh.groupdict()['host']
+                                # ищем наш дескр в полученном списке порезанных хостнеймов.
+                                if mag.groupdict()['host'] in cut_hname_dict:
+                                    nei_host = cut_hname_dict[mag.groupdict()['host']]
+                                else: 
+                                    logging.error('{}: Could not find hostname {} in host_dict'.format(cur_host, nei_host))
+                                    continue
+                            else: 
+                                logging.error('{}: Could not find hostname {} in host_dict'.format(cur_host, nei_host))
+                                continue
+                        
+                        
+                        chain[cur_host][nei_host] = {
+                            'ifid': ifid, 
+                            'port': iface['name'], 
+                            'type': iftype,}
+                        host_list.append(nei_host)
+                        
+                    elif not mag:
+                        end_iface_dict.setdefault(cur_host, {})
+                        end_iface_dict[cur_host][iface['name']] = iftype
+                    
+
+                elif 'L3' in iface:
+                    if (str(iface['L3']['outer-vlan-id']) != vlan and 
+                        str(iface['L3']['inner-vlan-id']) != vlan):
+                        continue
+                    
+                    l2_iftype = 'trunk'
+                    # Debatable! I need to think about this one
+                    #if (str(iface['L3']['inner-vlan-id']) == vlan and
+                    #    str(iface['L3']['outer-vlan-id']) != vlan):
+                    #    l2_iftype = 'access'
+                    
+                    # we need to find l2 iface and its neighbour
+                    l2_if = iface['L3']['iface']
+                    for ifi, ifc in host_dict[cur_host]['ifaces'].items():
+                        if ifc['name'] == l2_if:
+                            l2_mag = re.search(config.mag_regex, ifc['description'])
+                            if (not l2_mag or 
+                                l2_mag.groupdict()['host'] not in host_dict):
+                                logger.error('{}: could not find L2 link for {}'.format(cur_host, l2_if))
+                                continue
+                            l2nei_name = l2_mag.groupdict()['host']
+                            chain[cur_host][l2nei_name] = {'ifid': ifi, 'port': l2_if, 'type': l2_iftype}
+                    # and now to find mpls neighbour
+                    if 'mpls' in iface['L3']:
+                        nei_ip = iface['L3']['mpls']['neighbour']
+                        nei_name = ip_dict[nei_ip]
+                        chain[cur_host][nei_name] = {'ifid': None, 'port': 'mpls', 'type': 'mpls'}
+                        host_list.append(nei_name)
+                    
+                    #{'Cvetoch19-cs1': {'Cvetoch19-cr1': {'ifid': '25', 'port': 'Ethernet1/1/1', 'type': 'trunk'}}, 
+                    # 'Cvetoch19-cr1': {'Cvetoch19-cs1': {'ifid': '776', 'port': 'ae0', 'type': 'trunk'}, 
+                    #                   'Lig73-cr1': {'ifid': None, 'port': 'mpls', 'type': 'mpls'}}, 
+                    # 'Lig73-ds2': {'Lig73-cr1': {'ifid': '25', 'port': 'Ethernet1/0/25', 'type': 'trunk'}}, 
+                    # 'Lig73-cr1': {'Lig73-ds2': {'ifid': '616', 'port': 'ae0', 'type': 'trunk'}, 
+                    #               'Cvetoch19-cr1': {'ifid': None, 'port': 'mpls', 'type': 'mpls'}}}
+                    
+                    elif 'vpls' in iface['L3']:
+                        pass
+                    elif 'inet' in iface['L3']:
+                        pass
+                    elif 'unnumbered' in iface['L3']:
+                        pass
+                    
+                    #end_iface_dict = {'BMor18-ds4': {'Ethernet1/0/3': 'Access', 'Ethernet1/0/8': 'trunk'}}
+                    #chain = {'Vish12-as0': {'Mira3-ds2': {'ifid': '1000', 'port': 'Po1', 'type': 'trunk'}},
         
     except Exception as err_message:
         er = 'Ошибка в функции gather_services {}'
@@ -537,6 +585,7 @@ if __name__ == '__main__':
                 logger.info('Invalid hostname {}'.format(ip))
             elif '10.60.' in ip or '188.68.187.' in ip or '10.61.' in ip:
                 host_dict[host['host']] = {'ip': ip}
+        ip_dict = {host_dict[hname]['ip']: hname for hname in host_dict}
         
         #host_dict = {'BB-switch-as1': {'ip': '10.60.0.7'},
         #           'VM devnet.spb.avantel.ru': {'ip': '188.68.187.53'},
