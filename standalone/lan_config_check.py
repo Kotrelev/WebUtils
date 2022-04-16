@@ -23,6 +23,7 @@ from Vendors import vendors
 def gather_services(host_dict, logger):
     try:
         done_dict = {}
+        vpls_dict = gather_vpls(host_dict, logger)
         for host in host_dict:
             for vlan in host_dict[host]['vlans']:
                 get_chain(host, vlan, host_dict, done_dict, logger)
@@ -31,20 +32,37 @@ def gather_services(host_dict, logger):
         er = '{}: Ошибка в функции gather_services {}'
         logger.error(er.format(host, str(err_message)))
     
+def gather_vpls(host_dict, logger):
+    try:
+        vpls_dict = {}
+        for h in host_dict:
+            for i in host_dict[h]['ifaces']:
+                if 'L3' in host_dict[h]['ifaces'][i] and 'vpls' in host_dict[h]['ifaces'][i]['L3']:
+                    vpls_comm = host_dict[h]['ifaces'][i]['L3']['vpls']['vrf-target']['community']
+                    vpls_dict.setdefault(vpls_comm, []).append(h)
+        return vpls_dict
+    except Exception as err_message:
+        er = '{}: Ошибка в функции gather_vpls {}'
+        logger.error(er.format(host, str(err_message)))
+    
 def get_chain(host, vlan, host_dict, done_dict, logger):
     try:
         chain = {}
         end_iface_dict = {}
+        termination = {}
         host_list = [host]
         been_list = []
         while host_list:
             cur_host = host_list[0]
             while cur_host in host_list:
                 host_list.remove(cur_host)
+            if cur_host in been_list: continue
             been_list.append(cur_host)
                 
             if not vlan in host_dict[cur_host]['vlans']:
                 continue
+                
+            chain.setdefault(cur_host, {})
                 
             for ifid, iface in host_dict[cur_host]['ifaces'].items():
                 if iface['type'] not in ['6', '161', '117']:
@@ -60,6 +78,7 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                     continue
                     
                 if 'Untag' in iface: # L2 switch interface
+                    # ignore interfaces without current vlan
                     if vlan not in iface['Tag']+iface['Untag']:
                         continue
                         
@@ -69,8 +88,7 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                     mag = re.search(config.mag_regex, iface['description'])
                     
                     if mag and not mag.groupdict()['lag']:
-                        
-                        chain.setdefault(cur_host, {})
+
                         nei_host = mag.groupdict()['host']
                         
                         #RB260 can have problems with description length
@@ -99,7 +117,8 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                         chain[cur_host][nei_host] = {
                             'ifid': ifid, 
                             'port': iface['name'], 
-                            'type': iftype,}
+                            'type': iftype,
+                        }
                         host_list.append(nei_host)
                         
                     elif not mag:
@@ -144,11 +163,28 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                     #               'Cvetoch19-cr1': {'ifid': None, 'port': 'mpls', 'type': 'mpls'}}}
                     
                     elif 'vpls' in iface['L3']:
-                        pass
+                        # На подумать: может быть несколько интерфейсов в вплс. С разными vid.
+                        chain[cur_host]['VPLS'] = {'ifid': None, 'port': 'vpls', 'type': 'vpls'}
+                        host_list.append(nei_name)
+                        vpls_comm = iface['L3']['vpls']['vrf-target']['community']
+                        if vpls_comm in vpls_dict:
+                            for vpls_host in vpls_dict[vpls_comm]:
+                                if vpls_host != cur_host:
+                                    host_list.append(vpls_host)
+                            
                     elif 'inet' in iface['L3']:
-                        pass
+                        termination.setdefault(cur_host, {})
+                        termination[cur_host]['ifname'] = iface['name']
+                        termination[cur_host]['description'] = iface['description']
+                        termination[cur_host]['ip'] = iface['L3']['inet']
+                        termination[cur_host]['type'] = 'inet'
+
                     elif 'unnumbered' in iface['L3']:
-                        pass
+                        termination.setdefault(cur_host, {})
+                        termination[cur_host]['ifname'] = iface['name']
+                        termination[cur_host]['description'] = iface['description']
+                        termination[cur_host]['ip'] = iface['L3']['unnumbered']['static']
+                        termination[cur_host]['type'] = 'unnumbered'
                     
                     #end_iface_dict = {'BMor18-ds4': {'Ethernet1/0/3': 'Access', 'Ethernet1/0/8': 'trunk'}}
                     #chain = {'Vish12-as0': {'Mira3-ds2': {'ifid': '1000', 'port': 'Po1', 'type': 'trunk'}},
