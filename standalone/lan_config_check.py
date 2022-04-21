@@ -65,7 +65,7 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
             chain.setdefault(cur_host, {})
                 
             for ifid, iface in host_dict[cur_host]['ifaces'].items():
-                if iface['type'] not in ['6', '161', '117']:
+                if iface['type'] not in ['6', '161', '117', '53', '135', '136']:
                     continue
                 elif any(x in iface['name'] for x in ['.', ':']):
                     # джуники считают все саб интерфейсы агрегата как тип 161 
@@ -126,7 +126,7 @@ def get_chain(host, vlan, host_dict, done_dict, logger):
                         end_iface_dict[cur_host][iface['name']] = iftype
                     
 
-                elif 'L3' in iface:
+                elif 'L3' in iface and 'outer-vlan-id' in iface['L3']:
                     if (str(iface['L3']['outer-vlan-id']) != vlan and 
                         str(iface['L3']['inner-vlan-id']) != vlan):
                         continue
@@ -247,8 +247,6 @@ def description_validator(host_dict, config, logger):
                         validation_errors_hosts.setdefault(hname, []).append(er)
                     
                 elif mag:
-                    if mag.groupdict()['lag']:
-                        continue
                     if iface['status'] == '2' and 'OFF' not in iface['description']:
                         er = {'Host': hname, 
                               'Interface': iface['name'], 
@@ -265,7 +263,8 @@ def description_validator(host_dict, config, logger):
                               'Error': 'Нет линка на магистрали'}
                         validation_errors.setdefault('mag_down', []).append(er)
                         validation_errors_hosts.setdefault(hname, []).append(er)
-                    
+                    elif mag.groupdict()['lag']:
+                        continue
                     elif (mag.groupdict()['host'] not in host_dict):
                         err_switch = True
                         if mag.groupdict()['host'] in disabled_hosts:
