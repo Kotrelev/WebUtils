@@ -26,6 +26,7 @@ from lib.erth_inventory import erth_inventory
 from lib.ddm import ddm
 from lib.zabbix95 import zabbix95
 from lib.ipv4_table import ipv4_table
+from lib.common import common
 from lib.common import common_mysql
 from lib.inventory.mysql import inventory_mysql
 from lib.network_avalibility.avalibility_report import avalibility
@@ -131,11 +132,11 @@ def get_email_by_contract(contract, logger):
         logger.error('Ошибка в функции get_email_by_contract {}'.format(str(err_message)))
 
 
-def month_back(date, m):
-    # берет дату и кол-во месяцев (m), возвращает имя месяца.год для даты минус m
-    for month in range(0, m):
-        date = date - timedelta(days = date.day)
-    return(date)
+#def month_back(date, m):
+#    # берет дату и кол-во месяцев (m), возвращает имя месяца.год для даты минус m
+#    for month in range(0, m):
+#        date = date - timedelta(days = date.day)
+#    return(date)
 
     
 def make_session_id():
@@ -598,7 +599,7 @@ def inventory():
     now = datetime.now()
     headers = ['Type','Vendor','Model']
     #сделаем массив с названиями последних 12 месяцев
-    headers += (month_back(now, x).strftime('%b.%y') for x in reversed(range(0, 12)))
+    headers += (common.month_back(now, x).strftime('%b.%y') for x in reversed(range(0, 12)))
     models = []
     # получим массив диктов вида {'type': 'switch', 'vendor': 'Cisco', 'model': 'SF352-08'}
     db = inventory_mysql.get_dynamic_models(connection, logger)
@@ -1106,7 +1107,7 @@ def avalibility_report(msg=''):
 
     if request.method == 'GET':
         now = datetime.now()
-        fromd = int(datetime.strptime('01.'+month_back(now, 1).strftime("%m.%Y"),'%d.%m.%Y').timestamp())
+        fromd = int(datetime.strptime('01.'+common.month_back(now, 1).strftime("%m.%Y"),'%d.%m.%Y').timestamp())
         tilld = int(datetime.strptime('01.'+now.strftime("%m.%Y"),'%d.%m.%Y').timestamp())
     if request.method == 'POST':
         date_from = datetime.strptime(request.form['avalibility_report_date_from'], '%Y-%m-%d')

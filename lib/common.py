@@ -1,6 +1,6 @@
 import config, requests, ipaddress, string, secrets
 import pymysql.cursors
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class common:
     def id_generator(size, logger):
@@ -11,6 +11,12 @@ class common:
         except Exception as err_message:
             logger.error('Ошибка в функции common.id_generator {}'.format(str(err_message)))
 
+    def month_back(date, m):
+        # берет дату и кол-во месяцев (m), возвращает имя месяца.год для даты минус m
+        for month in range(0, m):
+            date = date - timedelta(days = date.day)
+        return(date)
+            
 class common_mysql:
     def local_sql_conn(logger):
         # это соединение будет возвращать словари
